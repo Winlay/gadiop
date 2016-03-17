@@ -1,0 +1,50 @@
+<script type="text/javascript">
+
+    jQuery('.tache').click(function() {
+        if (jQuery(this).hasClass('tache-active')) {
+            jQuery(this).parent().find('.tache-content').hide('200');
+            jQuery(this).parent().find('.fa').removeClass('fa-minus');
+            jQuery(this).parent().find('.fa').addClass('fa-plus');
+            jQuery(this).removeClass('tache-active');
+        } else {
+            jQuery(this).parent().find('.tache-content').show('200');
+            jQuery(this).parent().find('.fa').removeClass('fa-plus');
+            jQuery(this).parent().find('.fa').addClass('fa-minus');
+            jQuery(this).addClass('tache-active');
+        }
+    });
+    jQuery('.action').click(function() {
+        if (jQuery(this).hasClass('action-active')) {
+            jQuery(this).parent().find('.action-content').hide('200');
+            jQuery(this).parent().find('.fa').removeClass('fa-minus');
+            jQuery(this).parent().find('.fa').addClass('fa-plus');
+            jQuery(this).removeClass('action-active');
+        } else {
+            jQuery(this).parent().find('.action-content').show('200');
+            jQuery(this).parent().find('.fa').removeClass('fa-plus');
+            jQuery(this).parent().find('.fa').addClass('fa-minus');
+            jQuery(this).addClass('action-active');
+        }
+    });
+    for (var i = 0; i < 5; i++) {
+        var contenu="Lorem Ipsum is simply dummy text of the printing and typesetting industry.Lorem Ipsum has been the industry's standard dummy text ever since the 1500s";
+        var action="Action"+i;
+        var parcelle= i;
+        var titre="titre "+i;
+        var tache = "<div class=\"tache-div\">"
+                + "<a href=\"#\" class=\"tache\"><i class=\"fa fa-plus\"></i><strong>(Plle: "+parcelle+")</strong>"+titre+"</a>"
+                + "<div style=\"display: none; padding: 10px\" class=\"tache-content\">"
+                + "<p>"+contenu+"</p>"
+                + "<br/><a class=\"btn btn-\">Intervenntion</a>"
+                + "</div>"
+                + "<div class=\"action\">"
+                + "<div class=\"action\" style=\"display:none\">"
+                + " <p><textarea>"+action+"</textarea></p>"
+                + "</div>"
+                + "</div>";
+        jQuery('#listeTaches').append(tache);
+    }
+</script>
+<div class="header-menu" id="listeTaches" style="padding: 10px">
+
+</div>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<root>
+<!--    <define var="host" value="mysql1.alwaysdata.com"/>
+    <define var="username" value="winlay_bm"/>
+    <define var="password" value="passer"/>
+    <define var="dbname" value="winlay_Winlaytechmobile"/>  -->
+    <define var="host" value="localhost"/>
+    <define var="username" value="root"/>
+    <define var="password" value=""/>
+    <define var="dbname" value="geolands"/>  
+</root>

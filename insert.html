@@ -1,0 +1,290 @@
+<!DOCTYPE HTML>
+<html>
+
+    <head title="GEOLANDS">
+        <title>GEOLANDS</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0 minimal-ui"/>
+        <meta name="apple-mobile-web-app-capable" content="yes"/>
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="images/splash/splash-icon.png">
+        <link rel="apple-touch-startup-image" href="images/splash/splash-screen.png" 			media="screen and (max-device-width: 320px)" />
+        <link rel="apple-touch-startup-image" sizes="640x1096" href="images/ios/splash/splash-screen@3x.png" />
+        <link rel="apple-touch-startup-image" sizes="1024x748" href="images/ios/splash/splash-screen-ipad-landscape" media="screen and (min-device-width : 481px) and (max-device-width : 1024px) and (orientation : landscape)" />
+        <link rel="apple-touch-startup-image" sizes="768x1004" href="images/ios/splash/splash-screen-ipad-portrait.png" media="screen and (min-device-width : 481px) and (max-device-width : 1024px) and (orientation : portrait)" />
+
+
+        <link href="css/framework.min.css" 	  rel="stylesheet" type="text/css"/>
+        <link href="css/owl.theme.min.css"    rel="stylesheet" type="text/css"/>
+        <link href="css/swipebox.min.css"	  rel="stylesheet" type="text/css"/>
+        <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+        <link href="css/style.css"     	  rel="stylesheet" type="text/css"/>
+        <script  src="js/jquery.js" type="text/javascript"></script>
+        <style type="text/css">
+            body {
+                margin: 0;
+                -webkit-tap-highlight-color:rgba(0,0,0,0);
+            }
+            div#container {
+                position: absolute;
+                width: 100%;
+                top: 0;
+                bottom: 0;
+            }
+            div[data-role="header"] {
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+            }
+            div[data-role="content"] {
+                position: absolute;
+                top: 41px;
+                bottom: 0;
+                left: 0;
+                right: 0;
+            }
+            .scrollable {
+                overflow-y: scroll;
+                -webkit-overflow-scrolling: touch;
+                -webkit-overflow-scrolling: touch;
+            }
+            /* iOS specific fix, don't use it on Android devices */
+            .scrollable > * {
+                -webkit-transform: translateZ(0px);
+            }
+        </style>
+
+        <script type="text/javascript" src="js/jquery.min.js"></script>
+        <!--<script type="text/javascript" src="js/jquery.mobile-1.4.5.js"></script>-->
+        <script type="text/javascript" src="js/index.js"></script>
+        <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="js/custom.js"></script>
+        <script type="text/javascript" src="js/framework.plugins.min.js"></script>
+        <!--<script type="text/javascript" src="js/PhoneDialer.js"></script>-->
+        <script type="text/javascript">
+            function clearRadio(nom) {
+                if (nom) {
+                    jQuery("input:radio[name='" + nom + "']").each(function(i) {
+                        this.checked = false;
+                    });
+                }
+            }
+            function loadContent(url) {
+                jQuery('#ajax-content').load(url);
+            }
+
+            function quitter() {
+                if (confirm("Voulez-vous vraiment quitter l'application")) {
+                    navigator.app.exitApp();
+                } else {
+                    alert("Annulée");
+                }
+            }
+
+            document.addEventListener("backbutton", function(e) {
+                loadContent('index_ajax.html');
+            }, false);
+        </script>
+
+
+    </head>
+    <body>
+        <div class="scrollable" id="container">
+            <div class="snap-drawers">
+                <div class="snap-drawer snap-drawer-left">
+                    <div class="sidebar-header">
+                        <a href="#" class="sidebar-logo"><h2 style="color: #27AE60">GEOLANDS</h2></a>
+                        <a href="#" class="sidebar-logo-close" style="font-size: 18px"><i class="fa fa-arrow-circle-left default-color"></i></a>
+                    </div>
+                    <div class="clear"></div>
+                    <ul class="sidebar-navigation full-bottom">
+                        <li><a  class="ajax-menu cursor" href="index.html"><i class="fa fa-home"></i><em>Accueil</em></a></li>
+                        <li><a  class="ajax-menu cursor" href="list.html"><i class="fa fa-map-marker"></i><em>Liste zones</em></a></li>
+                        <li><a  class="ajax-menu cursor" href="search.html"><i class="fa fa-search-plus"></i><em>Recherche zones</em></a></li>
+                        <li><a  class="ajax-menu cursor" href="insert.html"><i class="fa fa-plus-circle"></i><em>Nouvelle zone</em></a></li>
+                        <li><a onclick="quitter()"><i class="fa fa-times-circle"></i><em>Quitter</em></a></li>
+                    </ul>
+                    <div class="sidebar-decoration"></div>
+
+                    <div class="sidebar-decoration"></div>
+                    <p class="sidebar-copyright">Copyright WINLAY 2016. All rights reserved.</p>
+                </div>
+
+                <div class="snap-drawer snap-drawer-right">
+                </div>
+            </div>
+
+            <div class="page-header">
+                <a href="#" class="open-left"><i class="fa fa-navicon"></i></a>
+                <a class="page-logo"><i class="fa fa-plus-circle"></i> Nouvelle zone</a>
+                <!--<a href="#" class="open-right"><i class="fa fa-info-circle"></i></a>-->
+            </div>
+            <div id="content" class="snap-content">
+                <div id="ajax-content" style="" class="scroller">
+                    <div style=" padding-top: 60px;">
+                        <table style="padding: 1px; margin-bottom: 2px" class="table">
+                            <tr style=" padding: 2px; margin: 2px">
+                                <td style="padding: 2px; margin: 2px">
+                                    <button id="btn-showformInfos" class="button-blue button-3d" onclick="$('#btn-showformInfos').hide();
+                $('#btn-hideformInfos').show();
+                $('#formInfos').show('slow');"><i class="fa fa-edit"></i> Editer Infos</button>
+                                    <button style="display: none" id="btn-hideformInfos" class="button-red button-3d" onclick="$('#formInfos').hide();
+                $('#btn-hideformInfos').hide();
+                $('#btn-showformInfos').show();"><i class="fa fa-eye-slash"></i> cacher Infos</button>
+                                </td>
+                                <td colspan="1" style=" padding: 2px; margin: 2px">
+                                    <button id="btn-savePolygone" class="button-green button-3d" onclick="savePolygone();"><i class="fa fa-save"></i>  Enregistrer</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div id="formInfos" style="display: none">
+                        <table style="padding: 5px; margin-bottom: 2px" class="table">
+                            <tr style=" padding: 2px; margin: 2px">
+                                <td style=" padding: 2px; margin: 2px">
+                                    <select class="contactField" onclick="polygoneDepart.fillColor = $('#categorie').val();" id="categorie" name="categorie">
+                                        <option value="">   Catégorie</option>
+                                        <option value="#3367D6">   Riz</option>
+                                        <option value="#000000">   Mais</option>
+                                        <option value="#DC493C">   Blé</option>
+                                        <option value="#F7E707">   Tomate</option>
+                                    </select>
+                                </td>
+                            </tr>
+
+                            <tr style=" padding: 2px; margin: 2px">
+                                <td style=" padding: 2px; margin: 2px">
+                                    <input class="contactField" name="libelle"  id="libelle" placeholder="Libelle de la zone"  />
+                                </td>
+                            </tr>
+
+                            <tr style=" padding: 2px; margin: 2px">
+                                <td style=" padding: 2px; margin: 2px">
+                                    <textarea class="contactField" style="height: 150px" name="description"  id="description" placeholder="Description de la zone"></textarea>
+                                </td>
+                            </tr>
+                        </table>
+
+                    </div>
+                    <div id="map" style="width: 100%; height: 500px; padding-top: 2px; text-align: center">
+                        <img style="text-align: center" src="images/loading.gif" alt="Chargement en cours..."/>
+                    </div> 
+                </div>
+
+            </div>
+            <script type="text/javascript">
+            var map;
+            var polygoneDepart;
+            var latInitial = 0;
+            var lngInitial = 0;
+            var initialLocation1;
+            var initialLocation2;
+            var initialLocation3;
+            var initialLocation4;
+            var initialLocation5;
+            var distance = 0.1;
+
+            function onSuccess(position) {
+                if (position) {
+                    latInitial = position.coords.latitude;
+                    lngInitial = position.coords.longitude;
+                } else {
+                    alert('Merci d\'activer votre conenction internet et votre localisation');
+                }
+                //alert('position detectée\n' + latInitial + '<==/==>' + lngInitial);
+                initialLocation = {lat: latInitial, lng: lngInitial};
+                initialLocation1 = translateCoordinates(100, latInitial, lngInitial, 45);
+                initialLocation2 = translateCoordinates(100, latInitial, lngInitial, 90);
+                initialLocation3 = translateCoordinates(100, latInitial, lngInitial, 135);
+                initialLocation4 = translateCoordinates(100, latInitial, lngInitial, 180);
+                initialLocation5 = translateCoordinates(100, latInitial, lngInitial, 225);
+                //var mapOptions = {zoom: 12, center: initialLocation, mapTypeId: google.maps.MapTypeId.ROADMAP};
+                map = new google.maps.Map(
+                        document.getElementById('map'),
+                        {zoom: 15, center: initialLocation, mapTypeId: google.maps.MapTypeId.TERRAIN}
+                );
+                // Define the LatLng coordinates for the polygon.
+                var triangleCoords = [
+                    initialLocation,
+                    initialLocation1,
+                    initialLocation2,
+                    initialLocation3,
+                    initialLocation4,
+                    initialLocation5
+                ];
+
+                // Construct the polygon.
+                polygoneDepart = new google.maps.Polygon({
+                    paths: triangleCoords,
+                    strokeColor: '#FF0000',
+                    strokeOpacity: 0.8,
+                    strokeWeight: 1,
+                    fillColor: '#FF0000',
+                    editable: true,
+                    draggable: true,
+                    fillOpacity: 0.35
+                });
+                polygoneDepart.setMap(map);
+            }
+
+            function onError(error) {
+                //  alert('Une erreur est survenue ===>' + 'message: ' + error.message + '\n');
+                alert('Merci d\'activer votre conenction internet');
+            }
+
+            function initialize() {
+                var options = {timeout: 30000, enableHighAccuracy: true, maximumAge: 900000};
+                navigator.geolocation.getCurrentPosition(onSuccess, onError, options);
+            }
+
+
+
+            function translateCoordinates(distance, Lat, Lng, angle) {
+                distanceNorth = Math.sin(angle) * distance;
+                distanceEast = Math.cos(angle) * distance;
+                earthRadius = 6371000;
+                newLat = Lat + (distanceNorth / earthRadius) * 180 / Math.PI;
+                newLon = Lng + (distanceEast / (earthRadius * Math.cos(newLat * 180 / Math.PI))) * 180 / Math.PI;
+                return {lat: newLat, lng: newLon};
+            }
+
+            function savePolygone() {
+                var vertices = polygoneDepart.getPath();
+                var contentString = '[';
+                // Iterate over the vertices.
+                for (var i = 0; i < vertices.getLength(); i++) {
+                    var xy = vertices.getAt(i);
+                    contentString += '{lat:' + xy.lat() + ', lng:' + xy.lng() + '}';
+                    if (i + 1 !== vertices.getLength()) {
+                        contentString += ',';
+                    }
+                }
+                contentString += ']';
+                var libelle = $('#libelle').val();
+                var description = $('#description').val();
+                var categorie = $('#categorie').val();
+                jQuery.ajax({
+                    'type': 'GET',
+//                    'dataType': 'json',
+                    'url': "http://localhost/geoLands/server/savezone.php",
+                    'data': {'libelle': libelle, 'categorie': categorie, 'description': description, 'polygone': contentString},
+                    'success': function() {
+                        alert('Nouvelle zone ajoutée avec succès');
+                        document.location.href="index.html";
+                    },
+                    'error': function() {
+                        alert('une erreur est survenue lors de l\'enrégistrement. Merci de réessayer');
+                    }
+                });
+            }
+
+            </script>
+            <script async defer
+                    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDJXY5vQQ_aowKOUA--27f7fgKDs07li60&callback=initialize">
+            </script>
+        </div>
+
+    </body>
+
+</html>
