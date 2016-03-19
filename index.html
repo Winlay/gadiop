@@ -99,7 +99,7 @@
                     </div>
                     <div class="clear"></div>
                     <ul class="sidebar-navigation full-bottom">
-                        <li><a  class="ajax-menu cursor" data-page="index.html" data-title="Geolands"><i class="fa fa-home"></i><em>Accueil</em></a></li>
+                        <li><a  href="index.html"><i class="fa fa-home"></i><em>Accueil</em></a></li>
                         <li><a  class="ajax-menu cursor" data-page="parcelles.html" data-title="Mes parcelles"><i class="fa fa-map-marker"></i><em>Mes parcelles</em></a></li>
                         <li><a  class="ajax-menu cursor" data-page="taches.html" data-title="Mes taches"><i class="fa fa-list"></i><em>Mes t&acirc;ches</em></a></li>
                         <li><a  class="ajax-menu cursor" data-page="interventions.html" data-title="Mes interventions"><i class="fa fa-thumbs-up"></i><em>Mes interventions</em></a></li>
@@ -118,8 +118,8 @@
 
             <div class="page-header">
                 <a href="#" class="open-left"><i class="fa fa-navicon"></i></a>
-                <a class="page-logo"><i class="fa fa-map-marker"></i> <span id="titreHeder">GEOLANDS</span></a>
-                <!--<a href="#" class="open-right"><i class="fa fa-info-circle"></i></a>-->
+                <a class="page-logo"><i class="fa fa-map-marker"></i><span id="titreHeder">GEOLANDS</span></a>
+                <a href="index.html" id="backbutton" class="open-right1 cursor"><i style="color: #FFF" class="fa fa-arrow-left"></i></a>
             </div>
             <div id="content" class="snap-content">
                 <div id="ajax-content" style="" class="scroller">
@@ -130,7 +130,7 @@
                         <a  class="ajax-menu cursor"  data-page="alertes.html" data-title="Mes alertes"><i class="fa fa-bullhorn"></i>Mes alertes<i class="fa fa-chevron-right"></i></a>
                         <a  class="ajax-menu cursor"  data-page="parametrage.html" data-title="Paramètrage"><i class="fa fa-cogs"></i>Paramètrage<i class="fa fa-chevron-right"></i></a>
                         <a  class="ajax-menu cursor"  data-page="synchroniser.html" data-title="Synchronisation"><i class="fa fa-refresh"></i>Synchroniser<i class="fa fa-chevron-right"></i></a>
-                        <a onclick="quitter()"><i class="fa fa-times"></i>Quitter<i class="fa fa-chevron-right"></i></a>
+                        <a onclick="quitter();"><i class="fa fa-times"></i>Quitter<i class="fa fa-chevron-right"></i></a>
                     </div>
                 </div>
 
@@ -140,6 +140,7 @@
             jQuery('.ajax-menu').on('click', function() {
                 jQuery("#titreHeder").html(jQuery(this).data('title'));
                 jQuery("#ajax-content").load(jQuery(this).data('page'));
+//                jQuery("#backbutton").load(jQuery(this).data('page'));
             });
             function loadFromServer(page, titre) {
 //                jQuery("#titreHeder").addClass(titre);
@@ -150,7 +151,7 @@
 //                 jQuery("#fromdb").load("server/articles.php?category=" + cat);
                     //jQuery("#fromdb").load("http://mms-serveur.noflay.com/articles.php?category="+cat);
                 } else {
-                    alert('connexion internet indisponible')
+                    alert('connexion internet indisponible');
                 }
             }
         </script>
@@ -164,19 +165,19 @@
 
                 db.transaction(function(tx) {
                     tx.executeSql('DROP TABLE IF EXISTS test_table');
-                    tx.executeSql('CREATE TABLE IF NOT EXISTS test_table (id integer primary key, data text, data_num integer)');
+                    tx.executeSql('CREATE TABLE IF NOT EXISTS taches (id integer primary key, personne_id integer, parcelle_id integer,libelle text, description text)');
 
-                    tx.executeSql("INSERT INTO test_table (data, data_num) VALUES (?,?)", ["test", 100], function(tx, res) {
-                        console.log("insertId: " + res.insertId + " -- probably 1");
-                        console.log("rowsAffected: " + res.rowsAffected + " -- should be 1");
+                    tx.executeSql("INSERT INTO tache (personne_id, parcelle_id, libelle,description,) VALUES (10,1,champs manioc de test,champs de test de la base de données)", ["test", 100], function(tx, res) {
+                        alert("insertId: " + res.insertId + " -- probably 1");
+                        alert("rowsAffected: " + res.rowsAffected + " -- should be 1");
 
                         tx.executeSql("select count(id) as cnt from test_table;", [], function(tx, res) {
-                            console.log("res.rows.length: " + res.rows.length + " -- should be 1");
-                            console.log("res.rows.item(0).cnt: " + res.rows.item(0).cnt + " -- should be 1");
+                            alert("res.rows.length: " + res.rows.length + " -- should be 1");
+                            alert("res.rows.item(0).cnt: " + res.rows.item(0).cnt + " -- should be 1");
                         });
 
                     }, function(e) {
-                        console.log("ERROR: " + e.message);
+                        alert("ERROR: " + e.message);
                     });
                 });
             }
