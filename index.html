@@ -8,18 +8,15 @@
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <link rel="apple-touch-icon-precomposed" sizes="114x114" href="images/splash/splash-icon.png">
         <link rel="apple-touch-startup-image" href="images/splash/splash-screen.png" 			media="screen and (max-device-width: 320px)" />
-        <link rel="apple-touch-startup-image" sizes="640x1096" href="images/ios/splash/splash-screen@3x.png" />
+        <link rel="apple-touch-startup-image" sizes="640x1096" href="images/ios/splash/splash-screen@3x.png"/>
         <link rel="apple-touch-startup-image" sizes="1024x748" href="images/ios/splash/splash-screen-ipad-landscape" media="screen and (min-device-width : 481px) and (max-device-width : 1024px) and (orientation : landscape)" />
         <link rel="apple-touch-startup-image" sizes="768x1004" href="images/ios/splash/splash-screen-ipad-portrait.png" media="screen and (min-device-width : 481px) and (max-device-width : 1024px) and (orientation : portrait)" />
-
         <title>GEOLANDS</title>
-
         <link href="css/framework.min.css" 	  rel="stylesheet" type="text/css"/>
         <link href="css/owl.theme.min.css"    rel="stylesheet" type="text/css"/>
-        <link href="css/swipebox.min.css"	  rel="stylesheet" type="text/css"/>
+        <!--<link href="css/swipebox.min.css"	  rel="stylesheet" type="text/css"/>-->
         <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
         <link href="css/style.css"     	  rel="stylesheet" type="text/css"/>
-
         <style type="text/css">
             body {
                 margin: 0;
@@ -81,15 +78,12 @@
             }
 
             document.addEventListener("backbutton", function(e) {
-                loadContent('index_ajax.html');
+                document.location('index.html');
             }, false);
 
         </script>
-
-
-
     </head>
-    <body>
+    <body onload="">
         <div class="scrollable" id="container">
             <div class="snap-drawers">
                 <div class="snap-drawer snap-drawer-left">
@@ -118,7 +112,7 @@
 
             <div class="page-header">
                 <a href="#" class="open-left"><i class="fa fa-navicon"></i></a>
-                <a class="page-logo"><i class="fa fa-map-marker"></i><span id="titreHeder">GEOLANDS</span></a>
+                <a class="page-logo"><i class="fa fa-map-marker"></i><span id="titreHeder"> GEOLANDS</span></a>
                 <a href="index.html" id="backbutton" class="open-right1 cursor"><i style="color: #FFF" class="fa fa-arrow-left"></i></a>
             </div>
             <div id="content" class="snap-content">
@@ -138,7 +132,7 @@
         </div>
         <script type="text/javascript">
             jQuery('.ajax-menu').on('click', function() {
-                jQuery("#titreHeder").html(jQuery(this).data('title'));
+                jQuery("#titreHeder").html(' '+jQuery(this).data('title'));
                 jQuery("#ajax-content").load(jQuery(this).data('page'));
 //                jQuery("#backbutton").load(jQuery(this).data('page'));
             });

@@ -19,15 +19,8 @@
         var action = "Action" + i;
         var parcelle = i;
         var titre = "titre " + i;
-        var tache = "<div class=\"tache-div\">"
-                + "<a class=\"tache\"><i class=\"fa fa-plus\"></i><strong>(Plle: " + parcelle + ")</strong>" + titre + "</a>"
-                + "<div style=\"display: none; padding: 10px\" class=\"tache-content\">"
-                + "<p>" + contenu + "</p>"
-                + "<br/><p class=\"btn action\">Intervention</p>"
-                + " <p><textarea>" + action + "</textarea></p>"
-                + "</div>";
-        +"</div>";
-       // jQuery('#listeTaches').append(tache);
+        var taches = "<div class=\"tache-div\"><a href=\"#\" class=\"tache\"><i class=\"fa fa-plus\"></i> " + titre + "</a><div style=\"display: none;\" class=\"tache-content\"><div><p>" + contenu + "</p></div><div style=\"\" class=\"intervention-div\"><a href=\"#\" class=\"intervention\"><i class=\"fa fa-minus\"></i>intervention</a><div class=\"intervention-content\"><p><textarea style=\"width: 100%\" rows=\"5\" cols=\"8\" class=\"interventiontext\" name=\"intervention" + parcelle + "\" id=\"intervention" + parcelle + "\"></textarea></p><p><a data-tacheid=\"" + parcelle + "\" class=\"saveintervention cursor\" style=\"text-shadow: none; background-color: darkgreen; color: #FFF; padding: 5px\">Enrégistrer</a></p></div></div></div></div>";
+        // jQuery('#listeTaches').append(tache);
 //        var tache = "<div class=\"tache-div\">"
 //                + "<a href=\"#\" class=\"tache\"><i class=\"fa fa-plus\"></i><strong>(Plle: "+parcelle+")</strong>"+titre+"</a>"
 //                + "<div style=\"display: none; padding: 10px\" class=\"tache-content\">"
@@ -37,7 +30,7 @@
 //                + " <p><textarea>"+action+"</textarea></p>"
 //                + "</div>";
 //                + "</div>";
-//        jQuery('#listeTaches').append(tache);
+        jQuery('#listeTaches').append(taches);
     }
 
     jQuery('.tache').click(function() {
@@ -56,58 +49,13 @@
 
     jQuery('.saveintervention').click(function() {
         var idtache = jQuery(this).data('tacheid');
-        var intervention = jQuery(this).closest('.interventiontext').val();
-        var intervention = jQuery(this).parent().find('.interventiontext').val();
+//        var intervention = jQuery(this).parent().find('.interventiontext').html();
+//        var intervention = jQuery(this).closest('div').find('.interventiontext').val();
+        var intervention = jQuery('#intervention' + idtache).val();
         alert("tache numéro: " + idtache);
-        alert("intervention " + intervention);
-
+        alert("intervention: " + intervention);
     });
 </script>
 <div class="header-menu" id="listeTaches" style="padding: 10px">
-    <div class="tache-div">
-        <a href="#" class="tache"><i class="fa fa-plus"></i>Tache 1</a>
-        <div style="display: none;" class="tache-content">
-            <div>
-                <p>
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
-                    Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
-                    when an unknown printer took a galley of type and scrambled specimen book.
-                </p>
-            </div>
-            <div style="" class="intervention-div">
-                <a href="#" class="intervention"><i class="fa fa-minus"></i>intervention</a>
-                <div class="intervention-content">
-                    <p>
-                        <textarea style="width: 100%" rows="5" cols="8" class="interventiontext" name="intervention1" id="intervention1"></textarea>
-                    </p>
-                    <p>
-                        <a data-tacheid="1"  class="saveintervention cursor" style="text-shadow: none; background-color: darkgreen; color: #FFF; padding: 5px">Enrégistrer</a>
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="tache-div">
-        <a href="#" class="tache"><i class="fa fa-plus"></i>Tache 1</a>
-        <div style="display: none;" class="tache-content">
-            <div>
-                <p>
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
-                    Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
-                    when an unknown printer took a galley of type and scrambled specimen book.
-                </p>
-            </div>
-            <div style="" class="intervention-div">
-                <a href="#" class="intervention"><i class="fa fa-minus"></i>intervention</a>
-                <div class="intervention-content">
-                    <p>
-                        <textarea style="width: 100%" rows="5" cols="8" class="interventiontext" name="intervention2" id="intervention1"></textarea>
-                    </p>
-                    <p>
-                        <a data-tacheid="2"  class="saveintervention cursor" style="text-shadow: none; background-color: darkgreen; color: #FFF; padding: 5px">Enrégistrer</a>
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
+
 </div>
