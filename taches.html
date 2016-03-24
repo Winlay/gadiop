@@ -19,7 +19,7 @@
         var action = "Action" + i;
         var parcelle = i;
         var titre = "titre " + i;
-        var taches = "<div class=\"tache-div\"><a href=\"#\" class=\"tache\"><i class=\"fa fa-plus\"></i> " + titre + "</a><div style=\"display: none;\" class=\"tache-content\"><div><p>" + contenu + "</p></div><div style=\"\" class=\"intervention-div\"><a href=\"#\" class=\"intervention\"><i class=\"fa fa-minus\"></i>intervention</a><div class=\"intervention-content\"><p><textarea style=\"width: 100%\" rows=\"5\" cols=\"8\" class=\"interventiontext\" name=\"intervention" + parcelle + "\" id=\"intervention" + parcelle + "\"></textarea></p><p><a data-tacheid=\"" + parcelle + "\" class=\"saveintervention cursor\" style=\"text-shadow: none; background-color: darkgreen; color: #FFF; padding: 5px\">Enrégistrer</a></p></div></div></div></div>";
+        var taches = "<div class=\"tache-div\"><a href=\"#\" class=\"tache\"><i class=\"fa fa-plus\"></i> " + titre + "</a><div style=\"display: none;\" class=\"tache-content\"><div><p>" + contenu + "</p></div><div style=\"\" class=\"intervention-div\"><a href=\"#\" class=\"intervention\"><i class=\"fa fa-minus\"></i>intervention</a><div class=\"intervention-content\"><p><select  id=\"etat"+i+"\" class=\"contactField\"><option value=\"1\">Effectué</option><option value=\"0\">En cours</option><option value=\"-1\">A faire</option></select></p><p><textarea style=\"width: 100%\" rows=\"5\" cols=\"8\" class=\"interventiontext\" name=\"intervention" + parcelle + "\" id=\"intervention" + parcelle + "\"></textarea></p><p><a data-tacheid=\"" + parcelle + "\" class=\"saveintervention cursor\" style=\"text-shadow: none; background-color: darkgreen; color: #FFF; padding: 5px\">Enrégistrer</a></p></div></div></div></div>";
         // jQuery('#listeTaches').append(tache);
 //        var tache = "<div class=\"tache-div\">"
 //                + "<a href=\"#\" class=\"tache\"><i class=\"fa fa-plus\"></i><strong>(Plle: "+parcelle+")</strong>"+titre+"</a>"
@@ -52,7 +52,9 @@
 //        var intervention = jQuery(this).parent().find('.interventiontext').html();
 //        var intervention = jQuery(this).closest('div').find('.interventiontext').val();
         var intervention = jQuery('#intervention' + idtache).val();
+        var etat = jQuery('#etat' + idtache).val();
         alert("tache numéro: " + idtache);
+        alert("etat: " + etat);
         alert("intervention: " + intervention);
     });
 </script>

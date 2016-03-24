@@ -60,7 +60,7 @@
         <script type="text/javascript">
             function clearRadio(nom) {
                 if (nom) {
-                    jQuery("input:radio[name='" + nom + "']").each(function(i) {
+                    jQuery("input:radio[name='" + nom + "']").each(function (i) {
                         this.checked = false;
                     });
                 }
@@ -77,7 +77,7 @@
                 }
             }
 
-            document.addEventListener("backbutton", function(e) {
+            document.addEventListener("backbutton", function (e) {
                 document.location('index.html');
             }, false);
 
@@ -112,27 +112,26 @@
 
             <div class="page-header">
                 <a href="#" class="open-left"><i class="fa fa-navicon"></i></a>
-                <a class="page-logo"><i class="fa fa-map-marker"></i><span id="titreHeder"> GEOLANDS</span></a>
+                <a class="page-logo"><i class="fa fa-refresh"></i><span id="titreHeder"> Synchroniser</span></a>
                 <a href="index.html" id="backbutton" class="open-right1 cursor"><i style="color: #FFF" class="fa fa-arrow-left"></i></a>
             </div>
             <div id="content" class="snap-content">
                 <div id="ajax-content" style="" class="scroller">
-                    <div class="header-menu">
-                        <a  class="cursor"  href="parcelles-liste.html" data-title="Mes parcelles"><i class="fa fa-map-marker"></i>Mes parcelles<i class="fa fa-chevron-right"></i></a>
-                        <a  class="ajax-menu cursor"  data-page="taches.html" data-title="Mes tâches"><i class="fa fa-list"></i>Mes taches<i class="fa fa-chevron-right"></i></a>
-<!--                        <a  class="ajax-menu cursor"  data-page="intervenetions.html" data-title="Mes interventions"><i class="fa fa-thumbs-up"></i>Mes interventions<i class="fa fa-chevron-right"></i></a>-->
-                        <a  class="ajax-menu cursor"  data-page="alertes.html" data-title="Mes alertes"><i class="fa fa-bullhorn"></i>Mes alertes<i class="fa fa-chevron-right"></i></a>
-                        <a  class="ajax-menu cursor"  data-page="parametrage.html" data-title="Paramètrage"><i class="fa fa-cogs"></i>Paramètrage<i class="fa fa-chevron-right"></i></a>
-                        <a  class="cursor"  href="synchroniser.html" data-title="Synchronisation"><i class="fa fa-refresh"></i>Synchroniser<i class="fa fa-chevron-right"></i></a>
-                        <a onclick="quitter();"><i class="fa fa-times"></i>Quitter<i class="fa fa-chevron-right"></i></a>
-                    </div>
+
+                    <p style="text-align: center; padding-top: 150px; ">
+                        <img style="margin-left: auto; margin-right: auto; text-align: center; width: 150px; height: 150px" alt="Synchroniser" src="images/synchroniser.png" />
+                        <br/>
+                        <a style="font-size: 30px">
+                            Synchroniser
+                        </a>
+                    </p>
                 </div>
 
             </div>
         </div>
         <script type="text/javascript">
-            jQuery('.ajax-menu').on('click', function() {
-                jQuery("#titreHeder").html(' '+jQuery(this).data('title'));
+            jQuery('.ajax-menu').on('click', function () {
+                jQuery("#titreHeder").html(' ' + jQuery(this).data('title'));
                 jQuery("#ajax-content").load(jQuery(this).data('page'));
 //                jQuery("#backbutton").load(jQuery(this).data('page'));
             });

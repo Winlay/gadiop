@@ -65,7 +65,7 @@
         <script type="text/javascript">
             function clearRadio(nom) {
                 if (nom) {
-                    jQuery("input:radio[name='" + nom + "']").each(function(i) {
+                    jQuery("input:radio[name='" + nom + "']").each(function (i) {
                         this.checked = false;
                     });
                 }
@@ -82,7 +82,7 @@
                 }
             }
 
-            document.addEventListener("backbutton", function(e) {
+            document.addEventListener("backbutton", function (e) {
                 loadContent('index_ajax.html');
             }, false);
         </script>
@@ -98,7 +98,7 @@
                         <a href="#" class="sidebar-logo-close" style="font-size: 18px"><i class="fa fa-arrow-circle-left default-color"></i></a>
                     </div>
                     <div class="clear"></div>
-                     <ul class="sidebar-navigation full-bottom">
+                    <ul class="sidebar-navigation full-bottom">
                         <li><a  href="index.html"><i class="fa fa-home"></i><em>Accueil</em></a></li>
                         <li><a  class="cursor" href="parcelles.html" data-title="Mes parcelles"><i class="fa fa-map-marker"></i><em>Mes parcelles</em></a></li>
                         <li><a  class="ajax-menu cursor" data-page="taches.html" data-title="Mes taches"><i class="fa fa-list"></i><em>Mes t&acirc;ches</em></a></li>
@@ -120,7 +120,7 @@
 
             <div class="page-header">
                 <a href="#" class="open-left"><i class="fa fa-navicon"></i></a>
-                <a class="page-logo"><i class="fa fa-plus-circle"></i> Nouvelle zone</a>
+                <a class="page-logo"><i class="fa fa-plus-circle"></i> Parcelle A</a>
                 <!--<a href="#" class="open-right"><i class="fa fa-info-circle"></i></a>-->
             </div>
             <div id="content" class="snap-content">
@@ -129,15 +129,15 @@
                         <table style="padding: 1px; margin-bottom: 2px" class="table">
                             <tr style=" padding: 2px; margin: 2px">
                                 <td style="padding: 2px; margin: 2px">
-                                    <button id="btn-showformInfos" class="button-blue button-3d" onclick="$('#btn-showformInfos').hide();
-                $('#btn-hideformInfos').show();
-                $('#formInfos').show('slow');"><i class="fa fa-edit"></i> Editer Infos</button>
-                                    <button style="display: none" id="btn-hideformInfos" class="button-red button-3d" onclick="$('#formInfos').hide();
-                $('#btn-hideformInfos').hide();
-                $('#btn-showformInfos').show();"><i class="fa fa-eye-slash"></i> cacher Infos</button>
+                                    <a id="btn-showformInfos" class="button-blue button-3d" onclick="$('#btn-showformInfos').hide();
+                                            $('#btn-hideformInfos').show();
+                                            $('#formInfos').show('slow');"><i class="fa fa-comment"></i> Détails</a>
+                                    <a style="display: none" id="btn-hideformInfos" class="button-red button-3d" onclick="$('#formInfos').hide();
+                                            $('#btn-hideformInfos').hide();
+                                            $('#btn-showformInfos').show();"><i class="fa fa-eye-slash"></i> cacher détails</a>
                                 </td>
                                 <td colspan="1" style=" padding: 2px; margin: 2px">
-                                    <button id="btn-savePolygone" class="button-green button-3d" onclick="savePolygone();"><i class="fa fa-save"></i>  Enregistrer</button>
+                                    <a href="parcelles-liste.html" class="button-green button-3d"><i class="fa fa-list"></i>  Liste</a>
                                 </td>
                             </tr>
                         </table>
@@ -146,25 +146,21 @@
                         <table style="padding: 5px; margin-bottom: 2px" class="table">
                             <tr style=" padding: 2px; margin: 2px">
                                 <td style=" padding: 2px; margin: 2px">
-                                    <select class="contactField" onclick="polygoneDepart.fillColor = $('#categorie').val();" id="categorie" name="categorie">
-                                        <option value="">   Catégorie</option>
-                                        <option value="#3367D6">   Riz</option>
-                                        <option value="#000000">   Mais</option>
-                                        <option value="#DC493C">   Blé</option>
-                                        <option value="#F7E707">   Tomate</option>
-                                    </select>
+                                    <p>Catégorie de la parcelle</p>
                                 </td>
                             </tr>
 
                             <tr style=" padding: 2px; margin: 2px">
                                 <td style=" padding: 2px; margin: 2px">
-                                    <input class="contactField" name="libelle"  id="libelle" placeholder="Libelle de la zone"  />
+                                    <p>Libelle de la parcelle</p>
                                 </td>
                             </tr>
 
                             <tr style=" padding: 2px; margin: 2px">
                                 <td style=" padding: 2px; margin: 2px">
-                                    <textarea class="contactField" style="height: 150px" name="description"  id="description" placeholder="Description de la zone"></textarea>
+                                    <p>
+                                        Description de la parcelle
+                                    </p>
                                 </td>
                             </tr>
                         </table>
@@ -176,111 +172,80 @@
 
             </div>
             <script type="text/javascript">
-            var map;
-            var polygoneDepart;
-            var latInitial = 0;
-            var lngInitial = 0;
-            var initialLocation1;
-            var initialLocation2;
-            var initialLocation3;
-            var initialLocation4;
-            var initialLocation5;
-            var distance = 0.1;
+                var map;
+                var polygoneDepart;
+                var latInitial = 14.7362987;
+                var lngInitial = -17.45662444;
+                var initialLocation1;
+                var initialLocation2;
+                var initialLocation3;
+                var initialLocation4;
+                var initialLocation5;
+                var distance = 0.1;
+                var infoWindow;
 
-            function onSuccess(position) {
-                if (position) {
-                    latInitial = position.coords.latitude;
-                    lngInitial = position.coords.longitude;
-                } else {
-                    alert('Merci d\'activer votre conenction internet et votre localisation');
+                function initialize() {
+                    initialLocation = {lat: latInitial, lng: lngInitial};
+                    initialLocation1 = translateCoordinates(100, latInitial, lngInitial, 45);
+                    initialLocation2 = translateCoordinates(100, latInitial, lngInitial, 90);
+                    initialLocation3 = translateCoordinates(100, latInitial, lngInitial, 135);
+                    //                    initialLocation4 = translateCoordinates(100, latInitial, lngInitial, 180);
+                    initialLocation5 = translateCoordinates(100, latInitial, lngInitial, 225);
+                    //var mapOptions = {zoom: 12, center: initialLocation, mapTypeId: google.maps.MapTypeId.ROADMAP};
+                    map = new google.maps.Map(
+                            document.getElementById('map'),
+                            {zoom: 16, center: initialLocation, mapTypeId: google.maps.MapTypeId.TERRAIN}
+                    );
+                    // Define the LatLng coordinates for the polygon.
+                    var triangleCoords = [
+                        initialLocation,
+                        initialLocation1,
+                        initialLocation2,
+                        initialLocation3,
+                        //                        initialLocation4,
+                        initialLocation5
+                    ];
+
+                    // Construct the polygon.
+                    polygoneDepart = new google.maps.Polygon({
+                        paths: triangleCoords,
+                        strokeColor: '#FF0000',
+                        strokeOpacity: 0.8,
+                        strokeWeight: 1,
+                        fillColor: '#FF0000',
+                        //                        editable: true,
+                        //                        draggable: true,
+                        fillOpacity: 0.35
+                    });
+                    polygoneDepart.setMap(map);
+                    polygoneDepart.addListener('click', showArrays);
+                    infoWindow = new google.maps.InfoWindow;
+
                 }
-                //alert('position detectée\n' + latInitial + '<==/==>' + lngInitial);
-                initialLocation = {lat: latInitial, lng: lngInitial};
-                initialLocation1 = translateCoordinates(100, latInitial, lngInitial, 45);
-                initialLocation2 = translateCoordinates(100, latInitial, lngInitial, 90);
-                initialLocation3 = translateCoordinates(100, latInitial, lngInitial, 135);
-                initialLocation4 = translateCoordinates(100, latInitial, lngInitial, 180);
-                initialLocation5 = translateCoordinates(100, latInitial, lngInitial, 225);
-                //var mapOptions = {zoom: 12, center: initialLocation, mapTypeId: google.maps.MapTypeId.ROADMAP};
-                map = new google.maps.Map(
-                        document.getElementById('map'),
-                        {zoom: 15, center: initialLocation, mapTypeId: google.maps.MapTypeId.TERRAIN}
-                );
-                // Define the LatLng coordinates for the polygon.
-                var triangleCoords = [
-                    initialLocation,
-                    initialLocation1,
-                    initialLocation2,
-                    initialLocation3,
-                    initialLocation4,
-                    initialLocation5
-                ];
 
-                // Construct the polygon.
-                polygoneDepart = new google.maps.Polygon({
-                    paths: triangleCoords,
-                    strokeColor: '#FF0000',
-                    strokeOpacity: 0.8,
-                    strokeWeight: 1,
-                    fillColor: '#FF0000',
-                    editable: true,
-                    draggable: true,
-                    fillOpacity: 0.35
-                });
-                polygoneDepart.setMap(map);
-            }
-
-            function onError(error) {
-                //  alert('Une erreur est survenue ===>' + 'message: ' + error.message + '\n');
-                alert('Merci d\'activer votre conenction internet');
-            }
-
-            function initialize() {
-                var options = {timeout: 30000, enableHighAccuracy: true, maximumAge: 900000};
-                navigator.geolocation.getCurrentPosition(onSuccess, onError, options);
-            }
-
-
-
-            function translateCoordinates(distance, Lat, Lng, angle) {
-                distanceNorth = Math.sin(angle) * distance;
-                distanceEast = Math.cos(angle) * distance;
-                earthRadius = 6371000;
-                newLat = Lat + (distanceNorth / earthRadius) * 180 / Math.PI;
-                newLon = Lng + (distanceEast / (earthRadius * Math.cos(newLat * 180 / Math.PI))) * 180 / Math.PI;
-                return {lat: newLat, lng: newLon};
-            }
-
-            function savePolygone() {
-                var vertices = polygoneDepart.getPath();
-                var contentString = '[';
-                // Iterate over the vertices.
-                for (var i = 0; i < vertices.getLength(); i++) {
-                    var xy = vertices.getAt(i);
-                    contentString += '{lat:' + xy.lat() + ', lng:' + xy.lng() + '}';
-                    if (i + 1 !== vertices.getLength()) {
-                        contentString += ',';
-                    }
+                /** @this {google.maps.Polygon} */
+                function showArrays(event) {
+                    // Since this polygon has only one path, we can call getPath() to return the
+                    // MVCArray of LatLngs.
+                    var contentString = '<b>Libelle</b>: Parcelle A<br>'
+                            + '<b>Culture</b>: RIZ<br>'
+                            + '<b>Zone </b>: Prodzc 4<br>'
+                            + '<b>Date </b>: 02/02/2015<br>'
+                            + '<b>Gerant</b>: Amadou LY<br>';
+                    // Replace the info window's content and position.
+                    infoWindow.setContent(contentString);
+                    infoWindow.setPosition(event.latLng);
+                    infoWindow.open(map);
                 }
-                contentString += ']';
-                var libelle = $('#libelle').val();
-                var description = $('#description').val();
-                var categorie = $('#categorie').val();
-                jQuery.ajax({
-                    'type': 'GET',
-//                    'dataType': 'json',
-                    'url': "http://localhost/geoLands/server/savezone.php",
-                    'data': {'libelle': libelle, 'categorie': categorie, 'description': description, 'polygone': contentString},
-                    'success': function() {
-                        alert('Nouvelle zone ajoutée avec succès');
-                        document.location.href="index.html";
-                    },
-                    'error': function() {
-                        alert('une erreur est survenue lors de l\'enrégistrement. Merci de réessayer');
-                    }
-                });
-            }
 
+                function translateCoordinates(distance, Lat, Lng, angle) {
+                    distanceNorth = Math.sin(angle) * distance;
+                    distanceEast = Math.cos(angle) * distance;
+                    earthRadius = 6371000;
+                    newLat = Lat + (distanceNorth / earthRadius) * 180 / Math.PI;
+                    newLon = Lng + (distanceEast / (earthRadius * Math.cos(newLat * 180 / Math.PI))) * 180 / Math.PI;
+                    return {lat: newLat, lng: newLon};
+                }
             </script>
             <script async defer
                     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDJXY5vQQ_aowKOUA--27f7fgKDs07li60&callback=initialize">
