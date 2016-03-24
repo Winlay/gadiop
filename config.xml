@@ -3,7 +3,7 @@
         xmlns:gap = "http://phonegap.com/ns/1.0"
         xmlns:android   = "http://schemas.android.com/apk/res/android"
         id        = "com.phonegap.Winlaytechmobile"
-        version   = "1.0">
+        version   = "1.1">
     <name>GEOLANDS</name>
     
     <description>
@@ -44,11 +44,6 @@
     <access origin="http://agences.noflay.com" subdomains="true"/>
     <access origin="*"/>
 
-    <!--IOS-->
-    <preference name="EnableViewportScale" value="true"/>
-    <preference name="KeyboardDisplayRequiresUserAction" value="true"/>
-    <preference name="UIWebViewDecelerationSpeed" value="normal"/>
-    <preference name="webviewbounce" value="true" />
 
     <!--<icon src="images/android/icons/" />-->
     <icon src="images/icon.png"/>
@@ -65,7 +60,7 @@
     <gap:plugin name="cordova-plugin-whitelist" source="npm" />
     <!--<gap:plugin name="com.adobe.plugins.gaplugin" version="2.4.0" />-->
     <plugin name="org.apache.cordova.geolocation" spec="0.3.12" source="pgb" />
-    <plugin name="com.brodysoft.sqliteplugin" spec="1.0.6" source="pgb" />
+    <!--<plugin name="com.brodysoft.sqliteplugin" spec="1.0.6" source="pgb" />-->
 <!--    <plugin name="de.appplant.cordova.plugin.local-notification" spec="0.8.1" source="pgb" />-->
     <platform name="android">
         <supports-screens android:anyDensity="true"
@@ -91,9 +86,5 @@
         <icon src="images/android/icon/icon-48-mdpi.png"/>
         <icon src="images/android/icon/icon-72-hdpi.png"/>
         <icon src="images/android/icon/icon-96-xhdpi.png"/>
-    </platform>
-
-    <platform name="winphone">
-        
     </platform>
 </widget>
