@@ -69,7 +69,7 @@
                           android:normalScreens="true"
                           android:largeScreens="true"
                           android:xlargeScreens="true" />
-        <splash  src="images/android/splash/splash-ldpi-portrait.png"     density="port-ldpi"/>
+<!--        <splash  src="images/android/splash/splash-ldpi-portrait.png"     density="port-ldpi"/>
         <splash  src="images/android/splash/splash-ldpi-landscape.png"    density="land-ldpi"/>
         <splash  src="images/android/splash/splash-mdpi-portrait.png"     density="port-mdpi"/>
         <splash  src="images/android/splash/splash-mdpi-landscape.png"    density="land-mdpi"/>
@@ -80,7 +80,7 @@
         <splash  src="images/android/splash/splash-xxhdpi-portrait.png"   density="port-xxhdpi"/>
         <splash  src="images/android/splash/splash-xxhdpi-landscape.png"  density="land-xxhdpi"/>
         <splash  src="images/android/splash/splash-xxxhdpi-portrait.png"  density="port-xxxhdpi"/>
-        <splash  src="images/android/splash/splash-xxxhdpi-landscape.png" density="land-xxxhdpi"/>
+        <splash  src="images/android/splash/splash-xxxhdpi-landscape.png" density="land-xxxhdpi"/>-->
 
         <icon src="images/android/icon/icon-36-ldpi.png"/>
         <icon src="images/android/icon/icon-48-mdpi.png"/>
