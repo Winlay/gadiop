@@ -98,11 +98,10 @@
                         <a href="#" class="sidebar-logo-close" style="font-size: 18px"><i class="fa fa-arrow-circle-left default-color"></i></a>
                     </div>
                     <div class="clear"></div>
-                    <ul class="sidebar-navigation full-bottom">
+                     <ul class="sidebar-navigation full-bottom">
                         <li><a  href="index.html"><i class="fa fa-home"></i><em>Accueil</em></a></li>
                         <li><a  class="cursor" href="parcelles-liste.html" data-title="Mes parcelles"><i class="fa fa-map-marker"></i><em>Mes parcelles</em></a></li>
-                        <li><a  class="ajax-menu cursor" data-page="taches.html" data-title="Mes taches"><i class="fa fa-list"></i><em>Mes t&acirc;ches</em></a></li>
-                        <!--<li><a  class="ajax-menu cursor" data-page="interventions.html" data-title="Mes interventions"><i class="fa fa-thumbs-up"></i><em>Mes interventions</em></a></li>-->
+                        <li><a  class="cursor" href="taches.html" data-title="Mes taches"><i class="fa fa-list"></i><em>Mes t&acirc;ches</em></a></li>
                         <li><a  class="cursor" href="alertes.html" data-title="Mes alertes"><i class="fa fa-bullhorn"></i><em>Mes alertes</em></a></li>
                         <li><a  class="cursor" href="parametrage.html" data-title="Paramètrage"><i class="fa fa-cogs"></i><em>Paramètrage</em></a></li>
                         <li><a  class="cursor" href="synchroniser.html" data-title="Synchronisation"><i class="fa fa-refresh"></i><em>Synchrosiner</em></a></li>
@@ -148,57 +147,42 @@
                 var polygoneDepart;
                 var latInitial = 14.7362987;
                 var lngInitial = -17.45662444;
-                var initialLocation1;
-                var initialLocation2;
-                var initialLocation3;
-                var initialLocation4;
-                var initialLocation5;
-                var distance = 0.1;
-
                 function initialize() {
                     initialLocation = {lat: latInitial, lng: lngInitial};
-                    initialLocation1 = translateCoordinates(100, latInitial, lngInitial, 45);
-                    initialLocation2 = translateCoordinates(100, latInitial, lngInitial, 90);
-                    initialLocation3 = translateCoordinates(100, latInitial, lngInitial, 135);
-//                    initialLocation4 = translateCoordinates(100, latInitial, lngInitial, 180);
-                    initialLocation5 = translateCoordinates(100, latInitial, lngInitial, 225);
-                    //var mapOptions = {zoom: 12, center: initialLocation, mapTypeId: google.maps.MapTypeId.ROADMAP};
                     map = new google.maps.Map(
                             document.getElementById('map'),
                             {zoom: 16, center: initialLocation, mapTypeId: google.maps.MapTypeId.TERRAIN}
                     );
-                    // Define the LatLng coordinates for the polygon.
-                    var triangleCoords = [
-                        initialLocation,
-                        initialLocation1,
-                        initialLocation2,
-                        initialLocation3,
-//                        initialLocation4,
-                        initialLocation5
-                    ];
-
-                    // Construct the polygon.
-                    polygoneDepart = new google.maps.Polygon({
-                        paths: triangleCoords,
-                        strokeColor: '#FF0000',
-                        strokeOpacity: 0.8,
-                        strokeWeight: 1,
-                        fillColor: '#FF0000',
-//                        editable: true,
-//                        draggable: true,
-                        fillOpacity: 0.35
+                    jQuery.ajax({
+                        'type': 'GET',
+                        'url': "http://geoland.noflay.com/server/parcelles.php",
+                        'data': {'user': 1},
+                        'dataType': 'JSON',
+                        'success': function (resultat) {
+                            for (var i = 0; i < resultat.length; i++) {
+                                var idparcelle = resultat[i].id;
+                                var couleur = resultat[i].couleur;
+                                var titre = resultat[i].libelle;
+                                var polygone = JSON.parse(resultat[i].polygone);
+                                polygoneDepart = new google.maps.Polygon({
+                                    paths: polygone,
+                                    strokeColor: couleur,
+                                    strokeOpacity: 0.8,
+                                    strokeWeight: 1,
+                                    fillColor: couleur,
+                                    fillOpacity: 0.35
+                                });
+                                polygoneDepart.setMap(map);
+                            }
+                        },
+                        'error': function () {
+                            alert('une erreur est survenue lors de l\'enrégistrement. Merci de réessayer');
+                        }
                     });
-                    polygoneDepart.setMap(map);
+
                 }
 
-                function translateCoordinates(distance, Lat, Lng, angle) {
-                    distanceNorth = Math.sin(angle) * distance;
-                    distanceEast = Math.cos(angle) * distance;
-                    earthRadius = 6371000;
-                    newLat = Lat + (distanceNorth / earthRadius) * 180 / Math.PI;
-                    newLon = Lng + (distanceEast / (earthRadius * Math.cos(newLat * 180 / Math.PI))) * 180 / Math.PI;
-                    return {lat: newLat, lng: newLon};
-                }
+
             </script>
             <script async defer
                     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDJXY5vQQ_aowKOUA--27f7fgKDs07li60&callback=initialize">

@@ -90,11 +90,10 @@
                         <a href="#" class="sidebar-logo-close" style="font-size: 18px"><i class="fa fa-arrow-circle-left default-color"></i></a>
                     </div>
                     <div class="clear"></div>
-                   <ul class="sidebar-navigation full-bottom">
+                       <ul class="sidebar-navigation full-bottom">
                         <li><a  href="index.html"><i class="fa fa-home"></i><em>Accueil</em></a></li>
                         <li><a  class="cursor" href="parcelles-liste.html" data-title="Mes parcelles"><i class="fa fa-map-marker"></i><em>Mes parcelles</em></a></li>
-                        <li><a  class="ajax-menu cursor" data-page="taches.html" data-title="Mes taches"><i class="fa fa-list"></i><em>Mes t&acirc;ches</em></a></li>
-                        <!--<li><a  class="ajax-menu cursor" data-page="interventions.html" data-title="Mes interventions"><i class="fa fa-thumbs-up"></i><em>Mes interventions</em></a></li>-->
+                        <li><a  class="cursor" href="taches.html" data-title="Mes taches"><i class="fa fa-list"></i><em>Mes t&acirc;ches</em></a></li>
                         <li><a  class="cursor" href="alertes.html" data-title="Mes alertes"><i class="fa fa-bullhorn"></i><em>Mes alertes</em></a></li>
                         <li><a  class="cursor" href="parametrage.html" data-title="Paramètrage"><i class="fa fa-cogs"></i><em>Paramètrage</em></a></li>
                         <li><a  class="cursor" href="synchroniser.html" data-title="Synchronisation"><i class="fa fa-refresh"></i><em>Synchrosiner</em></a></li>
@@ -110,7 +109,7 @@
 
             <div class="page-header">
                 <a href="#" class="open-left"><i class="fa fa-navicon"></i></a>
-                <a class="page-logo"><i class="fa fa-list"></i><span id="titreHeder"> Parcelles</span></a>
+                <a class="page-logo"><i class="fa fa-map-marker"></i><span id="titreHeder"> Parcelles</span></a>
                 <a href="index.html" id="backbutton" class="open-right1 cursor"><i style="color: #FFF" class="fa fa-arrow-left"></i></a>
             </div>
             <div id="content" class="snap-content">
@@ -119,7 +118,7 @@
                         <table style="padding: 1px; margin-bottom: 2px" class="table">
                             <tr style=" padding: 2px; margin: 2px">
                                 <td style="padding: 2px; margin: 2px">
-                                    <a href="insert.html" class="button-blue button-3d"><i class="fa fa-plus"></i>Ajouter</a>
+                                    <a href="insert.html" class="button-blue button-3d"><i class="fa fa-plus"></i> Ajouter</a>
                                 </td>
                                 <td colspan="1" style=" padding: 2px; margin: 2px">
                                     <a href="parcelles-map.html" class="button-green button-3d"><i class="fa fa-map-marker"></i> sur la carte</a>
@@ -138,34 +137,26 @@
             jQuery('.ajax-menu').on('click', function () {
                 jQuery("#titreHeder").html(' ' + jQuery(this).data('title'));
                 jQuery("#ajax-content").load(jQuery(this).data('page'));
-//                jQuery("#backbutton").load(jQuery(this).data('page'));
             });
-            function loadFromServer(page, titre) {
-//                jQuery("#titreHeder").addClass(titre);
-//                jQuery("#ajax-content").addClass(page+'.html');
-                if (conn) {
-//                 jQuery("#fromdb").show();
-//                 jQuery("#ajax-content").html('<div style="text-align: center"><img  src="images/load.gif"  style="width: 100%" /></div>');
-//                 jQuery("#fromdb").load("server/articles.php?category=" + cat);
-                    //jQuery("#fromdb").load("http://mms-serveur.noflay.com/articles.php?category="+cat);
-                } else {
-                    alert('connexion internet indisponible');
-                }
-            }
         </script>
         <script type="text/javascript">
-//            jQuery('.openparcelle').click(function () {
-//                var idparcelle = jQuery(this).data('idparcelle');
-//                alert("parcelle numéro: " + idparcelle);
-//                jQuery('#ajax-content').load('parcelle.html', {'idparcelle': idparcelle});
-//            });
-
-            for (var i = 0; i < 5; i++) {
-                var idparcelle = i;
-                var titre = "Parcelle " + i;
-                var parcelles = "<a href=\"parcelle-unique.html\" class=\"openparcelle cursor\" data-idparcelle=\"" + idparcelle + "\"><i class=\"fa fa-map-marker\"></i>" + titre + "<i class=\"fa fa-chevron-right\"></i></a>";
-                jQuery('#listeParcelles').append(parcelles);
-            }
+            jQuery.ajax({
+                'type': 'GET',
+                'url': "http://geoland.noflay.com/server/parcelles.php",
+                'data': {'user': 1},
+                'dataType': 'JSON',
+                'success': function (resultat) {
+                    for (var i = 0; i < resultat.length; i++) {
+                        var idparcelle = resultat[i].id;
+                        var titre = resultat[i].libelle;
+                        var parcelles = "<a href=\"parcelle-unique.html\" class=\"openparcelle cursor\" data-idparcelle=\"" + idparcelle + "\"><i class=\"fa fa-map-marker\"></i>" + titre + "<i class=\"fa fa-chevron-right\"></i></a>";
+                        jQuery('#listeParcelles').append(parcelles);
+                    }
+                },
+                'error': function () {
+                    alert('une erreur est survenue lors de l\'enrégistrement. Merci de réessayer');
+                }
+            });
         </script>
     </body>
 
