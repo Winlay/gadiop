@@ -1,1 +1,177 @@
-<select class=\"etat\"><option value=\"1\">Effectué</option><option value=\"0\">En cours</option><option value=\"-\">A faire</option></select>
+<!DOCTYPE HTML>
+<html>
+
+    <head title="GEOLANDS">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0 minimal-ui"/>
+        <meta name="apple-mobile-web-app-capable" content="yes"/>
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="images/splash/splash-icon.png">
+        <link rel="apple-touch-startup-image" href="images/splash/splash-screen.png" 			media="screen and (max-device-width: 320px)" />
+        <link rel="apple-touch-startup-image" sizes="640x1096" href="images/ios/splash/splash-screen@3x.png"/>
+        <link rel="apple-touch-startup-image" sizes="1024x748" href="images/ios/splash/splash-screen-ipad-landscape" media="screen and (min-device-width : 481px) and (max-device-width : 1024px) and (orientation : landscape)" />
+        <link rel="apple-touch-startup-image" sizes="768x1004" href="images/ios/splash/splash-screen-ipad-portrait.png" media="screen and (min-device-width : 481px) and (max-device-width : 1024px) and (orientation : portrait)" />
+        <title>GEOLANDS</title>
+        <link href="css/framework.min.css" 	  rel="stylesheet" type="text/css"/>
+        <link href="css/owl.theme.min.css"    rel="stylesheet" type="text/css"/>
+        <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+        <link href="css/style.css"     	  rel="stylesheet" type="text/css"/>
+        <style type="text/css">
+            body {
+                margin: 0;
+                -webkit-tap-highlight-color:rgba(0,0,0,0);
+            }
+            div#container {
+                position: absolute;
+                width: 100%;
+                top: 0;
+                bottom: 0;
+            }
+            div[data-role="header"] {
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+            }
+            div[data-role="content"] {
+                position: absolute;
+                top: 41px;
+                bottom: 0;
+                left: 0;
+                right: 0;
+            }
+            .scrollable {
+                overflow-y: scroll;
+                -webkit-overflow-scrolling: touch;
+                -webkit-overflow-scrolling: touch;
+            }
+            .scrollable > * {
+                -webkit-transform: translateZ(0px);
+            }
+            .tache-div{
+                padding-left: 5px;
+                padding-right: 5px
+            }
+        </style>
+
+        <script type="text/javascript" src="js/jquery.min.js"></script>
+        <script type="text/javascript" src="js/index.js"></script>
+        <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="js/custom.js"></script>
+        <script type="text/javascript" src="js/framework.plugins.min.js"></script>
+        <script type="text/javascript">
+            function clearRadio(nom) {
+                if (nom) {
+                    jQuery("input:radio[name='" + nom + "']").each(function (i) {
+                        this.checked = false;
+                    });
+                }
+            }
+            function loadContent(url) {
+                jQuery('#ajax-content').load(url);
+            }
+
+            function quitter() {
+                if (confirm("Voulez-vous vraiment quitter l'application")) {
+                    navigator.app.exitApp();
+                } else {
+                    alert("Annulée");
+                }
+            }
+
+            document.addEventListener("backbutton", function (e) {
+                document.location('index.html');
+            }, false);
+
+        </script>
+    </head>
+    <body onload="">
+        <div class="scrollable" id="container">
+            <div class="snap-drawers">
+                <div class="snap-drawer snap-drawer-left">
+                    <div class="sidebar-header">
+                        <a href="#" class="sidebar-logo"><h2 style="color: #27AE60"> GEOLANDS </h2></a>
+                        <a href="#" class="sidebar-logo-close" style="font-size: 18px"><i class="fa fa-arrow-circle-left default-color"></i></a>
+                    </div>
+                    <div class="clear"></div>
+                    <ul class="sidebar-navigation full-bottom">
+                        <li><a  href="index.html"><i class="fa fa-home"></i><em>Accueil</em></a></li>
+                        <li><a  class="cursor" href="parcelles-liste.html" data-title="Mes parcelles"><i class="fa fa-map-marker"></i><em>Mes parcelles</em></a></li>
+                        <li><a  class="cursor" href="taches.html" data-title="Mes taches"><i class="fa fa-list"></i><em>Mes t&acirc;ches</em></a></li>
+                        <li><a  class="cursor" href="alertes.html" data-title="Mes alertes"><i class="fa fa-bullhorn"></i><em>Mes alertes</em></a></li>
+                        <li><a  class="cursor" href="parametrage.html" data-title="Paramètrage"><i class="fa fa-cogs"></i><em>Paramètrage</em></a></li>
+                        <li><a  class="cursor" href="synchroniser.html" data-title="Synchronisation"><i class="fa fa-refresh"></i><em>Synchrosiner</em></a></li>
+                        <li><a onclick="quitter()"><i class="fa fa-times-circle"></i><em>Quitter</em></a></li>
+                    </ul>
+                    <div class="sidebar-decoration"></div>
+
+                    <div class="sidebar-decoration"></div>
+                    <p class="sidebar-copyright">Copyright Winlaytech 2016. All rights reserved.</p>
+                </div>
+
+            </div>
+
+            <div class="page-header">
+                <a href="#" class="open-left"><i class="fa fa-navicon"></i></a>
+                <a class="page-logo"><i class="fa fa-bullhorn"></i><span id="titreHeder"> Alertes</span></a>
+                <a href="index.html" id="backbutton" class="open-right1 cursor"><i style="color: #FFF" class="fa fa-arrow-left"></i></a>
+            </div>
+            <div id="content" class="snap-content">
+                <div id="ajax-content" style="" class="scroller">
+                    <div style=" padding-top: 60px;">
+                        <table style="padding: 1px; margin-bottom: 2px" class="table">
+                            <tr style=" padding: 2px; margin: 2px">
+                                <td style="padding: 2px; margin: 2px">
+                                    <a href="new-alerte.html" class="button-blue button-3d"><i class="fa fa-plus"></i> Ajouter</a>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="header-menu" id="listeAlertes" style="margin-top: 1px">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript">
+
+            jQuery.ajax({
+                'type': 'GET',
+                'url': "http://geoland.noflay.com/server/alertes.php",
+                'data': {'user': 1},
+                'dataType': 'JSON',
+                'success': function (resultat) {
+                    for (var i = 0; i < resultat.length; i++) {
+                        var idalerte = resultat[i].id;
+                        var titre = resultat[i].libelle;
+                        var description = resultat[i].description;
+                        var fichier = resultat[i].fichier;
+                        var alertesdiv = "<div class=\"alerte-div\"><a class=\"alerte cursor\"><i class=\"fa fa-plus\"></i>   " + titre + "</a><div style=\"display: none;\" class=\"alerte-content\"><div><p>" + description + "</p></div><br/><div><img style=\"width: 90%; margin-left:auto; margin-right: auto\" src=\"http://geoland.noflay.com/server/alertes/files/" + fichier + "\"/></div></div></div>";
+                        jQuery('#listeAlertes').append(alertesdiv);
+                    }
+                },
+                'error': function () {
+                    alert('une erreur est survenue lors de la recupération des alertes. Merci de réessayer');
+                }
+            });
+
+            jQuery(document).on("click", '.alerte', function () {
+                if (jQuery(this).hasClass('alerte-active')) {
+                    jQuery(this).parent().find('.alerte-content').hide('200');
+                    jQuery(this).parent().find('.fa').removeClass('fa-minus');
+                    jQuery(this).parent().find('.fa').addClass('fa-plus');
+                    jQuery(this).removeClass('alerte-active');
+                } else {
+                    jQuery(this).parent().find('.alerte-content').show('200');
+                    jQuery(this).parent().find('.fa').removeClass('fa-plus');
+                    jQuery(this).parent().find('.fa').addClass('fa-minus');
+                    jQuery(this).addClass('alerte-active');
+                    jQuery(this).css('background-color', '#9CE5BA');
+                    jQuery(this).parent().css('background-color', '#EFF2F0');
+                    jQuery(this).parent().css('border', 'solid 1px #9CE5BA');
+                }
+            });
+
+        </script>
+    </body>
+
+</html>
