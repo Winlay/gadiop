@@ -271,7 +271,6 @@
                     if(libelle!=='' && description!=='' && categorie!==''){
                     var vertices = polygoneDepart.getPath();
                     var contentString = '[';
-                    // Iterate over the vertices.
                     for (var i = 0; i < vertices.getLength(); i++) {
                         var xy = vertices.getAt(i);
                         contentString += '{"lat":' + xy.lat() + ',"lng":' + xy.lng() + '}';
@@ -282,7 +281,6 @@
                     contentString += ']';
                     jQuery.ajax({
                         'type': 'GET',
-//                        'url': "http://localhost/geoLands/server/savezone.php",
                         'url': "http://geoland.noflay.com/server/saveparcelle.php",
                         'data': {'libelle': libelle, 'categorie': categorie, 'description': description, 'polygone': contentString,'user':1},
                         'success': function () {

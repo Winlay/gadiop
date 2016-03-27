@@ -170,81 +170,75 @@
                 </div>
 
             </div>
+
             <script type="text/javascript">
                 var map;
                 var polygoneDepart;
                 var latInitial = 14.7362987;
                 var lngInitial = -17.45662444;
-                var initialLocation1;
-                var initialLocation2;
-                var initialLocation3;
-                var initialLocation4;
-                var initialLocation5;
-                var distance = 0.1;
                 var infoWindow;
 
                 function initialize() {
-                    initialLocation = {lat: latInitial, lng: lngInitial};
-                    initialLocation1 = translateCoordinates(100, latInitial, lngInitial, 45);
-                    initialLocation2 = translateCoordinates(100, latInitial, lngInitial, 90);
-                    initialLocation3 = translateCoordinates(100, latInitial, lngInitial, 135);
-                    //                    initialLocation4 = translateCoordinates(100, latInitial, lngInitial, 180);
-                    initialLocation5 = translateCoordinates(100, latInitial, lngInitial, 225);
-                    //var mapOptions = {zoom: 12, center: initialLocation, mapTypeId: google.maps.MapTypeId.ROADMAP};
+                    var parameters = location.search.substring(1).split("&");
+                    var temp = parameters[0].split("=");
+                    var parcelle_id = unescape(temp[1]);
+                    initialLocation = {lat: latInitial, lng: lngInitial}
                     map = new google.maps.Map(
                             document.getElementById('map'),
-                            {zoom: 16, center: initialLocation, mapTypeId: google.maps.MapTypeId.TERRAIN}
+                            {zoom: 18, center: initialLocation, mapTypeId: google.maps.MapTypeId.TERRAIN}
                     );
-                    // Define the LatLng coordinates for the polygon.
-                    var triangleCoords = [
-                        initialLocation,
-                        initialLocation1,
-                        initialLocation2,
-                        initialLocation3,
-                        //                        initialLocation4,
-                        initialLocation5
-                    ];
+                    jQuery.ajax({
+                        'type': 'GET',
+                        'url': "http://geoland.noflay.com/server/parcelles.php?parcelle=" + parcelle_id,
+                        'data': {'user': 1},
+                        'dataType': 'JSON',
+                        'success': function (resultat) {
+                            var idparcelle = resultat[0].id;
+                            var couleur = resultat[0].couleur;
+                            var categorie = resultat[0].categorie;
+                            var titre = resultat[0].libelle;
+                            var polygone = JSON.parse(resultat[0].polygone);
+                            polygoneDepart = new google.maps.Polygon({
+                                paths: polygone,
+                                strokeColor: couleur,
+                                strokeOpacity: 0.8,
+                                strokeWeight: 1,
+                                fillColor: couleur,
+                                fillOpacity: 0.35
+                            });
+                            polygoneDepart.setMap(map);
+                            map.setCenter(polygone[0]);
+                            var marker = new google.maps.Marker({
+                                position: polygone[0],
+                                draggable: true,
+                                icon: 'images/mapicons/corn.png',
+                                map: map
+                            });
+                            polygoneDepart.addListener('click', showArrays);
+                            infoWindow = new google.maps.InfoWindow;
 
-                    // Construct the polygon.
-                    polygoneDepart = new google.maps.Polygon({
-                        paths: triangleCoords,
-                        strokeColor: '#FF0000',
-                        strokeOpacity: 0.8,
-                        strokeWeight: 1,
-                        fillColor: '#FF0000',
-                        //                        editable: true,
-                        //                        draggable: true,
-                        fillOpacity: 0.35
+                            /** @this {google.maps.Polygon} */
+                            function showArrays(event) {
+                                var contentString = '<b>Libelle</b>: ' + titre + '<br/>'
+                                        + '<b>Culture</b>:  ' + categorie + '<br/>'
+                                        + '<b>Zone </b>: Prodzc 4<br/>'
+                                        + '<b>Date </b>: 02/02/2015<br/>'
+                                        + '<b>Gerant</b>: Amadou LY<br/>';
+                                // Replace the info window's content and position.
+                                infoWindow.setContent(contentString);
+                                infoWindow.setPosition(event.latLng);
+                                infoWindow.open(map);
+                            }
+                        },
+                        'error': function () {
+                            alert('une erreur est survenue lors de l\'enrégistrement. Merci de réessayer');
+                        }
                     });
-                    polygoneDepart.setMap(map);
-                    polygoneDepart.addListener('click', showArrays);
-                    infoWindow = new google.maps.InfoWindow;
+
 
                 }
 
-                /** @this {google.maps.Polygon} */
-                function showArrays(event) {
-                    // Since this polygon has only one path, we can call getPath() to return the
-                    // MVCArray of LatLngs.
-                    var contentString = '<b>Libelle</b>: Parcelle A<br>'
-                            + '<b>Culture</b>: RIZ<br>'
-                            + '<b>Zone </b>: Prodzc 4<br>'
-                            + '<b>Date </b>: 02/02/2015<br>'
-                            + '<b>Gerant</b>: Amadou LY<br>';
-                    // Replace the info window's content and position.
-                    infoWindow.setContent(contentString);
-                    infoWindow.setPosition(event.latLng);
-                    infoWindow.open(map);
-                }
 
-                function translateCoordinates(distance, Lat, Lng, angle) {
-                    distanceNorth = Math.sin(angle) * distance;
-                    distanceEast = Math.cos(angle) * distance;
-                    earthRadius = 6371000;
-                    newLat = Lat + (distanceNorth / earthRadius) * 180 / Math.PI;
-                    newLon = Lng + (distanceEast / (earthRadius * Math.cos(newLat * 180 / Math.PI))) * 180 / Math.PI;
-                    return {lat: newLat, lng: newLon};
-                }
             </script>
             <script async defer
                     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDJXY5vQQ_aowKOUA--27f7fgKDs07li60&callback=initialize">

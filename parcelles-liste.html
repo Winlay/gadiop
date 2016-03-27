@@ -149,7 +149,7 @@
                     for (var i = 0; i < resultat.length; i++) {
                         var idparcelle = resultat[i].id;
                         var titre = resultat[i].libelle;
-                        var parcelles = "<a href=\"parcelle-unique.html\" class=\"openparcelle cursor\" data-idparcelle=\"" + idparcelle + "\"><i class=\"fa fa-map-marker\"></i>" + titre + "<i class=\"fa fa-chevron-right\"></i></a>";
+                        var parcelles = "<a href=\"parcelle-unique.html?parcelle_id="+idparcelle+"\" class=\"openparcelle cursor\" data-idparcelle=\"" + idparcelle + "\"><i class=\"fa fa-map-marker\"></i>" + titre + "<i class=\"fa fa-chevron-right\"></i></a>";
                         jQuery('#listeParcelles').append(parcelles);
                     }
                 },

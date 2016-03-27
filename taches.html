@@ -48,6 +48,10 @@
             .scrollable > * {
                 -webkit-transform: translateZ(0px);
             }
+            .tache-div{
+                padding-left: 5px;
+                padding-right: 5px
+            }
         </style>
 
         <script type="text/javascript" src="js/jquery.min.js"></script>
@@ -143,7 +147,7 @@
                             selectEN = "selected";
                         if (etat === "1")
                             selectEF = "selected";
-                        var tachesdiv = "<div class=\"tache-div\"><a class=\"tache cursor\"><i class=\"fa fa-plus\"></i> " + titre + "</a><div style=\"display: none;\" class=\"tache-content\"><div><p>" + tache + "</p></div><div class=\"intervention-div\"><a href=\"#\" class=\"intervention cursor\"><i class=\"fa fa-minus\"></i>intervention</a><div class=\"intervention-content\"><p><select  id=\"etat" + idparcelle + "\" class=\"contactField\"><option value=\"1\" " + selectEF + ">Effectué</option><option value=\"0\" " + selectEN + ">En cours</option><option value=\"-1\" " + selectAF + ">A faire</option></select></p><p><textarea style=\"width: 100%\" rows=\"5\" cols=\"8\" class=\"interventiontext\" name=\"intervention" + idparcelle + "\" id=\"intervention" + idparcelle + "\">" + intervention + "</textarea></p><p><a data-tacheid=\"" + idparcelle + "\" class=\"saveintervention cursor\" style=\"text-shadow: none; background-color: darkgreen; color: #FFF; padding: 5px\">Enrégistrer</a></p></div></div></div></div>";
+                        var tachesdiv = "<div class=\"tache-div\"><a class=\"tache cursor\"><i class=\"fa fa-plus\"></i>  " + titre + "</a><div style=\"display: none;\" class=\"tache-content\"><div><p>" + tache + "</p></div><div class=\"intervention-div\"><a href=\"#\" class=\"intervention cursor\"><i class=\"fa fa-minus\"></i>intervention</a><div class=\"intervention-content\"><p><select  id=\"etat" + idparcelle + "\" class=\"contactField\"><option value=\"1\" " + selectEF + ">Effectué</option><option value=\"0\" " + selectEN + ">En cours</option><option value=\"-1\" " + selectAF + ">A faire</option></select></p><p><textarea style=\"width: 100%\" rows=\"5\" cols=\"8\" class=\"interventiontext\" name=\"intervention" + idparcelle + "\" id=\"intervention" + idparcelle + "\">" + intervention + "</textarea></p><p><a data-tacheid=\"" + idparcelle + "\" class=\"saveintervention cursor\" style=\"text-shadow: none; background-color: darkgreen; color: #FFF; padding: 5px\">Enrégistrer</a></p></div></div></div></div>";
                         jQuery('#listeTaches').append(tachesdiv);
                     }
                 },
@@ -176,6 +180,9 @@
                     jQuery(this).parent().find('.fa').removeClass('fa-plus');
                     jQuery(this).parent().find('.fa').addClass('fa-minus');
                     jQuery(this).addClass('tache-active');
+                    jQuery(this).css('background-color','#9CE5BA');
+                    jQuery(this).parent().css('background-color','#EFF2F0');
+                    jQuery(this).parent().css('border','solid 1px #9CE5BA');
                 }
             });
 
