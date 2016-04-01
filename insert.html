@@ -53,6 +53,34 @@
             .scrollable > * {
                 -webkit-transform: translateZ(0px);
             }
+            .border-radius{
+                border-radius: 20px;
+            }
+            .text-white{
+                color: #FFFFFF;
+            }
+
+            .buttons a{
+                width: 30px;
+                height: 30px;
+                border-radius: 10px;
+            }
+            .tabButtons i{
+                color: #FFFFFF;
+                font-size: 20px;
+                margin-top: 5px
+            }
+
+            .tabButtons{
+                width: 100px;
+                display:block;
+            }
+            .tabButtons, .tabButtons td,.tabButtons tr{
+                border: none;
+                margin: 2px;
+                background: transparent;
+                padding: 2px 2px 2px 15px;
+            }
         </style>
 
         <script type="text/javascript" src="js/jquery.min.js"></script>
@@ -124,19 +152,26 @@
             </div>
             <div id="content" class="snap-content">
                 <div id="ajax-content" style="" class="scroller">
-                    <div style=" padding-top: 60px;">
-                        <table style="padding: 1px; margin-bottom: 2px" class="table">
-                            <tr style=" padding: 2px; margin: 2px">
-                                <td style="padding: 2px; margin: 2px">
-                                    <button id="btn-showformInfos" class="button-blue button-3d" onclick="$('#btn-showformInfos').hide();
-                                            $('#btn-hideformInfos').show();
-                                            $('#formInfos').show('slow');"><i class="fa fa-edit"></i> Editer Infos</button>
-                                    <button style="display: none" id="btn-hideformInfos" class="button-red button-3d" onclick="$('#formInfos').hide();
-                                            $('#btn-hideformInfos').hide();
-                                            $('#btn-showformInfos').show();"><i class="fa fa-eye-slash"></i> cacher Infos</button>
+                    <div style=" padding-top: 60px;" class="buttons">
+                        <table class="tabButtons">
+                            <tr>
+                                <td>
                                 </td>
-                                <td colspan="1" style=" padding: 2px; margin: 2px">
-                                    <button id="btn-savePolygone" class="button-green button-3d" onclick="savePolygone();"><i class="fa fa-save"></i>  Enregistrer</button>
+                                <td>
+                                    <a id="btn-showformInfos" class="background-blue cursor" onclick="$('#btn-showformInfos').hide();$('#formInfos').show('slow');$('#btn-hideformInfos').show();"><i class="fa fa-info"></i></a>
+                                    <a style="display: none" id="btn-hideformInfos" class="background-gray cursor" onclick="$('#formInfos').hide(); $('#btn-hideformInfos').hide(); $('#btn-showformInfos').show();"><i class="fa fa-eye-slash"></i></a>
+                                </td>
+                                <td>    
+                                    <a class="background-red cursor" onclick="initialize();" title="effacer polygone"><i class="fa fa-eraser"></i></a>
+                                </td>
+                                <td> 
+                                    <a class="background-gray cursor" onclick="defarPolygone();"><i class="fa fa-pencil-square-o"></i></a>
+                                </td>
+                                <td> 
+                                    <a class="background-blue cursor" onclick="createMarkerMyInPosition();"><i class="fa fa-male"></i></a>
+                                </td>
+                                <td>
+                                    <a id="btn-savePolygone" class="background-green cursor" onclick="savePolygone();"><i class="fa fa-check"></i></a>
                                 </td>
                             </tr>
                         </table>
@@ -145,16 +180,27 @@
                         <table style="padding: 5px; margin-bottom: 2px" class="table">
                             <tr style=" padding: 2px; margin: 2px">
                                 <td style=" padding: 2px; margin: 2px">
-                                    <select class="contactField" onclick="polygoneDepart.fillColor = $('#categorie').val();" id="categorie" name="categorie">
-                                        <option value="">   Catégorie</option>
-                                        <option value="riz">   Riz</option>
-                                        <option value="mais">   Mais</option>
-                                        <option value="ble">   Blé</option>
-                                        <option value="tomate">   Tomate</option>
+                                    <select class="contactField" id="categorie" name="categorie">
+                                        <option value="NS"> NS </option>
+                                        <option value="NIEBE">NIEBE</option>
+                                        <option value="MIL">MIL</option>
+                                        <option value="RIZ">TOMATE</option>
                                     </select>
                                 </td>
                             </tr>
-
+                            <tr style=" padding: 2px; margin: 2px">
+                                <td style=" padding: 2px; margin: 2px">
+                                    <select class="contactField" id="couleur" name="couleur">
+                                        <option value="#35C91E">VERT</option>
+                                        <option value="#78F265">VERT CLAIR</option>
+                                        <option value="#FCF405">JAUNE</option>
+                                        <option value="#966022">MARRON</option>
+                                        <option value="#F7C847">ORANGE</option>
+                                        <option value="#F92420">ROUGE</option>
+                                        <option value="#077EF4">BLEU</option>
+                                    </select>
+                                </td>
+                            </tr>
                             <tr style=" padding: 2px; margin: 2px">
                                 <td style=" padding: 2px; margin: 2px">
                                     <input class="contactField" name="libelle"  id="libelle" placeholder="Libelle de la parcelle"  />
@@ -164,18 +210,6 @@
                             <tr style=" padding: 2px; margin: 2px">
                                 <td style=" padding: 2px; margin: 2px">
                                     <textarea class="contactField" style="height: 150px;" name="description"  id="description" placeholder="Description de la zone"></textarea>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div>
-                        <table style="padding: 1px; margin-bottom: 2px" class="table">
-                            <tr style=" padding: 2px; margin: 2px">
-                                <td colspan="1" style=" padding: 2px; margin: 2px">
-                                    <button class="button-green button-3d" onclick="initialize();"><i class="fa fa-eraser"></i>  effacer polygone</button>
-                                </td>
-                                <td style="padding: 2px; margin: 2px">
-                                    <button class="button-blue button-3d" onclick="defarPolygone();"><i class="fa fa-pencil"></i> tracer polygone</button>
                                 </td>
                             </tr>
                         </table>
@@ -200,7 +234,7 @@
                         lngInitial = position.coords.longitude;
                         map = new google.maps.Map(
                                 document.getElementById('map'),
-                                {zoom: 15, center: {lat: latInitial, lng: lngInitial}, mapTypeId: google.maps.MapTypeId.TERRAIN}
+                                {zoom: 18, center: {lat: latInitial, lng: lngInitial}, mapTypeId: google.maps.MapTypeId.SATELLITE}
                         );
                         google.maps.event.addListener(map, 'click', function (event) {
                             yokkMarker(event.latLng);
@@ -219,6 +253,8 @@
                     var options = {timeout: 30000, enableHighAccuracy: true, maximumAge: 900000};
                     navigator.geolocation.getCurrentPosition(onSuccess, onError, options);
                 }
+
+
 
                 function yokkMarker(location) {
                     var marker = new google.maps.Marker({
@@ -267,33 +303,56 @@
                     var libelle = $('#libelle').val();
                     var description = $('#description').val();
                     var categorie = $('#categorie').val();
-                    
-                    if(libelle!=='' && description!=='' && categorie!==''){
-                    var vertices = polygoneDepart.getPath();
-                    var contentString = '[';
-                    for (var i = 0; i < vertices.getLength(); i++) {
-                        var xy = vertices.getAt(i);
-                        contentString += '{"lat":' + xy.lat() + ',"lng":' + xy.lng() + '}';
-                        if (i + 1 !== vertices.getLength()) {
-                            contentString += ',';
+                    var couleur = $('#couleur').val();
+                    if (libelle !== '' && description !== '' && categorie !== '') {
+                        var vertices = polygoneDepart.getPath();
+                        var surface = google.maps.geometry.spherical.computeArea(vertices);
+                        var contentString = '[';
+                        for (var i = 0; i < vertices.getLength(); i++) {
+                            var xy = vertices.getAt(i);
+                            contentString += '{"lat":' + xy.lat() + ',"lng":' + xy.lng() + '}';
+                            if (i + 1 !== vertices.getLength()) {
+                                contentString += ',';
+                            }
                         }
+                        contentString += ']';
+                        jQuery.ajax({
+                            'type': 'GET',
+                            'url': "http://geoland.noflay.com/server/saveparcelle.php",
+                            'data': {'libelle': libelle, 'categorie': categorie, 'description': description, 'polygone': contentString, 'surface': surface, 'couleur': couleur},
+                            'success': function () {
+                                alert('Nouvelle parcelle ajoutée avec succès');
+                                document.location.href = "index.html";
+                            },
+                            'error': function () {
+                                alert('une erreur est survenue lors de l\'enrégistrement. Merci de réessayer');
+                            }
+                        });
+                    } else {
+                        alert('Vous devez renseigner le nom; la culture et la description');
                     }
-                    contentString += ']';
-                    jQuery.ajax({
-                        'type': 'GET',
-                        'url': "http://geoland.noflay.com/server/saveparcelle.php",
-                        'data': {'libelle': libelle, 'categorie': categorie, 'description': description, 'polygone': contentString,'user':1},
-                        'success': function () {
-                            alert('Nouvelle zone ajoutée avec succès');
-                            document.location.href = "index.html";
-                        },
-                        'error': function () {
-                            alert('une erreur est survenue lors de l\'enrégistrement. Merci de réessayer');
-                        }
-                    });
-                }else{
-                    alert('Vous devez renseigner le libelle; la catégorie et la description');
                 }
+
+                function createMarkerMyInPosition() {
+                    if (navigator.geolocation) {
+                        // Get current position
+                        navigator.geolocation.getCurrentPosition(function (position) {
+                            // Success!
+                            var marker = new google.maps.Marker({
+                                position: {lat: position.coords.latitude, lng: position.coords.longitude},
+                                draggable: true,
+                                map: map
+                            });
+                            markers.push(marker);
+                        },
+                                function () {
+                                    alert('Impossible de detecterr votre position');
+                                }
+                        );
+                    } else {
+                        // No geolocation fallback: Defaults to Eeaster Island, Chile
+                        alert('Impossible de detecterr votre position');
+                    }
                 }
 
             </script>

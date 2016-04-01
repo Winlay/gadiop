@@ -98,7 +98,7 @@
                         <a href="#" class="sidebar-logo-close" style="font-size: 18px"><i class="fa fa-arrow-circle-left default-color"></i></a>
                     </div>
                     <div class="clear"></div>
-                     <ul class="sidebar-navigation full-bottom">
+                    <ul class="sidebar-navigation full-bottom">
                         <li><a  href="index.html"><i class="fa fa-home"></i><em>Accueil</em></a></li>
                         <li><a  class="cursor" href="parcelles-liste.html" data-title="Mes parcelles"><i class="fa fa-map-marker"></i><em>Mes parcelles</em></a></li>
                         <li><a  class="cursor" href="taches.html" data-title="Mes taches"><i class="fa fa-list"></i><em>Mes t&acirc;ches</em></a></li>
@@ -145,13 +145,15 @@
             <script type="text/javascript">
                 var map;
                 var polygoneDepart;
+                var markers = [];
+                var infowindows = [];
                 var latInitial = 14.7362987;
                 var lngInitial = -17.45662444;
                 function initialize() {
                     initialLocation = {lat: latInitial, lng: lngInitial};
                     map = new google.maps.Map(
                             document.getElementById('map'),
-                            {zoom: 16, center: initialLocation, mapTypeId: google.maps.MapTypeId.TERRAIN}
+                            {zoom: 18, center: initialLocation, mapTypeId: google.maps.MapTypeId.SATELLITE}
                     );
                     jQuery.ajax({
                         'type': 'GET',
@@ -159,20 +161,97 @@
                         'data': {'user': 1},
                         'dataType': 'JSON',
                         'success': function (resultat) {
+                            function polygonCenter(poly) {
+                                var lowx,
+                                        highx,
+                                        lowy,
+                                        highy,
+                                        lats = [],
+                                        lngs = [],
+                                        vertices = poly.getPath();
+
+                                for (var i = 0; i < vertices.length; i++) {
+                                    lngs.push(vertices.getAt(i).lng());
+                                    lats.push(vertices.getAt(i).lat());
+                                }
+
+                                lats.sort();
+                                lngs.sort();
+                                lowx = lats[0];
+                                highx = lats[vertices.length - 1];
+                                lowy = lngs[0];
+                                highy = lngs[vertices.length - 1];
+                                center_x = lowx + ((highx - lowx) / 2);
+                                center_y = lowy + ((highy - lowy) / 2);
+                                return (new google.maps.LatLng(center_x, center_y));
+                            }
+
                             for (var i = 0; i < resultat.length; i++) {
-                                var idparcelle = resultat[i].id;
-                                var couleur = resultat[i].couleur;
-                                var titre = resultat[i].libelle;
-                                var polygone = JSON.parse(resultat[i].polygone);
-                                polygoneDepart = new google.maps.Polygon({
-                                    paths: polygone,
-                                    strokeColor: couleur,
-                                    strokeOpacity: 0.8,
-                                    strokeWeight: 1,
-                                    fillColor: couleur,
-                                    fillOpacity: 0.35
-                                });
-                                polygoneDepart.setMap(map);
+                                if (resultat[i].POLYGONE) {
+                                    var idparcelle = resultat[i].ID;
+                                    var couleur = resultat[i].COULEUR;
+                                    var superficie = resultat[i].SURFACE;
+                                    var categorie = resultat[i].CHAMP9;
+                                    var description = resultat[i].CHAMP7;
+                                    var titre = resultat[i].NOM;
+                                    var polygone = JSON.parse(resultat[i].POLYGONE);
+                                    polygoneDepart = new google.maps.Polygon({
+                                        paths: polygone,
+                                        strokeColor: couleur,
+                                        strokeOpacity: 0.8,
+                                        strokeWeight: 1,
+                                        fillColor: couleur,
+                                        fillOpacity: 0.35,
+                                        clickable: true
+                                    });
+                                    polygoneDepart.setMap(map);
+                                    var center = polygonCenter(polygoneDepart);
+                                    var marker = new google.maps.Marker({
+                                        position: center,
+                                        map: map
+                                    });
+                                    var contentString = '<table><tr><td><b>Libelle</b></td><td>' + titre + '</td></tr>'
+                                            + '<tr><td>Culture</b></td><td>' + categorie + '</td></tr>'
+                                            + '<tr><td>Description</b></td><td>' + description + '</td></tr>'
+                                            + '<tr><td>Superficie </b></td><td>' + Math.round(superficie * 100) / 100 + ' m<sup>2</sup></td></tr>'
+                                            + '<tr><td>Zone </b></td><td> Prodzc 4</td></tr>'
+                                            + '<tr><td>Gerant</b></td><td> Amadou LY</td></tr></table>';
+                                    
+                                    var infowindow = new google.maps.InfoWindow({
+                                        content: contentString
+                                    });
+                                    markers.push(marker);
+                                    infowindows.push(infowindow);
+                                    google.maps.event.addListener(markers[i], 'click', function () {
+                                        infowindows[i].open(map, markers[i]);
+                                    });
+
+//                                    marker.addListener('click', function () {
+//                                        infowindow.open(map, marker);
+//                                    });
+
+
+                                    /*   var infoWindow = new google.maps.InfoWindow;
+                                     polygoneDepart.addListener('click', function () {
+                                     var contentString = '<table><tr><td><b>Libelle</b></td><td>' + titre + '</td></tr>'
+                                     + '<tr><td>Culture</b></td><td>' + categorie + '</td></tr>'
+                                     + '<tr><td>Description</b></td><td>' + description + '</td></tr>'
+                                     + '<tr><td>Superficie </b></td><td>' + Math.round(superficie * 100) / 100 + ' m<sup>2</sup></td></tr>'
+                                     //                                                + '<tr><td>Périmètres </b></td><td>' + Math.round(perimetre * 100) / 100 + ' mètres</td></tr>'
+                                     + '<tr><td>Zone </b></td><td> Prodzc 4</td></tr>'
+                                     + '<tr><td>Date </b></td><td> 02/02/2015</td></tr>'
+                                     + '<tr><td>Gerant</b></td><td> Amadou LY</td></tr></table>';
+                                     // Replace the info window's content and position.
+                                     infoWindow.setContent(contentString);
+                                     infoWindow.setPosition(center);
+                                     infoWindow.open(map);
+                                     });
+                                     infowindows.push(infoWindow);
+                                     polygoneTable.push(polygoneDepart);*/
+                                    map.setCenter(center);
+                                    /** @this {google.maps.Polygon} */
+
+                                }
                             }
                         },
                         'error': function () {
@@ -180,6 +259,7 @@
                         }
                     });
                 }
+
             </script>
             <script async defer
                     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDJXY5vQQ_aowKOUA--27f7fgKDs07li60&callback=initialize">
