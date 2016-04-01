@@ -210,26 +210,21 @@
                                         position: center,
                                         map: map
                                     });
+                                    markers.push(marker);
                                     var contentString = '<table><tr><td><b>Libelle</b></td><td>' + titre + '</td></tr>'
                                             + '<tr><td>Culture</b></td><td>' + categorie + '</td></tr>'
                                             + '<tr><td>Description</b></td><td>' + description + '</td></tr>'
                                             + '<tr><td>Superficie </b></td><td>' + Math.round(superficie * 100) / 100 + ' m<sup>2</sup></td></tr>'
                                             + '<tr><td>Zone </b></td><td> Prodzc 4</td></tr>'
                                             + '<tr><td>Gerant</b></td><td> Amadou LY</td></tr></table>';
-                                    
                                     var infowindow = new google.maps.InfoWindow({
                                         content: contentString
                                     });
-                                    markers.push(marker);
-                                    infowindows.push(infowindow);
-                                    google.maps.event.addListener(markers[i], 'click', function () {
-                                        infowindows[i].open(map, markers[i]);
+                                    marker.addListener('click', function () {
+                                        infowindow.open(map, marker);
                                     });
 
-//                                    marker.addListener('click', function () {
-//                                        infowindow.open(map, marker);
-//                                    });
-
+                                    infowindows.push(infowindow);
 
                                     /*   var infoWindow = new google.maps.InfoWindow;
                                      polygoneDepart.addListener('click', function () {
