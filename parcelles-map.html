@@ -146,6 +146,7 @@
                 var map;
                 var polygoneDepart;
                 var markers = [];
+                var polygones = [];
                 var infowindows = [];
                 var latInitial = 14.7362987;
                 var lngInitial = -17.45662444;
@@ -190,11 +191,24 @@
                                 if (resultat[i].POLYGONE) {
                                     var idparcelle = resultat[i].ID;
                                     var couleur = resultat[i].COULEUR;
-                                    var superficie = resultat[i].SURFACE;
+                                    var superficie = parseFloat(resultat[i].SURFACE);
                                     var categorie = resultat[i].CHAMP9;
                                     var description = resultat[i].CHAMP7;
                                     var titre = resultat[i].NOM;
                                     var polygone = JSON.parse(resultat[i].POLYGONE);
+
+                                    var contentString = '<table><tr><td><b>Libelle</b></td><td>' + titre + '</td></tr>'
+                                            + '<tr><td>Culture</b></td><td>' + categorie + '</td></tr>'
+                                            + '<tr><td>Description</b></td><td>' + description + '</td></tr>'
+                                            + '<tr><td>Superficie </b></td><td>' + Math.round(superficie * 100) / 100 + ' m<sup>2</sup></td></tr>'
+                                            + '<tr><td>Zone </b></td><td> Prodzc 4</td></tr>'
+                                            + '<tr><td>Gerant</b></td><td> Amadou LY</td></tr></table>';
+
+                                    var infowindow = new google.maps.InfoWindow({
+                                        content: contentString
+                                    });
+
+
                                     polygoneDepart = new google.maps.Polygon({
                                         paths: polygone,
                                         strokeColor: couleur,
@@ -202,7 +216,9 @@
                                         strokeWeight: 1,
                                         fillColor: couleur,
                                         fillOpacity: 0.35,
-                                        clickable: true
+                                        clickable: true,
+                                        info: infowindow
+//                                        marker: marker
                                     });
                                     polygoneDepart.setMap(map);
                                     var center = polygonCenter(polygoneDepart);
@@ -210,22 +226,27 @@
                                         position: center,
                                         map: map
                                     });
+                                    polygoneDepart.info.setPosition(center);
                                     markers.push(marker);
-                                    var contentString = '<table><tr><td><b>Libelle</b></td><td>' + titre + '</td></tr>'
-                                            + '<tr><td>Culture</b></td><td>' + categorie + '</td></tr>'
-                                            + '<tr><td>Description</b></td><td>' + description + '</td></tr>'
-                                            + '<tr><td>Superficie </b></td><td>' + Math.round(superficie * 100) / 100 + ' m<sup>2</sup></td></tr>'
-                                            + '<tr><td>Zone </b></td><td> Prodzc 4</td></tr>'
-                                            + '<tr><td>Gerant</b></td><td> Amadou LY</td></tr></table>';
-                                    var infowindow = new google.maps.InfoWindow({
-                                        content: contentString
-                                    });
-                                    marker.addListener('click', function () {
-                                        infowindow.open(map, marker);
+
+
+                                    polygoneDepart.addListener('click', function () {
+                                        this.info.open(map);
                                     });
 
-                                    infowindows.push(infowindow);
-
+//                                    infowindows.push(infowindow);
+//                                    polygones.push(polygoneDepart);
+                                    /*
+                                     markers.push(marker);
+                                     var infowindow = new google.maps.InfoWindow({
+                                     content: contentString
+                                     });
+                                     marker.addListener('click', function () {
+                                     infowindow.open(map, marker);
+                                     });
+                                     
+                                     infowindows.push(infowindow);
+                                     */
                                     /*   var infoWindow = new google.maps.InfoWindow;
                                      polygoneDepart.addListener('click', function () {
                                      var contentString = '<table><tr><td><b>Libelle</b></td><td>' + titre + '</td></tr>'

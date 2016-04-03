@@ -58,7 +58,7 @@
                 padding: 5px;
 
             }
-           
+
             .formAlerte li{
 
                 list-style: none;
@@ -105,7 +105,7 @@
                         <a href="#" class="sidebar-logo-close" style="font-size: 18px"><i class="fa fa-arrow-circle-left default-color"></i></a>
                     </div>
                     <div class="clear"></div>
-                   <ul class="sidebar-navigation full-bottom">
+                    <ul class="sidebar-navigation full-bottom">
                         <li><a  href="index.html"><i class="fa fa-home"></i><em>Accueil</em></a></li>
                         <li><a  class="cursor" href="parcelles-liste.html" data-title="Mes parcelles"><i class="fa fa-map-marker"></i><em>Mes parcelles</em></a></li>
                         <!--<li><a  class="cursor" href="taches.html" data-title="Mes taches"><i class="fa fa-list"></i><em>Mes t&acirc;ches</em></a></li>-->
@@ -131,6 +131,20 @@
                 <div id="ajax-content" style="" class="scroller">
                     <div style=" padding-top: 80px;">
                         <div class="form-alert">
+                            <table>
+                                <tr>
+                                    <td><a onclick="geolocMe()"><img src="images/geoloc.png" /></a></td>
+                                    <td><a onclick="ungeolocMe()"><img src="images/ungeoloc.png" /></a></td>
+                                </tr>
+                                <tr id="trLabelLatLong" style="display: none">
+                                    <td>Latitude</td>
+                                    <td>Longitude</td>
+                                </tr>
+                                <tr id="trLatLong" style="display: none">
+                                    <td><input name="latitude" id="latitude" value=""/></td>
+                                    <td><input name="longitude" id="longitude" value=""/></td>
+                                </tr>
+                            </table>
                             <ul class="formAlerte" id="moby_form">
                                 <li>
                                     <input class="contactField" type="text" name="libelle" id="libelle" placeholder="Libelle alerte" required="required"/>
@@ -176,26 +190,55 @@
             </div>
         </div>
         <script type="text/javascript">
-              jQuery(document).on("click", '#saveAlerte', function () {
-                        jQuery("#fileupload").closest('li').html('');
-                        var libelle = jQuery('#libelle').val();
-                        var description = jQuery('#description').val();
-                        var fichier = jQuery('#fichier').val();
-                        var parcelle = jQuery('#parcelle').val();
-                        var user = 1;
-                        jQuery.ajax({
-                            'type': 'GET',
-                            'url': "http://geoland.noflay.com/server/savealerte.php",
-                            'data': {'libelle': libelle, 'fichier': fichier, 'description': description, 'parcelle': parcelle, 'user': user},
-                            'success': function () {
-                                alert('Nouvelle alerte ajoutée avec succès');
-                                document.location.href = "alertes.html";
-                            },
-                            'error': function () {
-                                alert('une erreur est survenue lors de l\'enrégistrement. Merci de réessayer');
-                            }
-                        });
-                    });
+
+            function geolocMe() {
+                var options = {timeout: 30000, enableHighAccuracy: true, maximumAge: 900000};
+                navigator.geolocation.getCurrentPosition(onSuccess, onError, options);
+                function onSuccess(position) {
+                    if (position) {
+                        jQuery('#latitude').val(position.coords.latitude);
+                        jQuery('#longitude').val(position.coords.longitude);
+                        jQuery('#trLabelLatLong').show();
+                        jQuery('#trLatLong').show();
+                    } else {
+                        alert('Merci d\'activer votre conenction internet et votre localisation');
+                    }
+                }
+
+                function onError(error) {
+                    alert('Merci d\'activer votre conenction internet');
+                }
+            }
+
+            function ungeolocMe() {
+                jQuery('#latitude').val("");
+                jQuery('#longitude').val("");
+                jQuery('#trLabelLatLong').hide();
+                jQuery('#trLatLong').hide();
+            }
+
+            jQuery(document).on("click", '#saveAlerte', function () {
+                jQuery("#fileupload").closest('li').html('');
+                var libelle = jQuery('#libelle').val();
+                var description = jQuery('#description').val();
+                var fichier = jQuery('#fichier').val();
+                var parcelle = jQuery('#parcelle').val();
+                var latitude = jQuery('#latitude').val();
+                var longitude = jQuery('#longitude').val();
+                var user = 1;
+                jQuery.ajax({
+                    'type': 'GET',
+                    'url': "http://geoland.noflay.com/server/savealerte.php",
+                    'data': {'libelle': libelle, 'fichier': fichier, 'description': description, 'parcelle': parcelle, 'user': user, 'latitude': latitude, 'longitude': longitude},
+                    'success': function () {
+                        alert('Nouvelle alerte ajoutée avec succès');
+                        document.location.href = "alertes.html";
+                    },
+                    'error': function () {
+                        alert('une erreur est survenue lors de l\'enrégistrement. Merci de réessayer');
+                    }
+                });
+            });
         </script>
 
         <a href="success-savealerte.html"></a>

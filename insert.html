@@ -60,25 +60,26 @@
                 color: #FFFFFF;
             }
 
-            .buttons a{
-                width: 30px;
-                height: 30px;
-                border-radius: 10px;
-            }
-            .tabButtons i{
-                color: #FFFFFF;
-                font-size: 20px;
-                margin-top: 5px
-            }
-
+/*            .buttons a{
+                width: 35px;
+                height: 35px;
+                background-color:#2ECC71;
+            }*/
+       
             .tabButtons{
                 width: 100px;
                 display:block;
+                background-color:#FFFFFF;
+                width: 100%;
+            }
+            .tabButtons img{
+                border-radius: 10px;
+                width: 32px;
+                background-color:#2ECC71;
             }
             .tabButtons, .tabButtons td,.tabButtons tr{
                 border: none;
                 margin: 2px;
-                background: transparent;
                 padding: 2px 2px 2px 15px;
             }
         </style>
@@ -158,20 +159,20 @@
                                 <td>
                                 </td>
                                 <td>
-                                    <a id="btn-showformInfos" class="background-blue cursor" onclick="$('#btn-showformInfos').hide();$('#formInfos').show('slow');$('#btn-hideformInfos').show();"><i class="fa fa-info"></i></a>
-                                    <a style="display: none" id="btn-hideformInfos" class="background-gray cursor" onclick="$('#formInfos').hide(); $('#btn-hideformInfos').hide(); $('#btn-showformInfos').show();"><i class="fa fa-eye-slash"></i></a>
+                                    <a id="btn-showformInfos" class="cursor" onclick="$('#btn-showformInfos').hide();$('#formInfos').show('slow');$('#btn-hideformInfos').show();"><img  src="images/arrow-right.png" /></a>
+                                    <a style="display: none" id="btn-hideformInfos" class="cursor" onclick="$('#formInfos').hide(); $('#btn-hideformInfos').hide(); $('#btn-showformInfos').show();"><img src="images/arrow-left.png" /></a>
                                 </td>
                                 <td>    
-                                    <a class="background-red cursor" onclick="initialize();" title="effacer polygone"><i class="fa fa-eraser"></i></a>
+                                    <a class="cursor" onclick="initialize();" title="effacer polygone"><img src="images/abc_ic_clear_mtrl_alpha.png" /></a>
                                 </td>
                                 <td> 
-                                    <a class="background-gray cursor" onclick="defarPolygone();"><i class="fa fa-pencil-square-o"></i></a>
+                                    <a class="cursor" onclick="defarPolygone();"><img src="images/icon_geofence.png" /></a>
                                 </td>
                                 <td> 
-                                    <a class="background-blue cursor" onclick="createMarkerMyInPosition();"><i class="fa fa-male"></i></a>
+                                    <a class="cursor" onclick="createMarkerMyInPosition();"><img src="images/marker_icon_walking.png" /></a>
                                 </td>
                                 <td>
-                                    <a id="btn-savePolygone" class="background-green cursor" onclick="savePolygone();"><i class="fa fa-check"></i></a>
+                                    <a id="btn-savePolygone" class="cursor" onclick="savePolygone();"><img src="images/icon_validate.png" /></a>
                                 </td>
                             </tr>
                         </table>

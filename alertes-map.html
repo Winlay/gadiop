@@ -2,20 +2,24 @@
 <html>
 
     <head title="GEOLANDS">
+        <title>GEOLANDS</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0 minimal-ui"/>
         <meta name="apple-mobile-web-app-capable" content="yes"/>
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <link rel="apple-touch-icon-precomposed" sizes="114x114" href="images/splash/splash-icon.png">
         <link rel="apple-touch-startup-image" href="images/splash/splash-screen.png" 			media="screen and (max-device-width: 320px)" />
-        <link rel="apple-touch-startup-image" sizes="640x1096" href="images/ios/splash/splash-screen@3x.png"/>
+        <link rel="apple-touch-startup-image" sizes="640x1096" href="images/ios/splash/splash-screen@3x.png" />
         <link rel="apple-touch-startup-image" sizes="1024x748" href="images/ios/splash/splash-screen-ipad-landscape" media="screen and (min-device-width : 481px) and (max-device-width : 1024px) and (orientation : landscape)" />
         <link rel="apple-touch-startup-image" sizes="768x1004" href="images/ios/splash/splash-screen-ipad-portrait.png" media="screen and (min-device-width : 481px) and (max-device-width : 1024px) and (orientation : portrait)" />
-        <title>GEOLANDS</title>
+
+
         <link href="css/framework.min.css" 	  rel="stylesheet" type="text/css"/>
         <link href="css/owl.theme.min.css"    rel="stylesheet" type="text/css"/>
+        <link href="css/swipebox.min.css"	  rel="stylesheet" type="text/css"/>
         <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
         <link href="css/style.css"     	  rel="stylesheet" type="text/css"/>
+        <script  src="js/jquery.js" type="text/javascript"></script>
         <style type="text/css">
             body {
                 margin: 0;
@@ -45,16 +49,19 @@
                 -webkit-overflow-scrolling: touch;
                 -webkit-overflow-scrolling: touch;
             }
+            /* iOS specific fix, don't use it on Android devices */
             .scrollable > * {
                 -webkit-transform: translateZ(0px);
             }
         </style>
 
         <script type="text/javascript" src="js/jquery.min.js"></script>
+        <!--<script type="text/javascript" src="js/jquery.mobile-1.4.5.js"></script>-->
         <script type="text/javascript" src="js/index.js"></script>
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/custom.js"></script>
         <script type="text/javascript" src="js/framework.plugins.min.js"></script>
+        <!--<script type="text/javascript" src="js/PhoneDialer.js"></script>-->
         <script type="text/javascript">
             function clearRadio(nom) {
                 if (nom) {
@@ -76,17 +83,18 @@
             }
 
             document.addEventListener("backbutton", function (e) {
-                document.location('index.html');
+                loadContent('index_ajax.html');
             }, false);
-
         </script>
+
+
     </head>
-    <body onload="">
+    <body>
         <div class="scrollable" id="container">
             <div class="snap-drawers">
                 <div class="snap-drawer snap-drawer-left">
                     <div class="sidebar-header">
-                        <a href="#" class="sidebar-logo"><h2 style="color: #27AE60"> GEOLANDS </h2></a>
+                        <a href="#" class="sidebar-logo"><h2 style="color: #27AE60">GEOLANDS</h2></a>
                         <a href="#" class="sidebar-logo-close" style="font-size: 18px"><i class="fa fa-arrow-circle-left default-color"></i></a>
                     </div>
                     <div class="clear"></div>
@@ -102,15 +110,17 @@
                     <div class="sidebar-decoration"></div>
 
                     <div class="sidebar-decoration"></div>
-                    <p class="sidebar-copyright">Copyright Winlaytech 2016. All rights reserved.</p>
+                    <p class="sidebar-copyright">Copyright WINLAY 2016. All rights reserved.</p>
                 </div>
 
+                <div class="snap-drawer snap-drawer-right">
+                </div>
             </div>
 
             <div class="page-header">
                 <a href="#" class="open-left"><i class="fa fa-navicon"></i></a>
-                <a class="page-logo"><i class="fa fa-map-marker"></i><span id="titreHeder"> Parcelles</span></a>
-                <a href="index.html" id="backbutton" class="open-right1 cursor"><i style="color: #FFF" class="fa fa-arrow-left"></i></a>
+                <a class="page-logo"><i class="fa fa-map-marker"></i> Alertes</a>
+                <!--<a href="#" class="open-right"><i class="fa fa-info-circle"></i></a>-->
             </div>
             <div id="content" class="snap-content">
                 <div id="ajax-content" style="" class="scroller">
@@ -118,47 +128,90 @@
                         <table style="padding: 1px; margin-bottom: 2px" class="table">
                             <tr style=" padding: 2px; margin: 2px">
                                 <td style="padding: 2px; margin: 2px">
-                                    <a href="insert.html" class="button-blue button-3d"><i class="fa fa-plus"></i> Ajouter</a>
+                                    <a href="new-alerte.html" class="button-blue button-3d"><i class="fa fa-plus"></i> Ajouter</a>
                                 </td>
                                 <td colspan="1" style=" padding: 2px; margin: 2px">
-                                    <a href="parcelles-map.html" class="button-green button-3d"><i class="fa fa-map-marker"></i> sur la carte</a>
+                                    <a href="alertes.html" class="button-green button-3d"><i class="fa fa-list"></i> Liste</a>
                                 </td>
                             </tr>
                         </table>
                     </div>
-                    <div class="header-menu1" id="listeParcelles">
-
-                    </div>
+                    <div id="map" style="width: 100%; height: 500px; padding-top: 2px; text-align: center">
+                        <img style="text-align: center" src="images/loading.gif" alt="Chargement en cours..."/>
+                    </div> 
                 </div>
 
             </div>
-        </div>
-        <script type="text/javascript">
-            jQuery('.ajax-menu').on('click', function () {
-                jQuery("#titreHeder").html(' ' + jQuery(this).data('title'));
-                jQuery("#ajax-content").load(jQuery(this).data('page'));
-            });
-        </script>
-        <script type="text/javascript">
-            jQuery.ajax({
-                'type': 'GET',
-                'url': "http://geoland.noflay.com/server/parcelles.php",
-//                'data': {'user': 1},
-                'dataType': 'JSON',
-                'success': function (resultat) {
-                    for (var i = 0; i < resultat.length; i++) {
-                        var idparcelle = resultat[i].ID;
-                        var titre = resultat[i].NOM;
-                        var surface = Math.floor(parseFloat(resultat[i].SURFACE) * 100) / 100;
-                        var parcelles = "<a href=\"parcelle-unique.html?parcelle_id=" + idparcelle + "\" class=\"openparcelle cursor\" data-idparcelle=\"" + idparcelle + "\"><i class=\"fa fa-map-marker\"></i>" + titre + " ("+surface+"m<sup>2</sup>)<i class=\"fa fa-chevron-right\"></i></a>";
-                        jQuery('#listeParcelles').append(parcelles);
-                    }
-                },
-                'error': function () {
-                    alert('une erreur est survenue lors de l\'enrégistrement. Merci de réessayer');
+            <script type="text/javascript">
+                var map;
+                var markers = [];
+                var infowindows = [];
+                var latInitial = 14.7362987;
+                var lngInitial = -17.45662444;
+                function initialize() {
+                    initialLocation = {lat: latInitial, lng: lngInitial};
+                    map = new google.maps.Map(
+                            document.getElementById('map'),
+                            {zoom: 18, center: initialLocation, mapTypeId: google.maps.MapTypeId.SATELLITE}
+                    );
+                    jQuery.ajax({
+                        'type': 'GET',
+                        'url': "http://geoland.noflay.com/server/alertes.php",
+                        'data': {'user': 1, 'map': 'map'},
+                        'dataType': 'JSON',
+                        'success': function (resultat) {
+                            for (var i = 0; i < resultat.length; i++) {
+                                var description = resultat[i].description;
+                                var titre = resultat[i].libelle;
+                                var latitude = resultat[i].latitude;
+                                var longitude = resultat[i].longitude;
+                                var fichier = resultat[i].fichier;
+                                var textimg = '';
+                                if (fichier) {
+                                    textimg = '<p><img style="width:90%"  src="http://geoland.noflay.com/server/alertes/files/' + fichier + '"/></p>';
+                                }
+
+                                var contentString = '<div>'
+                                        + textimg
+                                        + '<br/><table><tr><td><b>Libelle</b></td><td>' + titre + '</td></tr>'
+                                        + '<tr><td>Description</b></td><td>' + description + '</td></tr>'
+//                                        + '<tr><td>Parcelle </b></td><td>' + parcelle + '</td></tr>'
+                                        + '</table></div>';
+                                
+                                var infowindow = new google.maps.InfoWindow({
+                                    position: new google.maps.LatLng(latitude, longitude),
+                                    content: contentString
+                                });
+                                var marker = new google.maps.Marker({
+                                    position: new google.maps.LatLng(latitude, longitude),
+                                    map: map,
+                                    title: titre,
+                                    icon: 'images/alerte.png',
+                                    info:infowindow
+                                });
+
+                                markers.push(marker);
+
+
+                                marker.addListener('click', function () {
+                                    this.info.open(map);
+                                });
+                                
+                                map.setCenter(marker.position);
+                            }
+                        },
+                        'error': function () {
+                            alert('une erreur est survenue lors de l\'enrégistrement. Merci de réessayer');
+                        }
+                    });
                 }
-            });
-        </script>
+
+            </script>
+            <script async defer
+                    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDJXY5vQQ_aowKOUA--27f7fgKDs07li60&callback=initialize">
+            </script>
+        </div>
+
     </body>
 
 </html>
