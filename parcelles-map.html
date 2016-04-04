@@ -175,7 +175,7 @@
                                     lngs.push(vertices.getAt(i).lng());
                                     lats.push(vertices.getAt(i).lat());
                                 }
-
+                                
                                 lats.sort();
                                 lngs.sort();
                                 lowx = lats[0];
@@ -200,14 +200,12 @@
                                     var contentString = '<table><tr><td><b>Libelle</b></td><td>' + titre + '</td></tr>'
                                             + '<tr><td>Culture</b></td><td>' + categorie + '</td></tr>'
                                             + '<tr><td>Description</b></td><td>' + description + '</td></tr>'
-                                            + '<tr><td>Superficie </b></td><td>' + Math.round(superficie * 100) / 100 + ' m<sup>2</sup></td></tr>'
-                                            + '<tr><td>Zone </b></td><td> Prodzc 4</td></tr>'
-                                            + '<tr><td>Gerant</b></td><td> Amadou LY</td></tr></table>';
+                                            + '<tr><td>Superficie </b></td><td>' + Math.round(superficie * 100) / 100 + ' Ha</td></tr>'
+                                            + '</table>';
 
                                     var infowindow = new google.maps.InfoWindow({
                                         content: contentString
                                     });
-
 
                                     polygoneDepart = new google.maps.Polygon({
                                         paths: polygone,
@@ -218,7 +216,6 @@
                                         fillOpacity: 0.35,
                                         clickable: true,
                                         info: infowindow
-//                                        marker: marker
                                     });
                                     polygoneDepart.setMap(map);
                                     var center = polygonCenter(polygoneDepart);
@@ -226,47 +223,14 @@
                                         position: center,
                                         map: map
                                     });
+                                    
                                     polygoneDepart.info.setPosition(center);
                                     markers.push(marker);
-
 
                                     polygoneDepart.addListener('click', function () {
                                         this.info.open(map);
                                     });
-
-//                                    infowindows.push(infowindow);
-//                                    polygones.push(polygoneDepart);
-                                    /*
-                                     markers.push(marker);
-                                     var infowindow = new google.maps.InfoWindow({
-                                     content: contentString
-                                     });
-                                     marker.addListener('click', function () {
-                                     infowindow.open(map, marker);
-                                     });
-                                     
-                                     infowindows.push(infowindow);
-                                     */
-                                    /*   var infoWindow = new google.maps.InfoWindow;
-                                     polygoneDepart.addListener('click', function () {
-                                     var contentString = '<table><tr><td><b>Libelle</b></td><td>' + titre + '</td></tr>'
-                                     + '<tr><td>Culture</b></td><td>' + categorie + '</td></tr>'
-                                     + '<tr><td>Description</b></td><td>' + description + '</td></tr>'
-                                     + '<tr><td>Superficie </b></td><td>' + Math.round(superficie * 100) / 100 + ' m<sup>2</sup></td></tr>'
-                                     //                                                + '<tr><td>Périmètres </b></td><td>' + Math.round(perimetre * 100) / 100 + ' mètres</td></tr>'
-                                     + '<tr><td>Zone </b></td><td> Prodzc 4</td></tr>'
-                                     + '<tr><td>Date </b></td><td> 02/02/2015</td></tr>'
-                                     + '<tr><td>Gerant</b></td><td> Amadou LY</td></tr></table>';
-                                     // Replace the info window's content and position.
-                                     infoWindow.setContent(contentString);
-                                     infoWindow.setPosition(center);
-                                     infoWindow.open(map);
-                                     });
-                                     infowindows.push(infoWindow);
-                                     polygoneTable.push(polygoneDepart);*/
                                     map.setCenter(center);
-                                    /** @this {google.maps.Polygon} */
-
                                 }
                             }
                         },
