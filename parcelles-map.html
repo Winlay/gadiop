@@ -145,8 +145,6 @@
             <script type="text/javascript">
                 var map;
                 var polygoneDepart;
-                var markers = [];
-                var polygones = [];
                 var infowindows = [];
                 var latInitial = 14.7362987;
                 var lngInitial = -17.45662444;
@@ -175,7 +173,7 @@
                                     lngs.push(vertices.getAt(i).lng());
                                     lats.push(vertices.getAt(i).lat());
                                 }
-                                
+
                                 lats.sort();
                                 lngs.sort();
                                 lowx = lats[0];
@@ -186,7 +184,7 @@
                                 center_y = lowy + ((highy - lowy) / 2);
                                 return (new google.maps.LatLng(center_x, center_y));
                             }
-
+                            alert(resultat.length + ' parcelles trouvées');
                             for (var i = 0; i < resultat.length; i++) {
                                 if (resultat[i].POLYGONE) {
                                     var idparcelle = resultat[i].ID;
@@ -206,7 +204,10 @@
                                     var infowindow = new google.maps.InfoWindow({
                                         content: contentString
                                     });
-
+                                    var infosimple = new google.maps.InfoWindow({
+                                        content: titre + " <br/>" + description,
+                                    });
+                                    
                                     polygoneDepart = new google.maps.Polygon({
                                         paths: polygone,
                                         strokeColor: couleur,
@@ -215,19 +216,19 @@
                                         fillColor: couleur,
                                         fillOpacity: 0.35,
                                         clickable: true,
-                                        info: infowindow
+                                        info: infowindow,
+                                        infosimple: infosimple
                                     });
+
                                     polygoneDepart.setMap(map);
                                     var center = polygonCenter(polygoneDepart);
-                                    var marker = new google.maps.Marker({
-                                        position: center,
-                                        map: map
-                                    });
-                                    
+
                                     polygoneDepart.info.setPosition(center);
-                                    markers.push(marker);
+                                    polygoneDepart.infosimple.setPosition(center);
+                                    polygoneDepart.infosimple.open(map);
 
                                     polygoneDepart.addListener('click', function () {
+                                        this.infosimple.close(map);
                                         this.info.open(map);
                                     });
                                     map.setCenter(center);
