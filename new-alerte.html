@@ -156,7 +156,11 @@
                                 <li id="patienter" style="display: none">Patientez jusqu'au chargement à 100% du fichier
                                 </li>
                                 <li>
+                                    <button class="btn btn-success fileinput-button" onclick="capturePhotoWithData();">Photo Data</button> <br>
+                                    <button class="btn btn-success fileinput-button" onclick="capturePhotoWithFile();">Photo URI</button> <br>
                                     <a class="btn btn-success fileinput-button" onclick="captureImage()"><i class="fa fa-camera"></i>Caméra</a>
+                                    <img style="display:none;width:60px;height:60px;" id="smallImage" src="" />
+                                    <img style="display:none;" id="largeImage" src="" />
                                 </li>
                                 <li>
                                     <span class="btn btn-success fileinput-button">
@@ -189,223 +193,191 @@
         </div>
 
         <script type="text/javascript" charset="utf-8">
-// Called when capture operation is finished
-//
-                    function captureSuccess(mediaFiles) {
-                        var i, len;
-                        for (i = 0, len = mediaFiles.length; i < len; i += 1) {
-                            uploadFile(mediaFiles[i]);
-                        }
-                    }
-            function captureSuccess2(mediaFiles) {
-                var i, len;
-                for (i = 0, len = mediaFiles.length; i < len; i += 1) {
-                    uploadFile2(mediaFiles[i]);
-                }
+            var pictureSource;   // picture source
+            var destinationType; // sets the format of returned value 
+            // Wait for PhoneGap to connect with the device
+            //
+            document.addEventListener("deviceready", onDeviceReady, false);
+            // PhoneGap is ready to be used!
+            //
+            function onDeviceReady() {
+                pictureSource = navigator.camera.PictureSourceType;
+                destinationType = navigator.camera.DestinationType;
             }
-            function captureSuccess3(mediaFiles) {
-                var i, len;
-                for (i = 0, len = mediaFiles.length; i < len; i += 1) {
-                    uploadFile3(mediaFiles[i]);
-                }
-            }
-// Called if something bad happens.
-//
-            function captureError(error) {
-                var msg = "An error occurred during capture: " + error.code;
-                navigator.notification.alert(msg, null, "Uh oh!");
-            }
-            function captureError2(error) {
-                var msg = "An error occurred during capture: " + error.code;
-                navigator.notification.alert(msg, null, "Uh oh!");
-            }
-            function captureError3(error) {
-                var msg = "An error occurred during capture: " + error.code;
-                navigator.notification.alert(msg, null, "Uh oh!");
-            }
-// A button will call this function
-//
-            function captureAudio() {
-// Launch device audio recording application,
-// allowing user to capture up to 2 audio clips
-                navigator.device.capture.captureAudio(captureSuccess, captureError, {limit: 2});
-            }
-            
-            function captureImage()
-            {
-// Launch device camera application,
-// allowing user to capture up to 2 images
-                navigator.device.capture.captureImage(captureSuccess2, captureError2, {limit: 2});
-            }
-            function captureVideo() {
-// Launch device video recording application,
-// allowing user to capture up to 2 video clips
-                navigator.device.capture.captureVideo(captureSuccess3, captureError3, {limit: 2});
-            }
-// Upload files to server
-            function uploadFile(mediaFile) {
-                var win = function (r) {
-                    alert("Code = " + r.responseCode);
-                    alert("Bytes Sent = " + r.bytesSent);
-                    alert("Audio Uploaded");
-                }
-                var fail = function (error) {
-                    alert("An error has occurred: Code = " + error.code);
-                    alert("upload error source " + error.source);
-                    alert("upload error target " + error.target);
-                }
-                var options = new FileUploadOptions();
-//options.fileKey = mediafile.file;
-                options.fileName = mediaFile.file;
-                options.mimeType = "audio/wav";
-                fileURL = mediaFile.fullPath;
-                var ft = new FileTransfer();
-                ft.upload(fileURL, encodeURI("http://geoland.noflay.com/server/alertes/index.php"), win, fail,
-                        options);
-            }
-            function uploadFile2(mediaFile) {
-                var win = function (r) {
-                    alert("Code = " + r.responseCode);
-                    alert("Bytes Sent = " + r.bytesSent);
-                    alert("Image Uploaded");
-                }
-                var fail = function (error) {
-                    alert("An error has occurred: Code = " + error.code);
-                    alert("upload error source " + error.source);
-                    alert("upload error target " + error.target);
-                }
-                var options = new FileUploadOptions();
-//options.fileKey = mediafile.file;
-                options.fileName = mediaFile.file;
-                options.mimeType = "text/plain";
-                ImageURL = mediaFile.fullPath;
-                var ft = new FileTransfer();
-                ft.upload(ImageURL, encodeURI("http://geoland.noflay.com/server/alertes/index.php"), win, fail,
-                        options);
-            }
-            function uploadFile3(mediaFile) {
-                var win = function (r) {
-                    alert("Code = " + r.responseCode);
-                    alert("Bytes Sent = " + r.bytesSent);
-                    alert("Video Uploaded");
-                }
-                var fail = function (error) {
-                    alert("An error has occurred: Code = " + error.code);
-                    alert("upload error source " + error.source);
-                    alert("upload error target " + error.target);
-                }
-                var options = new FileUploadOptions();
-//options.fileKey = mediafile.file;
-                options.fileName = mediaFile.file;
-                options.mimeType = "video/mpeg";
-                VideoURL = mediaFile.fullPath;
-                var ft = new FileTransfer();
-                ft.upload(VideoURL, encodeURI("http://geoland.noflay.com/server/alertes/index.php"), win, fail,
-                        options);
-            }
-    </script>
-    <script type="text/javascript">
-        jQuery.ajax({
-            'type': 'GET',
-            'url': "http://geoland.noflay.com/server/parcelles.php",
-            'data': {'user': 1},
-            'dataType': 'JSON',
-            'success': function (resultat) {
-                for (var i = 0; i < resultat.length; i++) {
-                    var idparcelle = resultat[i].ID;
-                    var titre = resultat[i].NOM;
-                    var parcelles = "<option value=\"" + idparcelle + "\">" + titre + "</option>";
-                    jQuery('#parcelle').append(parcelles);
-                }
-            },
-            'error': function () {
-                alert('une erreur est survenue lors de l\'enrégistrement. Merci de réessayer');
-            }
-        });
-
-
-        function geolocMe() {
-            var options = {timeout: 30000, enableHighAccuracy: true, maximumAge: 900000};
-            navigator.geolocation.getCurrentPosition(onSuccess, onError, options);
-            function onSuccess(position) {
-                if (position) {
-                    jQuery('#latitude').val(position.coords.latitude);
-                    jQuery('#longitude').val(position.coords.longitude);
-                    jQuery('#trLabelLatLong').show();
-                    jQuery('#trLatLong').show();
-                } else {
-                    alert('Merci d\'activer votre conenction internet et votre localisation');
-                }
+            // Called when a photo is successfully retrieved
+            //
+            function onPhotoDataSuccess(imageData) {
+                // Get image handle
+                //
+                var smallImage = document.getElementById('smallImage');
+                // Unhide image elements
+                //
+                smallImage.style.display = 'block';
+                // Show the captured photo
+                // The inline CSS rules are used to resize the image
+                //
+                smallImage.src = "data:image/jpeg;base64," + imageData;
             }
 
-            function onError(error) {
-                alert('Merci d\'activer votre conenction internet');
+            // Called when a photo is successfully retrieved
+            //
+            function onPhotoFileSuccess(imageData) {
+                // Get image handle
+                console.log(JSON.stringify(imageData));
+
+                // Get image handle
+                //
+                var smallImage = document.getElementById('smallImage');
+                // Unhide image elements
+                //
+                smallImage.style.display = 'block';
+                // Show the captured photo
+                // The inline CSS rules are used to resize the image
+                //
+                smallImage.src = imageData;
             }
-        }
+            // Called when a photo is successfully retrieved
+            //
+            function onPhotoURISuccess(imageURI) {
+                // Uncomment to view the image file URI 
+                // console.log(imageURI);
+                // Get image handle
+                //
+                var largeImage = document.getElementById('largeImage');
+                // Unhide image elements
+                //
+                largeImage.style.display = 'block';
+                // Show the captured photo
+                // The inline CSS rules are used to resize the image
+                //
+                largeImage.src = imageURI;
+            }
+            // A button will call this function
+            //
+            function capturePhotoWithData() {
+                // Take picture using device camera and retrieve image as base64-encoded string
+                navigator.camera.getPicture(onPhotoDataSuccess, onFail, {quality: 50});
+            }
+            function capturePhotoWithFile() {
+                navigator.camera.getPicture(onPhotoFileSuccess, onFail, {quality: 50, destinationType: Camera.DestinationType.FILE_URI});
+            }
 
-        function ungeolocMe() {
-            jQuery('#latitude').val("");
-            jQuery('#longitude').val("");
-            jQuery('#trLabelLatLong').hide();
-            jQuery('#trLatLong').hide();
-        }
-
-        jQuery(document).on("click", '#saveAlerte', function () {
-            jQuery("#fileupload").closest('li').html('');
-            var libelle = jQuery('#libelle').val();
-            var description = jQuery('#description').val();
-            var fichier = jQuery('#fichier').val();
-            var parcelle = jQuery('#parcelle').val();
-            var latitude = jQuery('#latitude').val();
-            var longitude = jQuery('#longitude').val();
-            var user = 1;
+            // A button will call this function
+            //
+            function getPhoto(source) {
+                // Retrieve image file location from specified source
+                navigator.camera.getPicture(onPhotoURISuccess, onFail, {quality: 50,
+                    destinationType: destinationType.FILE_URI,
+                    sourceType: source});
+            }
+            // Called if something bad happens.
+            // 
+            function onFail(message) {
+                alert('Failed because: ' + message);
+            }
+        </script>
+        <script type="text/javascript">
             jQuery.ajax({
                 'type': 'GET',
-                'url': "http://geoland.noflay.com/server/savealerte.php",
-                'data': {'libelle': libelle, 'fichier': fichier, 'description': description, 'parcelle': parcelle, 'user': user, 'latitude': latitude, 'longitude': longitude},
-                'success': function () {
-                    alert('Nouvelle alerte ajoutée avec succès');
-                    document.location.href = "alertes.html";
+                'url': "http://geoland.noflay.com/server/parcelles.php",
+                'data': {'user': 1},
+                'dataType': 'JSON',
+                'success': function (resultat) {
+                    for (var i = 0; i < resultat.length; i++) {
+                        var idparcelle = resultat[i].ID;
+                        var titre = resultat[i].NOM;
+                        var parcelles = "<option value=\"" + idparcelle + "\">" + titre + "</option>";
+                        jQuery('#parcelle').append(parcelles);
+                    }
                 },
                 'error': function () {
                     alert('une erreur est survenue lors de l\'enrégistrement. Merci de réessayer');
                 }
             });
-        });
-    </script>
 
 
-
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="js/jquery.ui.widget.js"></script>
-    <script src="js/jquery.iframe-transport.js"></script>
-    <script src="js/jquery.fileupload.js"></script>
-    <script>
-        /*jslint unparam: true */
-        /*global window, $ */
-        $(function () {
-            'use strict';
-            $('#fileupload').fileupload({
-                url: 'http://geoland.noflay.com/server/alertes/index.php',
-                dataType: 'json',
-                done: function (e, data) {
-                    $.each(data.result.files, function (index, file) {
-                        $('#fichier').val(file.name);
-                    });
-                },
-                progressall: function (e, data) {
-                    var progress = parseInt(data.loaded / data.total * 100, 10);
-                    $('#progress .progress-bar').css(
-                            'width',
-                            progress + '%'
-                            );
-                    $('.progress-bar').text('Chargement terminé à ' + progress + '%');
+            function geolocMe() {
+                var options = {timeout: 30000, enableHighAccuracy: true, maximumAge: 900000};
+                navigator.geolocation.getCurrentPosition(onSuccess, onError, options);
+                function onSuccess(position) {
+                    if (position) {
+                        jQuery('#latitude').val(position.coords.latitude);
+                        jQuery('#longitude').val(position.coords.longitude);
+                        jQuery('#trLabelLatLong').show();
+                        jQuery('#trLatLong').show();
+                    } else {
+                        alert('Merci d\'activer votre conenction internet et votre localisation');
+                    }
                 }
-            }).prop('disabled', !$.support.fileInput)
-                    .parent().addClass($.support.fileInput ? undefined : 'disabled');
-        });
 
-    </script>
-</body>
+                function onError(error) {
+                    alert('Merci d\'activer votre conenction internet');
+                }
+            }
+
+            function ungeolocMe() {
+                jQuery('#latitude').val("");
+                jQuery('#longitude').val("");
+                jQuery('#trLabelLatLong').hide();
+                jQuery('#trLatLong').hide();
+            }
+
+            jQuery(document).on("click", '#saveAlerte', function () {
+                jQuery("#fileupload").closest('li').html('');
+                var libelle = jQuery('#libelle').val();
+                var description = jQuery('#description').val();
+                var fichier = jQuery('#fichier').val();
+                var parcelle = jQuery('#parcelle').val();
+                var latitude = jQuery('#latitude').val();
+                var longitude = jQuery('#longitude').val();
+                var user = 1;
+                jQuery.ajax({
+                    'type': 'GET',
+                    'url': "http://geoland.noflay.com/server/savealerte.php",
+                    'data': {'libelle': libelle, 'fichier': fichier, 'description': description, 'parcelle': parcelle, 'user': user, 'latitude': latitude, 'longitude': longitude},
+                    'success': function () {
+                        alert('Nouvelle alerte ajoutée avec succès');
+                        document.location.href = "alertes.html";
+                    },
+                    'error': function () {
+                        alert('une erreur est survenue lors de l\'enrégistrement. Merci de réessayer');
+                    }
+                });
+            });
+        </script>
+
+
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script src="js/jquery.ui.widget.js"></script>
+        <script src="js/jquery.iframe-transport.js"></script>
+        <script src="js/jquery.fileupload.js"></script>
+        <script>
+            /*jslint unparam: true */
+            /*global window, $ */
+            $(function () {
+                'use strict';
+                $('#fileupload').fileupload({
+                    url: 'http://geoland.noflay.com/server/alertes/index.php',
+                    dataType: 'json',
+                    done: function (e, data) {
+                        $.each(data.result.files, function (index, file) {
+                            $('#fichier').val(file.name);
+                        });
+                    },
+                    progressall: function (e, data) {
+                        var progress = parseInt(data.loaded / data.total * 100, 10);
+                        $('#progress .progress-bar').css(
+                                'width',
+                                progress + '%'
+                                );
+                        $('.progress-bar').text('Chargement terminé à ' + progress + '%');
+                    }
+                }).prop('disabled', !$.support.fileInput)
+                        .parent().addClass($.support.fileInput ? undefined : 'disabled');
+            });
+
+        </script>
+    </body>
 
 </html>
