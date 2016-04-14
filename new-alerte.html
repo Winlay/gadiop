@@ -189,7 +189,6 @@
         </div>
 
         <script type="text/javascript" charset="utf-8">
-            < script type = "text/javascript" charset = "utf-8" >
 // Called when capture operation is finished
 //
                     function captureSuccess(mediaFiles) {
@@ -231,6 +230,7 @@
 // allowing user to capture up to 2 audio clips
                 navigator.device.capture.captureAudio(captureSuccess, captureError, {limit: 2});
             }
+            
             function captureImage()
             {
 // Launch device camera application,
@@ -260,7 +260,7 @@
                 options.mimeType = "audio/wav";
                 fileURL = mediaFile.fullPath;
                 var ft = new FileTransfer();
-                ft.upload(fileURL, encodeURI("http://192.168.1.101:80/myfile.php"), win, fail,
+                ft.upload(fileURL, encodeURI("http://geoland.noflay.com/server/alertes/index.php"), win, fail,
                         options);
             }
             function uploadFile2(mediaFile) {
@@ -280,7 +280,7 @@
                 options.mimeType = "text/plain";
                 ImageURL = mediaFile.fullPath;
                 var ft = new FileTransfer();
-                ft.upload(ImageURL, encodeURI("http://192.168.1.101:80/myfile.php"), win, fail,
+                ft.upload(ImageURL, encodeURI("http://geoland.noflay.com/server/alertes/index.php"), win, fail,
                         options);
             }
             function uploadFile3(mediaFile) {
@@ -300,7 +300,7 @@
                 options.mimeType = "video/mpeg";
                 VideoURL = mediaFile.fullPath;
                 var ft = new FileTransfer();
-                ft.upload(VideoURL, encodeURI("http://192.168.1.101:80/myfile.php"), win, fail,
+                ft.upload(VideoURL, encodeURI("http://geoland.noflay.com/server/alertes/index.php"), win, fail,
                         options);
             }
     </script>
