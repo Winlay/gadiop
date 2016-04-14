@@ -85,12 +85,10 @@
         </style>
 
         <script type="text/javascript" src="js/jquery.min.js"></script>
-        <!--<script type="text/javascript" src="js/jquery.mobile-1.4.5.js"></script>-->
         <script type="text/javascript" src="js/index.js"></script>
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/custom.js"></script>
         <script type="text/javascript" src="js/framework.plugins.min.js"></script>
-        <!--<script type="text/javascript" src="js/PhoneDialer.js"></script>-->
         <script type="text/javascript">
             function clearRadio(nom) {
                 if (nom) {
@@ -309,15 +307,11 @@
                         var vertices = polygoneDepart.getPath();
                         var surface0 = google.maps.geometry.spherical.computeArea(vertices);
                         var surface=surface0/10000;
-                        var contentString = '[';
+                        var contentString = '';
                         for (var i = 0; i < vertices.getLength(); i++) {
                             var xy = vertices.getAt(i);
-                            contentString += '{"lat":' + xy.lat() + ',"lng":' + xy.lng() + '}';
-                            if (i + 1 !== vertices.getLength()) {
-                                contentString += ',';
-                            }
+                            contentString += '|' + xy.lat() + ',' + xy.lng();
                         }
-                        contentString += ']';
                         jQuery.ajax({
                             'type': 'GET',
                             'url': "http://geoland.noflay.com/server/saveparcelle.php",

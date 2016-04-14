@@ -110,8 +110,6 @@
                         <li><a  class="cursor" href="parcelles-liste.html" data-title="Mes parcelles"><i class="fa fa-map-marker"></i><em>Mes parcelles</em></a></li>
                         <!--<li><a  class="cursor" href="taches.html" data-title="Mes taches"><i class="fa fa-list"></i><em>Mes t&acirc;ches</em></a></li>-->
                         <li><a  class="cursor" href="alertes.html" data-title="Mes alertes"><i class="fa fa-bullhorn"></i><em>Mes alertes</em></a></li>
-                        <!--<li><a  class="cursor" href="parametrage.html" data-title="Paramètrage"><i class="fa fa-cogs"></i><em>Paramètrage</em></a></li>-->
-                        <!--<li><a  class="cursor" href="synchroniser.html" data-title="Synchronisation"><i class="fa fa-refresh"></i><em>Synchrosiner</em></a></li>-->
                         <li><a onclick="quitter()"><i class="fa fa-times-circle"></i><em>Quitter</em></a></li>
                     </ul>
                     <div class="sidebar-decoration"></div>
@@ -130,6 +128,15 @@
             <div id="content" class="snap-content">
                 <div id="ajax-content" style="" class="scroller">
                     <div style=" padding-top: 80px;">
+                        <div>
+                            <button onclick="getPhoto(pictureSource.PHOTOLIBRARY);">Select Photo:</button><br>
+                            <img style="display:none;width:60px;height:60px;" id="smallImage" src="" />
+
+                            First Name: <input type="text" id="firstname" name="firstname"><br>
+                            Last Name: <input type="text" id="lastname" name="lastname"><br>
+                            Work Place: <input type="text" id="workplace" name="workPlace"><br>
+                            <input type="button" id="btnSubmit" value="Submit" onclick="uploadPhoto();">
+                        </div>
                         <div class="form-alert">
                             <table>
                                 <tr>
@@ -152,10 +159,7 @@
                                 <li>
                                     <select id="parcelle" class="contactField">
                                         <option value="0">Pas de parcelle</option>
-                                        <option value="1">Parcelle 1</option>
-                                        <option value="2">Parcelle 2</option>
-                                        <option value="3">Parcelle 3</option>
-                                        <option value="4">Parcelle 4</option>
+
                                     </select>
                                 </li>
                                 <li id="patienter" style="display: none">Patientez jusqu'au chargement à 100% du fichier
@@ -189,7 +193,108 @@
                 </div>
             </div>
         </div>
+
+        <script type="text/javascript" charset="utf-8">
+
+            var pictureSource;   // picture source
+            var destinationType; // sets the format of returned value
+
+// Wait for device API libraries to load
+//
+            document.addEventListener("deviceready", onDeviceReady, false);
+
+// device APIs are available
+//
+            function onDeviceReady() {
+                pictureSource = navigator.camera.PictureSourceType;
+                destinationType = navigator.camera.DestinationType;
+            }
+
+
+// Called when a photo is successfully retrieved
+//
+            function onPhotoURISuccess(imageURI) {
+
+                // Show the selected image
+                var smallImage = document.getElementById('smallImage');
+                smallImage.style.display = 'block';
+                smallImage.src = imageURI;
+            }
+
+
+// A button will call this function
+//
+            function getPhoto(source) {
+                // Retrieve image file location from specified source
+                navigator.camera.getPicture(onPhotoURISuccess, onFail, {quality: 50,
+                    destinationType: destinationType.FILE_URI,
+                    sourceType: source});
+            }
+
+            function uploadPhoto() {
+
+                //selected photo URI is in the src attribute (we set this on getPhoto)
+                var imageURI = document.getElementById('smallImage').getAttribute("src");
+                if (!imageURI) {
+                    alert('Please select an image first.');
+                    return;
+                }
+
+                //set upload options
+                var options = new FileUploadOptions();
+                options.fileKey = "file";
+                options.fileName = imageURI.substr(imageURI.lastIndexOf('/') + 1);
+                options.mimeType = "image/jpeg";
+
+                options.params = {
+                    firstname: document.getElementById("firstname").value,
+                    lastname: document.getElementById("lastname").value,
+                    workplace: document.getElementById("workplace").value
+                }
+
+                var ft = new FileTransfer();
+                ft.upload(imageURI, encodeURI("http://geoland.noflay.com/server/alertes/index.php"), win, fail, options);
+            }
+
+// Called if something bad happens.
+//
+            function onFail(message) {
+                console.log('Failed because: ' + message);
+            }
+
+            function win(r) {
+                console.log("Code = " + r.responseCode);
+                console.log("Response = " + r.response);
+                //alert("Response =" + r.response);
+                console.log("Sent = " + r.bytesSent);
+            }
+
+            function fail(error) {
+                alert("An error has occurred: Code = " + error.code);
+                console.log("upload error source " + error.source);
+                console.log("upload error target " + error.target);
+            }
+
+        </script>
         <script type="text/javascript">
+            jQuery.ajax({
+                'type': 'GET',
+                'url': "http://geoland.noflay.com/server/parcelles.php",
+                'data': {'user': 1},
+                'dataType': 'JSON',
+                'success': function (resultat) {
+                    for (var i = 0; i < resultat.length; i++) {
+                        var idparcelle = resultat[i].ID;
+                        var titre = resultat[i].NOM;
+                        var parcelles = "<option value=\"" + idparcelle + "\">" + titre + "</option>";
+                        jQuery('#parcelle').append(parcelles);
+                    }
+                },
+                'error': function () {
+                    alert('une erreur est survenue lors de l\'enrégistrement. Merci de réessayer');
+                }
+            });
+
 
             function geolocMe() {
                 var options = {timeout: 30000, enableHighAccuracy: true, maximumAge: 900000};
@@ -241,7 +346,8 @@
             });
         </script>
 
-        <a href="success-savealerte.html"></a>
+
+
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
         <script src="js/jquery.ui.widget.js"></script>
         <script src="js/jquery.iframe-transport.js"></script>

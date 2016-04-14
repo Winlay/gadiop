@@ -98,7 +98,7 @@
                         <a href="#" class="sidebar-logo-close" style="font-size: 18px"><i class="fa fa-arrow-circle-left default-color"></i></a>
                     </div>
                     <div class="clear"></div>
-                   <ul class="sidebar-navigation full-bottom">
+                    <ul class="sidebar-navigation full-bottom">
                         <li><a  href="index.html"><i class="fa fa-home"></i><em>Accueil</em></a></li>
                         <li><a  class="cursor" href="parcelles-liste.html" data-title="Mes parcelles"><i class="fa fa-map-marker"></i><em>Mes parcelles</em></a></li>
                         <!--<li><a  class="cursor" href="taches.html" data-title="Mes taches"><i class="fa fa-list"></i><em>Mes t&acirc;ches</em></a></li>-->
@@ -170,7 +170,7 @@
 
                             <tr style=" padding: 2px; margin: 2px">
                                 <td style=" padding: 2px; margin: 2px">
-                                   <b>Decsription</b>
+                                    <b>Decsription</b>
                                 </td>
                                 <td style=" padding: 2px; margin: 2px">
                                     <p id="description"></p>
@@ -201,45 +201,85 @@
                             document.getElementById('map'),
                             {zoom: 18, center: initialLocation, mapTypeId: google.maps.MapTypeId.SATELLITE}
                     );
+                    function polygonCenter(poly) {
+                        var lowx,
+                                highx,
+                                lowy,
+                                highy,
+                                lats = [],
+                                lngs = [],
+                                vertices = poly.getPath();
+
+                        for (var i = 0; i < vertices.length; i++) {
+                            lngs.push(vertices.getAt(i).lng());
+                            lats.push(vertices.getAt(i).lat());
+                        }
+
+                        lats.sort();
+                        lngs.sort();
+                        lowx = lats[0];
+                        highx = lats[vertices.length - 1];
+                        lowy = lngs[0];
+                        highy = lngs[vertices.length - 1];
+                        center_x = lowx + ((highx - lowx) / 2);
+                        center_y = lowy + ((highy - lowy) / 2);
+                        return (new google.maps.LatLng(center_x, center_y));
+                    }
                     jQuery.ajax({
                         'type': 'GET',
                         'url': "http://geoland.noflay.com/server/parcelles.php?parcelle=" + parcelle_id,
                         'data': {'user': 1},
                         'dataType': 'JSON',
                         'success': function (resultat) {
-                            var idparcelle = resultat[0].ID;
+                            var idparcelle = resultat[0].ID_PCLE_CLT;
                             var couleur = resultat[0].COULEUR;
-                            var categorie = resultat[0].CHAMP9;
-                            var titre = resultat[0].NOM;
-                            var description = resultat[0].CHAMP7;
-                            var surface = resultat[0].SURFACE;
-                            var polygone = JSON.parse(resultat[0].POLYGONE);
-//                            document.getElementById('parcelle').innerHTML=titre;
-//                            document.getElementById('categorie').innerHTML=categorie;
-//                            document.getElementById('description').innerHTML=description;
-//                            document.getElementById('surface').innerHTML=surface+' m<sup>2</sup>';
+                            var categorie = resultat[0].NOM_CULTURE;
+                            var titre = resultat[0].NOMCA;
+                            var description = "Description";
+                            var surface = parseFloat(resultat[0].SUPERFICIE_EMB);
+//                            var pol = jQuery.parseJSON(resultat[0].polygone);
+//                            var pol2 = [{lat:14.7647623459741,lng:-17.3662734031677},{lat:14.7650268974297,lng:-17.3655438423157},{lat:14.7642176801988,lng:-17.3656404018402},{lat:14.7642176801988,lng:-17.366150021553}];
+                            var pol = resultat[0].polygone;
+
+                            var polygone = [];
+                            for (var i = 0; i < pol.length; i++) {
+//                               alert(pol[i].lat);
+                                var lati = parseFloat(pol[i].lat);
+                                var long = parseFloat(pol[i].lng);
+                                var cord = {lat: lati, lng: long};
+                                polygone.push(cord);
+                            }
+
+//                            alert(polygone);
                             jQuery('#parcelle').html(titre);
                             jQuery('#categorie').html(categorie);
                             jQuery('#description').html(description);
-                            jQuery('#surface').html(surface+' m<sup>2</sup>');
+                            jQuery('#surface').html(surface + ' m<sup>2</sup>');
+                            var contentString0 = '<table><tr><td><b>Libelle</b></td><td>' + titre + '</td></tr>'
+                                    + '<tr><td>Culture</b></td><td>' + categorie + '</td></tr>'
+                                    + '<tr><td>Superficie </b></td><td>' + Math.round(superficie * 100) / 100 + ' m<sup>2</sup></td></tr>'
+                                    + '<tr><td>Périmètres </b></td><td>' + Math.round(perimetre * 100) / 100 + ' mètres</td></tr>'
+                                    + '<tr><td>Gerant</b></td><td> Amadou LY</td></tr></table>';
+                            var infosimple = new google.maps.InfoWindow({
+                                content: contentString0,
+                            });
+
                             polygoneDepart = new google.maps.Polygon({
                                 paths: polygone,
                                 strokeColor: couleur,
                                 strokeOpacity: 0.8,
                                 strokeWeight: 1,
                                 fillColor: couleur,
-                                fillOpacity: 0.35
+                                fillOpacity: 0.35,
+                                info: infosimple
                             });
+                            center = polygonCenter(polygoneDepart);
                             polygoneDepart.setMap(map);
-                            map.setCenter(polygone[0]);
-                            var marker = new google.maps.Marker({
-                                position: polygone[0],
-                                draggable: true,
-                                icon: 'images/mapicons/corn.png',
-                                map: map
-                            });
+                            map.setCenter(center);
+                            polygoneDepart.info.setPosition(center);
+                            polygoneDepart.info.open(map);
                             polygoneDepart.addListener('click', showArrays);
-                            var superficie= google.maps.geometry.spherical.computeArea(polygoneDepart.getPath());
+                            var superficie = google.maps.geometry.spherical.computeArea(polygoneDepart.getPath());
                             var perimetre = google.maps.geometry.spherical.computeLength(polygoneDepart.getPath());
                             infoWindow = new google.maps.InfoWindow;
 
@@ -247,8 +287,8 @@
                             function showArrays(event) {
                                 var contentString = '<table><tr><td><b>Libelle</b></td><td>' + titre + '</td></tr>'
                                         + '<tr><td>Culture</b></td><td>' + categorie + '</td></tr>'
-                                        + '<tr><td>Superficie </b></td><td>'+Math.round(superficie*100)/100+' m<sup>2</sup></td></tr>'
-                                        + '<tr><td>Périmètres </b></td><td>'+Math.round(perimetre*100)/100+' mètres</td></tr>'
+                                        + '<tr><td>Superficie </b></td><td>' + Math.round(superficie * 100) / 100 + ' m<sup>2</sup></td></tr>'
+                                        + '<tr><td>Périmètres </b></td><td>' + Math.round(perimetre * 100) / 100 + ' mètres</td></tr>'
                                         + '<tr><td>Zone </b></td><td> Prodzc 4</td></tr>'
                                         + '<tr><td>Date </b></td><td> 02/02/2015</td></tr>'
                                         + '<tr><td>Gerant</b></td><td> Amadou LY</td></tr></table>';

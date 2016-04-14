@@ -184,16 +184,26 @@
                                 center_y = lowy + ((highy - lowy) / 2);
                                 return (new google.maps.LatLng(center_x, center_y));
                             }
+                            
                             alert(resultat.length + ' parcelles trouvées');
                             for (var i = 0; i < resultat.length; i++) {
-                                if (resultat[i].POLYGONE) {
+                                if (resultat[i].polygone) {
                                     var idparcelle = resultat[i].ID;
                                     var couleur = resultat[i].COULEUR;
-                                    var superficie = parseFloat(resultat[i].SURFACE);
-                                    var categorie = resultat[i].CHAMP9;
-                                    var description = resultat[i].CHAMP7;
-                                    var titre = resultat[i].NOM;
-                                    var polygone = JSON.parse(resultat[i].POLYGONE);
+                                    var superficie = parseFloat(resultat[i].SUPERFICIE_EMB);
+                                    var categorie = resultat[i].NOM_CULTURE;
+                                    var description = "Description";
+                                    var titre = resultat[i].NOMCA;
+                                    var pol = resultat[i].polygone;
+
+                                    var polygone = [];
+                                    for (var i = 0; i < pol.length; i++) {
+//                               alert(pol[i].lat);
+                                        var lati = parseFloat(pol[i].lat);
+                                        var long = parseFloat(pol[i].lng);
+                                        var cord = {lat: lati, lng: long};
+                                        polygone.push(cord);
+                                    }
 
                                     var contentString = '<table><tr><td><b>Libelle</b></td><td>' + titre + '</td></tr>'
                                             + '<tr><td>Culture</b></td><td>' + categorie + '</td></tr>'
@@ -207,7 +217,7 @@
                                     var infosimple = new google.maps.InfoWindow({
                                         content: titre + " <br/>" + description,
                                     });
-                                    
+
                                     polygoneDepart = new google.maps.Polygon({
                                         paths: polygone,
                                         strokeColor: couleur,
