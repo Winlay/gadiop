@@ -32,7 +32,8 @@
     
     <feature name="http://api.phonegap.com/1.0/geolocation"/>
     <feature name="http://api.phonegap.com/1.0/network"/>
-
+    <feature name="http://api.phonegap.com/1.0/camera" />
+    <feature name="http://api.phonegap.com/1.0/file" />
     
     <access origin="tel:*" launch-external="yes"/>
     <access origin="http://google.com" subdomains="true"/>
@@ -61,7 +62,7 @@
     <!--<gap:plugin name="com.adobe.plugins.gaplugin" version="2.4.0" />-->
     <plugin name="org.apache.cordova.geolocation" spec="0.3.12" source="pgb" />
     <!--<plugin name="com.brodysoft.sqliteplugin" spec="1.0.6" source="pgb" />-->
-<!--    <plugin name="de.appplant.cordova.plugin.local-notification" spec="0.8.1" source="pgb" />-->
+    <!--    <plugin name="de.appplant.cordova.plugin.local-notification" spec="0.8.1" source="pgb" />-->
     <platform name="android">
         <supports-screens android:anyDensity="true"
                           android:resizeable="true"
@@ -69,7 +70,7 @@
                           android:normalScreens="true"
                           android:largeScreens="true"
                           android:xlargeScreens="true" />
-<!--        <splash  src="images/android/splash/splash-ldpi-portrait.png"     density="port-ldpi"/>
+        <!--        <splash  src="images/android/splash/splash-ldpi-portrait.png"     density="port-ldpi"/>
         <splash  src="images/android/splash/splash-ldpi-landscape.png"    density="land-ldpi"/>
         <splash  src="images/android/splash/splash-mdpi-portrait.png"     density="port-mdpi"/>
         <splash  src="images/android/splash/splash-mdpi-landscape.png"    density="land-mdpi"/>
