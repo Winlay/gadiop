@@ -196,6 +196,7 @@
         <script type="text/javascript" charset="utf-8">
             var pictureSource;   // picture source
             var destinationType; // sets the format of returned value 
+            var imageData2save;
             // Wait for PhoneGap to connect with the device
             //
             document.addEventListener("deviceready", onDeviceReady, false);
@@ -210,6 +211,7 @@
             function onPhotoDataSuccess(imageData) {
                 // Get image handle
                 //
+                imageData2save = imageData;
                 var smallImage = document.getElementById('smallImage');
                 // Unhide image elements
                 //
@@ -224,7 +226,7 @@
             //
             function onPhotoFileSuccess(imageData) {
                 // Get image handle
-                console.log(JSON.stringify(imageData));
+                alert(JSON.stringify(imageData));
 
                 // Get image handle
                 //
@@ -245,13 +247,15 @@
                 // Get image handle
                 //
                 var largeImage = document.getElementById('largeImage');
+                var smallImage = document.getElementById('smallImage');
                 // Unhide image elements
                 //
                 largeImage.style.display = 'block';
                 // Show the captured photo
                 // The inline CSS rules are used to resize the image
                 //
-                largeImage.src = imageURI;
+                largeImage.src = "data:image/jpeg;base64," + imageURI;
+//                smallImage.src = "data:image/jpeg;base64," + imageData;
             }
             // A button will call this function
             //
@@ -324,6 +328,31 @@
             }
 
             jQuery(document).on("click", '#saveAlerte', function () {
+
+                    var img = document.getElementById('smallImage');
+                if(img.src) {
+                    var imageURI = img.src;
+                    var options = new FileUploadOptions();
+                    options.fileKey = "file";
+                    options.fileName = imageURI.substr(imageURI.lastIndexOf('/') + 1);
+                    options.mimeType = "image/jpeg";
+                    var params = new Object();
+                    options.params = params;
+                    options.chunkedMode = false;
+                    var ft = new FileTransfer();
+                    ft.upload(imageURI, "http://geoland.noflay.com/server/alertes/index.php", win, fail, options);
+                }
+                function win(r) {
+                    alert("Code = " + r.responseCode);
+                    alert("Response = " + r.response);
+                    alert ("Sent = " + r.bytesSent);
+                }
+                function fail(error) {
+                    alert("An error has occurred: Code = " + error.code);
+                    alert("upload error source " + error.source);
+                    alert("upload error target " + error.target);
+                }
+
                 jQuery("#fileupload").closest('li').html('');
                 var libelle = jQuery('#libelle').val();
                 var description = jQuery('#description').val();
@@ -334,7 +363,7 @@
                 var user = 1;
                 jQuery.ajax({
                     'type': 'GET',
-                    'url': "http://geoland.noflay.com/server/savealerte.php",
+                    'url': "http://geoland.noflay.com/server/savealerte.php?",
                     'data': {'libelle': libelle, 'fichier': fichier, 'description': description, 'parcelle': parcelle, 'user': user, 'latitude': latitude, 'longitude': longitude},
                     'success': function () {
                         alert('Nouvelle alerte ajoutée avec succès');
