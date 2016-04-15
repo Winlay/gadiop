@@ -155,24 +155,25 @@
                                 </li>
                                 <li id="patienter" style="display: none">Patientez jusqu'au chargement à 100% du fichier
                                 </li>
-                                <li>
-                                    <button class="btn btn-success fileinput-button" onclick="capturePhotoWithData();">Photo Data</button> <br>
-                                    <button class="btn btn-success fileinput-button" onclick="capturePhotoWithFile();">Photo URI</button> <br>
-                                    <a class="btn btn-success fileinput-button" onclick="captureImage()"><i class="fa fa-camera"></i>Caméra</a>
-                                    <img style="display:none;width:60px;height:60px;" id="smallImage" src="" />
-                                    <img style="display:none;" id="largeImage" src="" />
+                                <li style="padding-bottom: 50px">
+                                    <button style="width: 45%; float: left"  class="btn btn-success fileinput-button" onclick="capturePhotoWithData();"><i class="fa fa-camera"></i> Photo</button>
+                                    <button  style="width: 45%; float: right"  class="btn btn-success fileinput-button" onclick="getPhoto(pictureSource.PHOTOLIBRARY);"><i class="fa fa-image"></i> Fichier </button>
                                 </li>
                                 <li>
-                                    <span class="btn btn-success fileinput-button">
-                                        <i class="fa fa-plus"></i>
-                                        <span>Selectionner un fichier...</span>
-                                        <input id="fileupload" onclick="jQuery('#patienter').show();" type="file" name="files[]">
-                                    </span>
-                                    <br/><br/>
-                                    <div id="progress" class="progress" style="border: solid 1px #27AE60; background-color: #4A51E0">
-                                        <div class="progress-bar progress-bar-success" ></div>
-                                    </div>
+                                    <img style="display:none;width:60px;height:60px;" alt="Small image" id="smallImage" src="" />
+                                    <img style="display:none;"  id="largeImage" src="" alt="Large image"/>
                                 </li>
+                                <!--                                <li>
+                                                                    <span class="btn btn-success fileinput-button">
+                                                                        <i class="fa fa-plus"></i>
+                                                                        <span>Selectionner un fichier...</span>
+                                                                        <input id="fileupload" onclick="jQuery('#patienter').show();" type="file" name="files[]">
+                                                                    </span>
+                                                                    <br/><br/>
+                                                                    <div id="progress" class="progress" style="border: solid 1px #27AE60; background-color: #4A51E0">
+                                                                        <div class="progress-bar progress-bar-success" ></div>
+                                                                    </div>
+                                                                </li>-->
                                 <li>
                                     <input type="hidden" name="fichier"  id="fichier" value="" />
                                     <textarea name="description" id="description" placeholder="Objet de l'alerte" required="required" style="height: 150px; width: 100%"  maxlength="10000"></textarea>
