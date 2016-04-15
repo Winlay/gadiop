@@ -160,7 +160,7 @@
                                     <button  style="width: 45%; float: right"  class="btn btn-success fileinput-button" onclick="getPhoto(pictureSource.PHOTOLIBRARY);"><i class="fa fa-image"></i> Fichier </button>
                                 </li>
                                 <li>
-                                    <img style="display:none;width:60px;height:60px;" alt="Small image" id="smallImage" src="" />
+                                    <img style="display:none;width:60px; height:60px;" alt="Small image" id="smallImage" src="" />
                                     <img style="display:none;"  id="largeImage" src="" alt="Large image"/>
                                 </li>
                                 <!--                                <li>
@@ -211,7 +211,8 @@
             function onPhotoDataSuccess(imageData) {
                 // Get image handle
                 //
-                imageData2save = imageData;
+//                imageData2save = imageData;
+                alert(imageData);
                 var smallImage = document.getElementById('smallImage');
                 // Unhide image elements
                 //
@@ -247,14 +248,13 @@
                 // Get image handle
                 //
                 var largeImage = document.getElementById('largeImage');
-                var smallImage = document.getElementById('smallImage');
                 // Unhide image elements
                 //
                 largeImage.style.display = 'block';
                 // Show the captured photo
                 // The inline CSS rules are used to resize the image
                 //
-                largeImage.src = "data:image/jpeg;base64," + imageURI;
+                largeImage.src = imageURI;
 //                smallImage.src = "data:image/jpeg;base64," + imageData;
             }
             // A button will call this function
@@ -329,23 +329,24 @@
 
             jQuery(document).on("click", '#saveAlerte', function () {
 
-                    var img = document.getElementById('smallImage');
-                if(img.src) {
-                    var imageURI = img.src;
-                    var options = new FileUploadOptions();
-                    options.fileKey = "file";
-                    options.fileName = imageURI.substr(imageURI.lastIndexOf('/') + 1);
-                    options.mimeType = "image/jpeg";
-                    var params = new Object();
-                    options.params = params;
-                    options.chunkedMode = false;
-                    var ft = new FileTransfer();
-                    ft.upload(imageURI, "http://geoland.noflay.com/server/alertes/index.php", win, fail, options);
-                }
+                var img = document.getElementById('smallImage');
+//                if(img.src) {
+                var imageURI = img.src;
+                var options = new FileUploadOptions();
+                options.fileKey = "file";
+                options.fileName = imageURI.substr(imageURI.lastIndexOf('/') + 1);
+                options.mimeType = "image/jpeg";
+                var params = new Object();
+                options.params = params;
+                options.chunkedMode = false;
+                var ft = new FileTransfer();
+                ft.upload(imageURI, "http://geoland.noflay.com/server/alertes/index.php", win, fail, options);
+//                }
+
                 function win(r) {
                     alert("Code = " + r.responseCode);
                     alert("Response = " + r.response);
-                    alert ("Sent = " + r.bytesSent);
+                    alert("Sent = " + r.bytesSent);
                 }
                 function fail(error) {
                     alert("An error has occurred: Code = " + error.code);
