@@ -156,17 +156,17 @@
                                 <li id="patienter" style="display: none">Patientez jusqu'au chargement à 100% du fichier
                                 </li>
                                 <li style="padding-bottom: 50px">
-                                    <!--                                    <button style="width: 45%; float: left"  class="btn btn-success fileinput-button" onclick="getPhoto(navigator.camera.PictureSourceType);"><i class="fa fa-camera"></i> Photo</button>
-                                                                        <button  style="width: 45%; float: right"  class="btn btn-success fileinput-button" onclick="getPhoto(pictureSource.PHOTOLIBRARY);"><i class="fa fa-image"></i> Fichier </button>-->
-                                    <button  class="btn btn-success fileinput-button" onclick="capturePhotoWithData();">Capture Photo With Image Data</button> <br>
+                                                                        <button style="width: 45%; float: left"  class="btn btn-success fileinput-button" onclick="capturePhotoWithData();"><i class="fa fa-camera"></i> Photo</button>
+                                                                        <button  style="width: 45%; float: right"  class="btn btn-success fileinput-button" onclick="getPhoto(pictureSource.PHOTOLIBRARY);"><i class="fa fa-image"></i> Fichier </button>
+<!--                                    <button  class="btn btn-success fileinput-button" onclick="capturePhotoWithData();">Capture Photo With Image Data</button> <br>
                                     <button  class="btn btn-success fileinput-button" onclick="capturePhotoWithFile();">Capture Photo With Image File URI</button> <br>
                                     <button  class="btn btn-success fileinput-button" onclick="getPhoto(pictureSource.PHOTOLIBRARY);">From Photo Library</button><br>
-                                    <button  class="btn btn-success fileinput-button" onclick="getPhoto(pictureSource.SAVEDPHOTOALBUM);">From Photo Album</button><br>
+                                    <button  class="btn btn-success fileinput-button" onclick="getPhoto(pictureSource.SAVEDPHOTOALBUM);">From Photo Album</button><br>-->
                                     
                                 </li>
-                                <li>
-                                    <img style="display:none;width:100%;" id="smallImage" src="" />
-                                    <img style="display:none;"  id="largeImage" src="" />
+                                <li style="text-align: center">
+                                    <img style="display:none;width:250px;" id="smallImage" src="" />
+                                    <!--<img style="display:none;"  id="largeImage" src="" />-->
                                 </li>
 
                                 <li>
@@ -241,14 +241,17 @@
                 // console.log(imageURI);
                 // Get image handle
                 //
-                var largeImage = document.getElementById('largeImage');
+//                var largeImage = document.getElementById('largeImage');
+                var smallImage = document.getElementById('smallImage');
                 // Unhide image elements
                 //
-                largeImage.style.display = 'block';
+//                largeImage.style.display = 'block';
+                smallImage.style.display = 'block';
                 // Show the captured photo
                 // The inline CSS rules are used to resize the image
                 //
-                largeImage.src = imageURI;
+//                largeImage.src = imageURI;
+                smallImage.src = imageURI;
             }
             // A button will call this function
             //
@@ -376,39 +379,6 @@
                 });
             });
         </script>
-
-
-
-        <!--        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-                <script src="js/jquery.ui.widget.js"></script>
-                <script src="js/jquery.iframe-transport.js"></script>
-                <script src="js/jquery.fileupload.js"></script>
-                <script>
-                    /*jslint unparam: true */
-                    /*global window, $ */
-                    $(function () {
-                        'use strict';
-                        $('#fileupload').fileupload({
-                            url: 'http://geoland.noflay.com/server/alertes/index.php',
-                            dataType: 'json',
-                            done: function (e, data) {
-                                $.each(data.result.files, function (index, file) {
-                                    $('#fichier').val(file.name);
-                                });
-                            },
-                            progressall: function (e, data) {
-                                var progress = parseInt(data.loaded / data.total * 100, 10);
-                                $('#progress .progress-bar').css(
-                                        'width',
-                                        progress + '%'
-                                        );
-                                $('.progress-bar').text('Chargement terminé à ' + progress + '%');
-                            }
-                        }).prop('disabled', !$.support.fileInput)
-                                .parent().addClass($.support.fileInput ? undefined : 'disabled');
-                    });
-        
-                </script>-->
     </body>
 
 </html>
