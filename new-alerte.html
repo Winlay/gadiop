@@ -156,24 +156,19 @@
                                 <li id="patienter" style="display: none">Patientez jusqu'au chargement à 100% du fichier
                                 </li>
                                 <li style="padding-bottom: 50px">
-                                    <button style="width: 45%; float: left"  class="btn btn-success fileinput-button" onclick="capturePhotoWithData();"><i class="fa fa-camera"></i> Photo</button>
-                                    <button  style="width: 45%; float: right"  class="btn btn-success fileinput-button" onclick="getPhoto(pictureSource.PHOTOLIBRARY);"><i class="fa fa-image"></i> Fichier </button>
+                                    <!--                                    <button style="width: 45%; float: left"  class="btn btn-success fileinput-button" onclick="getPhoto(navigator.camera.PictureSourceType);"><i class="fa fa-camera"></i> Photo</button>
+                                                                        <button  style="width: 45%; float: right"  class="btn btn-success fileinput-button" onclick="getPhoto(pictureSource.PHOTOLIBRARY);"><i class="fa fa-image"></i> Fichier </button>-->
+                                    <button  class="btn btn-success fileinput-button" onclick="capturePhotoWithData();">Capture Photo With Image Data</button> <br>
+                                    <button  class="btn btn-success fileinput-button" onclick="capturePhotoWithFile();">Capture Photo With Image File URI</button> <br>
+                                    <button  class="btn btn-success fileinput-button" onclick="getPhoto(pictureSource.PHOTOLIBRARY);">From Photo Library</button><br>
+                                    <button  class="btn btn-success fileinput-button" onclick="getPhoto(pictureSource.SAVEDPHOTOALBUM);">From Photo Album</button><br>
+                                    
                                 </li>
                                 <li>
-                                    <img style="display:none;width:60px; height:60px;" alt="Small image" id="smallImage" src="" />
-                                    <img style="display:none;"  id="largeImage" src="" alt="Large image"/>
+                                    <img style="display:none;width:100%;" id="smallImage" src="" />
+                                    <img style="display:none;"  id="largeImage" src="" />
                                 </li>
-                                <!--                                <li>
-                                                                    <span class="btn btn-success fileinput-button">
-                                                                        <i class="fa fa-plus"></i>
-                                                                        <span>Selectionner un fichier...</span>
-                                                                        <input id="fileupload" onclick="jQuery('#patienter').show();" type="file" name="files[]">
-                                                                    </span>
-                                                                    <br/><br/>
-                                                                    <div id="progress" class="progress" style="border: solid 1px #27AE60; background-color: #4A51E0">
-                                                                        <div class="progress-bar progress-bar-success" ></div>
-                                                                    </div>
-                                                                </li>-->
+
                                 <li>
                                     <input type="hidden" name="fichier"  id="fichier" value="" />
                                     <textarea name="description" id="description" placeholder="Objet de l'alerte" required="required" style="height: 150px; width: 100%"  maxlength="10000"></textarea>
@@ -194,9 +189,10 @@
         </div>
 
         <script type="text/javascript" charset="utf-8">
+
+
             var pictureSource;   // picture source
             var destinationType; // sets the format of returned value 
-            var imageData2save;
             // Wait for PhoneGap to connect with the device
             //
             document.addEventListener("deviceready", onDeviceReady, false);
@@ -211,8 +207,6 @@
             function onPhotoDataSuccess(imageData) {
                 // Get image handle
                 //
-//                imageData2save = imageData;
-                alert(imageData);
                 var smallImage = document.getElementById('smallImage');
                 // Unhide image elements
                 //
@@ -227,7 +221,7 @@
             //
             function onPhotoFileSuccess(imageData) {
                 // Get image handle
-                alert(JSON.stringify(imageData));
+                console.log(JSON.stringify(imageData));
 
                 // Get image handle
                 //
@@ -255,7 +249,6 @@
                 // The inline CSS rules are used to resize the image
                 //
                 largeImage.src = imageURI;
-//                smallImage.src = "data:image/jpeg;base64," + imageData;
             }
             // A button will call this function
             //
@@ -280,7 +273,34 @@
             function onFail(message) {
                 alert('Failed because: ' + message);
             }
+
+
+            function uploadPhoto() {
+
+                //selected photo URI is in the src attribute (we set this on getPhoto)
+                var imageURI = document.getElementById('smallImage').getAttribute("src");
+                if (!imageURI) {
+                    alert('Please select an image first.');
+                    return;
+                }
+
+                //set upload options
+                var options = new FileUploadOptions();
+                options.fileKey = "file";
+                options.fileName = imageURI.substr(imageURI.lastIndexOf('/') + 1);
+                options.mimeType = "image/jpeg";
+
+                options.params = {
+                    firstname: document.getElementById("firstname").value,
+                    lastname: document.getElementById("lastname").value,
+                    workplace: document.getElementById("workplace").value
+                };
+
+                var ft = new FileTransfer();
+                ft.upload(imageURI, encodeURI("http://geoland.noflay.com/server/alertes/index.php"), win, fail, options);
+            }
         </script>
+
         <script type="text/javascript">
             jQuery.ajax({
                 'type': 'GET',
@@ -331,28 +351,8 @@
 
                 var img = document.getElementById('smallImage');
 //                if(img.src) {
-                var imageURI = img.src;
-                var options = new FileUploadOptions();
-                options.fileKey = "file";
-                options.fileName = imageURI.substr(imageURI.lastIndexOf('/') + 1);
-                options.mimeType = "image/jpeg";
-                var params = new Object();
-                options.params = params;
-                options.chunkedMode = false;
-                var ft = new FileTransfer();
-                ft.upload(imageURI, "http://geoland.noflay.com/server/alertes/index.php", win, fail, options);
+                uploadPhoto();
 //                }
-
-                function win(r) {
-                    alert("Code = " + r.responseCode);
-                    alert("Response = " + r.response);
-                    alert("Sent = " + r.bytesSent);
-                }
-                function fail(error) {
-                    alert("An error has occurred: Code = " + error.code);
-                    alert("upload error source " + error.source);
-                    alert("upload error target " + error.target);
-                }
 
                 jQuery("#fileupload").closest('li').html('');
                 var libelle = jQuery('#libelle').val();
@@ -379,36 +379,36 @@
 
 
 
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-        <script src="js/jquery.ui.widget.js"></script>
-        <script src="js/jquery.iframe-transport.js"></script>
-        <script src="js/jquery.fileupload.js"></script>
-        <script>
-            /*jslint unparam: true */
-            /*global window, $ */
-            $(function () {
-                'use strict';
-                $('#fileupload').fileupload({
-                    url: 'http://geoland.noflay.com/server/alertes/index.php',
-                    dataType: 'json',
-                    done: function (e, data) {
-                        $.each(data.result.files, function (index, file) {
-                            $('#fichier').val(file.name);
-                        });
-                    },
-                    progressall: function (e, data) {
-                        var progress = parseInt(data.loaded / data.total * 100, 10);
-                        $('#progress .progress-bar').css(
-                                'width',
-                                progress + '%'
-                                );
-                        $('.progress-bar').text('Chargement terminé à ' + progress + '%');
-                    }
-                }).prop('disabled', !$.support.fileInput)
-                        .parent().addClass($.support.fileInput ? undefined : 'disabled');
-            });
-
-        </script>
+        <!--        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+                <script src="js/jquery.ui.widget.js"></script>
+                <script src="js/jquery.iframe-transport.js"></script>
+                <script src="js/jquery.fileupload.js"></script>
+                <script>
+                    /*jslint unparam: true */
+                    /*global window, $ */
+                    $(function () {
+                        'use strict';
+                        $('#fileupload').fileupload({
+                            url: 'http://geoland.noflay.com/server/alertes/index.php',
+                            dataType: 'json',
+                            done: function (e, data) {
+                                $.each(data.result.files, function (index, file) {
+                                    $('#fichier').val(file.name);
+                                });
+                            },
+                            progressall: function (e, data) {
+                                var progress = parseInt(data.loaded / data.total * 100, 10);
+                                $('#progress .progress-bar').css(
+                                        'width',
+                                        progress + '%'
+                                        );
+                                $('.progress-bar').text('Chargement terminé à ' + progress + '%');
+                            }
+                        }).prop('disabled', !$.support.fileInput)
+                                .parent().addClass($.support.fileInput ? undefined : 'disabled');
+                    });
+        
+                </script>-->
     </body>
 
 </html>
