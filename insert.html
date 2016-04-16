@@ -126,10 +126,7 @@
                     <ul class="sidebar-navigation full-bottom">
                         <li><a  href="index.html"><i class="fa fa-home"></i><em>Accueil</em></a></li>
                         <li><a  class="cursor" href="parcelles-liste.html" data-title="Mes parcelles"><i class="fa fa-map-marker"></i><em>Mes parcelles</em></a></li>
-                        <!--<li><a  class="cursor" href="taches.html" data-title="Mes taches"><i class="fa fa-list"></i><em>Mes t&acirc;ches</em></a></li>-->
                         <li><a  class="cursor" href="alertes.html" data-title="Mes alertes"><i class="fa fa-bullhorn"></i><em>Mes alertes</em></a></li>
-                        <!--<li><a  class="cursor" href="parametrage.html" data-title="Paramètrage"><i class="fa fa-cogs"></i><em>Paramètrage</em></a></li>-->
-                        <!--<li><a  class="cursor" href="synchroniser.html" data-title="Synchronisation"><i class="fa fa-refresh"></i><em>Synchrosiner</em></a></li>-->
                         <li><a onclick="quitter()"><i class="fa fa-times-circle"></i><em>Quitter</em></a></li>
                     </ul>
                     <div class="sidebar-decoration"></div>
@@ -145,7 +142,6 @@
             <div class="page-header">
                 <a href="#" class="open-left"><i class="fa fa-navicon"></i></a>
                 <a class="page-logo"><i class="fa fa-plus-circle"></i> Nouvelle zone</a>
-                <!--<a href="#" class="open-right"><i class="fa fa-info-circle"></i></a>-->
             </div>
             <div id="content" class="snap-content">
                 <div id="ajax-content" style="" class="scroller">
@@ -175,11 +171,11 @@
                     </div>
                     <div id="formInfos" style="display: none">
                         <table style="padding: 5px; margin-bottom: 2px" class="table">
-                            <!--                            <tr style=" padding: 2px; margin: 2px">
-                                                            <td style=" padding: 2px; margin: 2px">
-                                                                <input class="contactField" name="libelle"  id="libelle" placeholder="Libelle de la parcelle"  />
-                                                            </td>
-                                                        </tr>-->
+                            <tr style=" padding: 2px; margin: 2px">
+                                <td style=" padding: 2px; margin: 2px">
+                                    <input class="contactField" name="libelle"  id="libelle" placeholder="Libelle de la parcelle"  />
+                                </td>
+                            </tr>
                             <tr style=" padding: 2px; margin: 2px">
                                 <td style=" padding: 2px; margin: 2px">
                                     <select class="contactField" id="CULTURE" name="CULTURE">
@@ -440,7 +436,8 @@
                     var DETAILCAMPAGNE = $('#DETAILCAMPAGNE').val();
                     var UAE = $('#UAE').val();
                     var COULEUR = $('#COULEUR').val();
-                    if (libelle !== '' && description !== '' && categorie !== '') {
+                    var LIBELLE = $('#libelle').val();
+                    if (LIBELLE !== '' && CULTURE !== '') {
                         var vertices = polygoneDepart.getPath();
                         var surface0 = google.maps.geometry.spherical.computeArea(vertices);
                         var surface = surface0 / 10000;
@@ -463,6 +460,7 @@
                                 'ID_UAE': UAE,
                                 'SUPERFICIE_PCLE': surface,
                                 'COULEUR': COULEUR,
+                                'LIBELLE': LIBELLE,
                                 'polygone': contentString
                             },
                             'success': function () {
@@ -474,7 +472,7 @@
                             }
                         });
                     } else {
-                        alert('Vous devez renseigner le nom; la culture et la description');
+                        alert('Vous devez renseigner le libelle et la culture');
                     }
                 }
 

@@ -108,7 +108,6 @@
                     <ul class="sidebar-navigation full-bottom">
                         <li><a  href="index.html"><i class="fa fa-home"></i><em>Accueil</em></a></li>
                         <li><a  class="cursor" href="parcelles-liste.html" data-title="Mes parcelles"><i class="fa fa-map-marker"></i><em>Mes parcelles</em></a></li>
-                        <!--<li><a  class="cursor" href="taches.html" data-title="Mes taches"><i class="fa fa-list"></i><em>Mes t&acirc;ches</em></a></li>-->
                         <li><a  class="cursor" href="alertes.html" data-title="Mes alertes"><i class="fa fa-bullhorn"></i><em>Mes alertes</em></a></li>
                         <li><a onclick="quitter()"><i class="fa fa-times-circle"></i><em>Quitter</em></a></li>
                     </ul>
@@ -158,11 +157,6 @@
                                 <li style="padding-bottom: 50px">
                                     <button style="width: 45%; float: left"  class="btn btn-success fileinput-button" onclick="capturePhotoWithFile();"><i class="fa fa-camera"></i> Photo</button>
                                     <button  style="width: 45%; float: right"  class="btn btn-success fileinput-button" onclick="getPhoto(pictureSource.PHOTOLIBRARY);"><i class="fa fa-image"></i> Fichier </button>
-                                    <!--                                    <button  class="btn btn-success fileinput-button" onclick="capturePhotoWithData();">Capture Photo With Image Data</button> <br>
-                                                                        <button  class="btn btn-success fileinput-button" onclick="capturePhotoWithFile();">Capture Photo With Image File URI</button> <br>-->
-                                    <!--<button  class="btn btn-success fileinput-button" onclick="getPhoto(pictureSource.PHOTOLIBRARY);">From Photo Library</button><br>-->
-                                    <!--<button  class="btn btn-success fileinput-button" onclick="getPhoto(pictureSource.SAVEDPHOTOALBUM);">From Photo Album</button><br>-->
-
                                 </li>
 
                                 <li style="text-align: center">
@@ -175,7 +169,7 @@
                                     <textarea name="description" id="description" placeholder="Objet de l'alerte" required="required" style="height: 150px; width: 100%"  maxlength="10000"></textarea>
                                 </li>
                                 <li style="text-align: center">
-                                    <a class="btn btn-success" onclick="uploadPhoto()" style="width: 80%"  id="saveAlerte">Enrégistrer</a>
+                                    <a class="btn btn-success" onclick="saveAlerte()" style="width: 80%"  id="saveAlerte">Enrégistrer</a>
                                 </li>
                             </ul>
 
@@ -189,9 +183,7 @@
             </div>
         </div>
 
-        <script type="text/javascript" charset="utf-8">
-
-
+        <script type="text/javascript">
             var pictureSource;   // picture source
             var destinationType; // sets the format of returned value 
             // Wait for PhoneGap to connect with the device
@@ -275,50 +267,10 @@
             // Called if something bad happens.
             // 
             function onFail(message) {
-                alert('Failed because: ' + message);
+//                alert('Failed because: ' + message);
+                alert('Problemes de chargemen  de la photo:' +message);
             }
 
-
-            function uploadPhoto() {
-
-                //selected photo URI is in the src attribute (we set this on getPhoto)
-                var imageURI = document.getElementById('smallImage').getAttribute("src");
-                if (!imageURI) {
-                    alert('Please select an image first.');
-                    return;
-                }
-
-                //set upload options
-                var options = new FileUploadOptions();
-                options.fileKey = "file";
-                options.fileName = imageURI.substr(imageURI.lastIndexOf('/') + 1);
-                options.mimeType = "image/jpeg";
-
-                options.params = {
-                    libelle: document.getElementById("libelle").value,
-                    description: document.getElementById("description").value,
-                    parcelle: document.getElementById("parcelle").value,
-                    fichier: document.getElementById("fichier").value,
-                    latitude: document.getElementById("latitude").value,
-                    longitude:  document.getElementById("longitude").value
-                };
-             
-                var ft = new FileTransfer();
-                ft.upload(imageURI, encodeURI("http://geoland.noflay.com/server/savealerte.php"), win, fail, options);
-
-                function win(r) {
-                    //alert("Response =" + r.response);
-                    alert("Code = " + r.responseCode);
-                    alert("Response = " + r.response);
-                    alert("Sent = " + r.bytesSent);
-                }
-
-                function fail(error) {
-                    alert("An error has occurred: Code = " + error.code);
-                    alert("upload error source " + error.source);
-                    alert("upload error target " + error.target);
-                }
-            }
         </script>
 
         <script type="text/javascript">
@@ -329,8 +281,8 @@
                 'dataType': 'JSON',
                 'success': function (resultat) {
                     for (var i = 0; i < resultat.length; i++) {
-                        var idparcelle = resultat[i].ID;
-                        var titre = resultat[i].NOM;
+                        var idparcelle = resultat[i].ID_PCLE_CLT;
+                        var titre = resultat[i].LIBELLE;
                         var parcelles = "<option value=\"" + idparcelle + "\">" + titre + "</option>";
                         jQuery('#parcelle').append(parcelles);
                     }
@@ -367,35 +319,28 @@
                 jQuery('#trLatLong').hide();
             }
 
-//            jQuery(document).on("click", '#saveAlerte', function () {
-//
-////                var img = document.getElementById('smallImage');
-////                if(img.src) {
-//                uploadPhoto();
-////                }
-//
-//              /*  jQuery("#fileupload").closest('li').html('');
-//                var libelle = jQuery('#libelle').val();
-//                var description = jQuery('#description').val();
-//                var fichier = jQuery('#fichier').val();
-//                var parcelle = jQuery('#parcelle').val();
-//                var latitude = jQuery('#latitude').val();
-//                var longitude = jQuery('#longitude').val();
-//                var user = 1;
-//                jQuery.ajax({
-//                    'type': 'GET',
-//                    'url': "http://geoland.noflay.com/server/savealerte.php",
-//                    'data': {'libelle': libelle, 'fichier': fichier, 'description': description, 'parcelle': parcelle, 'user': user, 'latitude': latitude, 'longitude': longitude},
-//                    'success': function () {
-//                        alert('Nouvelle alerte ajoutée avec succès');
-//                        document.location.href = "alertes.html";
-//                    },
-//                    'error': function () {
-//                        alert('une erreur est survenue lors de l\'enrégistrement. Merci de réessayer');
-//                    }
-//                });
-//                */
-//            });
+            function saveAlerte() {
+                jQuery("#fileupload").closest('li').html('');
+                var libelle = jQuery('#libelle').val();
+                var description = jQuery('#description').val();
+                var fichier = jQuery('#fichier').val();
+                var parcelle = jQuery('#parcelle').val();
+                var latitude = jQuery('#latitude').val();
+                var longitude = jQuery('#longitude').val();
+                var user = 1;
+                jQuery.ajax({
+                    'type': 'GET',
+                    'url': "http://geoland.noflay.com/server/savealerte.php",
+                    'data': {'libelle': libelle, 'fichier': fichier, 'description': description, 'parcelle': parcelle, 'user': user, 'latitude': latitude, 'longitude': longitude},
+                    'success': function () {
+                        alert('Nouvelle alerte ajoutée avec succès');
+                        document.location.href = "alertes.html";
+                    },
+                    'error': function () {
+                        alert('une erreur est survenue lors de l\'enrégistrement. Merci de réessayer');
+                    }
+                });
+            }
         </script>
 
 
