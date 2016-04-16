@@ -175,7 +175,7 @@
                                     <textarea name="description" id="description" placeholder="Objet de l'alerte" required="required" style="height: 150px; width: 100%"  maxlength="10000"></textarea>
                                 </li>
                                 <li style="text-align: center">
-                                    <input class="btn btn-success" type="submit" style="width: 80%"  id="saveAlerte"  value="Enrégistrer" />
+                                    <a class="btn btn-success" onclick="uploadPhoto()" style="width: 80%"  id="saveAlerte">Enrégistrer</a>
                                 </li>
                             </ul>
 
@@ -295,13 +295,16 @@
                 options.mimeType = "image/jpeg";
 
                 options.params = {
-                    firstname: document.getElementById("firstname").value,
-                    lastname: document.getElementById("lastname").value,
-                    workplace: document.getElementById("workplace").value
+                    libelle: document.getElementById("libelle").value,
+                    description: document.getElementById("description").value,
+                    parcelle: document.getElementById("parcelle").value,
+                    fichier: document.getElementById("fichier").value,
+                    latitude: document.getElementById("latitude").value,
+                    longitude:  document.getElementById("longitude").value
                 };
-
+             
                 var ft = new FileTransfer();
-                ft.upload(imageURI, encodeURI("http://geoland.noflay.com/server/alertes/index.php"), win, fail, options);
+                ft.upload(imageURI, encodeURI("http://geoland.noflay.com/server/savealerte.php"), win, fail, options);
 
                 function win(r) {
                     //alert("Response =" + r.response);
@@ -364,34 +367,35 @@
                 jQuery('#trLatLong').hide();
             }
 
-            jQuery(document).on("click", '#saveAlerte', function () {
-
-                var img = document.getElementById('smallImage');
-//                if(img.src) {
-                uploadPhoto();
-//                }
-
-                jQuery("#fileupload").closest('li').html('');
-                var libelle = jQuery('#libelle').val();
-                var description = jQuery('#description').val();
-                var fichier = jQuery('#fichier').val();
-                var parcelle = jQuery('#parcelle').val();
-                var latitude = jQuery('#latitude').val();
-                var longitude = jQuery('#longitude').val();
-                var user = 1;
-                jQuery.ajax({
-                    'type': 'GET',
-                    'url': "http://geoland.noflay.com/server/savealerte.php?",
-                    'data': {'libelle': libelle, 'fichier': fichier, 'description': description, 'parcelle': parcelle, 'user': user, 'latitude': latitude, 'longitude': longitude},
-                    'success': function () {
-                        alert('Nouvelle alerte ajoutée avec succès');
-                        document.location.href = "alertes.html";
-                    },
-                    'error': function () {
-                        alert('une erreur est survenue lors de l\'enrégistrement. Merci de réessayer');
-                    }
-                });
-            });
+//            jQuery(document).on("click", '#saveAlerte', function () {
+//
+////                var img = document.getElementById('smallImage');
+////                if(img.src) {
+//                uploadPhoto();
+////                }
+//
+//              /*  jQuery("#fileupload").closest('li').html('');
+//                var libelle = jQuery('#libelle').val();
+//                var description = jQuery('#description').val();
+//                var fichier = jQuery('#fichier').val();
+//                var parcelle = jQuery('#parcelle').val();
+//                var latitude = jQuery('#latitude').val();
+//                var longitude = jQuery('#longitude').val();
+//                var user = 1;
+//                jQuery.ajax({
+//                    'type': 'GET',
+//                    'url': "http://geoland.noflay.com/server/savealerte.php",
+//                    'data': {'libelle': libelle, 'fichier': fichier, 'description': description, 'parcelle': parcelle, 'user': user, 'latitude': latitude, 'longitude': longitude},
+//                    'success': function () {
+//                        alert('Nouvelle alerte ajoutée avec succès');
+//                        document.location.href = "alertes.html";
+//                    },
+//                    'error': function () {
+//                        alert('une erreur est survenue lors de l\'enrégistrement. Merci de réessayer');
+//                    }
+//                });
+//                */
+//            });
         </script>
 
 
