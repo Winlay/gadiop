@@ -342,39 +342,6 @@
                 });
             }
         </script>
-
-
-
-        <!--        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-                <script src="js/jquery.ui.widget.js"></script>
-                <script src="js/jquery.iframe-transport.js"></script>
-                <script src="js/jquery.fileupload.js"></script>
-                <script>
-                    /*jslint unparam: true */
-                    /*global window, $ */
-                    $(function () {
-                        'use strict';
-                        $('#fileupload').fileupload({
-                            url: 'http://geoland.noflay.com/server/alertes/index.php',
-                            dataType: 'json',
-                            done: function (e, data) {
-                                $.each(data.result.files, function (index, file) {
-                                    $('#fichier').val(file.name);
-                                });
-                            },
-                            progressall: function (e, data) {
-                                var progress = parseInt(data.loaded / data.total * 100, 10);
-                                $('#progress .progress-bar').css(
-                                        'width',
-                                        progress + '%'
-                                        );
-                                $('.progress-bar').text('Chargement terminé à ' + progress + '%');
-                            }
-                        }).prop('disabled', !$.support.fileInput)
-                                .parent().addClass($.support.fileInput ? undefined : 'disabled');
-                    });
-        
-                </script>-->
     </body>
 
 </html>
