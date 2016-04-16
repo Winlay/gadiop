@@ -12,8 +12,6 @@
         <link rel="apple-touch-startup-image" sizes="640x1096" href="images/ios/splash/splash-screen@3x.png" />
         <link rel="apple-touch-startup-image" sizes="1024x748" href="images/ios/splash/splash-screen-ipad-landscape" media="screen and (min-device-width : 481px) and (max-device-width : 1024px) and (orientation : landscape)" />
         <link rel="apple-touch-startup-image" sizes="768x1004" href="images/ios/splash/splash-screen-ipad-portrait.png" media="screen and (min-device-width : 481px) and (max-device-width : 1024px) and (orientation : portrait)" />
-
-
         <link href="css/framework.min.css" 	  rel="stylesheet" type="text/css"/>
         <link href="css/owl.theme.min.css"    rel="stylesheet" type="text/css"/>
         <link href="css/swipebox.min.css"	  rel="stylesheet" type="text/css"/>
@@ -116,7 +114,7 @@
 
 
     </head>
-    <body>
+    <body onload="initParams()">
         <div class="scrollable" id="container">
             <div class="snap-drawers">
                 <div class="snap-drawer snap-drawer-left">
@@ -157,7 +155,7 @@
                                 <td>
                                 </td>
                                 <td>
-                                    <a id="btn-showformInfos" class="cursor" onclick="$('#btn-showformInfos').hide();$('#formInfos').show('slow');$('#btn-hideformInfos').show();"><img  src="images/arrow-right.png" /></a>
+                                    <a id="btn-showformInfos" class="cursor" onclick="$('#btn-showformInfos').hide();$('#formInfos').show('slow');$('#btn-hideformInfos').show();"><img  src="images/info.gif" /></a>
                                     <a style="display: none" id="btn-hideformInfos" class="cursor" onclick="$('#formInfos').hide(); $('#btn-hideformInfos').hide(); $('#btn-showformInfos').show();"><img src="images/arrow-left.png" /></a>
                                 </td>
                                 <td>    
@@ -268,6 +266,92 @@
 
             </div>
             <script type="text/javascript">
+
+                function initParams() {
+                    jQuery.ajax({
+                        'type': 'GET',
+                        'url': "http://geoland.noflay.com/server/parameters.php",
+                        'data': {'user': 1},
+                        'dataType': 'JSON',
+                        'success': function (resultat) {
+                            
+//                            CULTURE
+                            for (var i = 0; i < resultat.CULTURE.length; i++) {
+                                var id = resultat.CULTURE[i].ID_CULTURE;
+                                var nom = resultat.CULTURE[i].NOM_CULTURE;
+                                var options = "<option value=\"" + id + "\">" + nom + "</option>";
+                                jQuery('#CULTURE').append(options);
+                            }
+                            
+//                            TYPEFONCIER
+                            for (var i = 0; i < resultat.TYPEFONCIER.length; i++) {
+                                var id = resultat.TYPEFONCIER[i].ID_TYPE_FONCIER;
+                                var nom = resultat.TYPEFONCIER[i].TYPE_FONCIER;
+                                var options = "<option value=\"" + id + "\">" + nom + "</option>";
+                                jQuery('#TYPEFONCIER').append(options);
+                            }
+ 
+                            
+//                            TYPEIRRIGATION
+                            for (var i = 0; i < resultat.TYPEIRRIGATION.length; i++) {
+                                var id = resultat.TYPEIRRIGATION[i].ID_TYPE_IRRIGATION;
+                                var nom = resultat.TYPEIRRIGATION[i].TYPE_IRRIGATION;
+                                var options = "<option value=\"" + id + "\">" + nom + "</option>";
+                                jQuery('#TYPEIRRIGATION').append(options);
+                            }
+                            
+//                            TYPEAMENAGEMENT
+                            for (var i = 0; i < resultat.TYPEAMENAGEMENT.length; i++) {
+                                var id = resultat.TYPEAMENAGEMENT[i].ID_TYPE_AMENAGEMENT;
+                                var nom = resultat.TYPEAMENAGEMENT[i].TYPE_AMENAGEMENT;
+                                var options = "<option value=\"" + id + "\">" + nom + "</option>";
+                                jQuery('#TYPEAMENAGEMENT').append(options);
+                            }
+ 
+                            
+//                            GEA
+                            for (var i = 0; i < resultat.GEA.length; i++) {
+                                var id = resultat.GEA[i].ID_GEA;
+                                var nom = resultat.GEA[i].NOM_GEA;
+                                var options = "<option value=\"" + id + "\">" + nom + "</option>";
+                                jQuery('#GEA').append(options);
+                            }
+ 
+                            
+//                            CAMPAGNE
+                            for (var i = 0; i < resultat.CAMPAGNE.length; i++) {
+                                var id = resultat.CAMPAGNE[i].ID_CA;
+                                var nom = resultat.CAMPAGNE[i].NOMCA;
+                                var options = "<option value=\"" + id + "\">" + nom + "</option>";
+                                jQuery('#CAMPAGNE').append(options);
+                            }
+ 
+//                            DETAILCAMPAGNE
+                            for (var i = 0; i < resultat.DETAILCAMPAGNE.length; i++) {
+                                var id = resultat.DETAILCAMPAGNE[i].ID_DETAIL_CA;
+                                var nom = resultat.DETAILCAMPAGNE[i].ID_DETAIL_CA;
+                                var options = "<option value=\"" + id + "\">" + nom + "</option>";
+                                jQuery('#DETAILCAMPAGNE').append(options);
+                            }
+                            
+//                            UAE
+                            for (var i = 0; i < resultat.UAE.length; i++) {
+                                var id = resultat.UAE[i].ID_UAE;
+                                var nom = resultat.UAE[i].NOM_UAE;
+                                var options = "<option value=\"" + id + "\">" + nom + "</option>";
+                                jQuery('#UAE').append(options);
+                            }
+ 
+                            
+ 
+                            
+                        },
+                        'error': function () {
+                            alert('une erreur est survenue lors de l\'enrégistrement. Merci de réessayer');
+                        }
+                    });
+                }
+
                 var map;
                 var polygoneDepart;
                 var latInitial = 14.7362987;
