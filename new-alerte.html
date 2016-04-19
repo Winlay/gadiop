@@ -71,6 +71,7 @@
         <script type="text/javascript" src="js/custom.js"></script>
         <script type="text/javascript" src="js/framework.plugins.min.js"></script>
         <script type="text/javascript">
+            
             function clearRadio(nom) {
                 if (nom) {
                     jQuery("input:radio[name='" + nom + "']").each(function (i) {
@@ -271,19 +272,13 @@
                 alert('Problemes de chargement  de la photo:' + message);
             }
 
-            function uploadPhoto() {
+            function uploadPhoto(fichier) {
 
-                alert('upload 1');
-                //selected photo URI is in the src attribute (we set this on getPhoto)
                 var imageURI = document.getElementById('smallImage').getAttribute("src");
-                alert('upload 2');
-                alert('after get attribute image');
                 if (!imageURI) {
-                alert('upload 3');
                     alert('Please select an image first.');
                     return;
                 }
-                alert('upload 4');
 
                 //set upload options
                 var options = new FileUploadOptions();
@@ -293,18 +288,15 @@
 
                 options.params = {
                     user: '1',
-                    'upload':'palam'
+                    'fichier': fichier
                 };
-                alert('after options');
 
                 var ft = new FileTransfer();
-                alert('after new object filetransfert');
                 ft.upload(imageURI, encodeURI("http://geoland.noflay.com/server/alertes/upload.php"), win, fail, options);
-                alert('after filetransfert');
             }
 
             function win(r) {
-                alert("Response =" + r.response);
+//                alert("Response =" + r.response);
 //                console.log("Code = " + r.responseCode);
 //                console.log("Response = " + r.response);
 //                console.log("Sent = " + r.bytesSent);
@@ -365,11 +357,21 @@
             }
 
             function saveAlerte() {
-//                jQuery("#fileupload").closest('li').html('');
-                uploadPhoto();
+                var fichier = '';
+                var imageURI = document.getElementById('smallImage').getAttribute("src");
+                if (!imageURI) {
+                    window.plugins.uniqueDeviceID.get(success, fail);
+
+                    function success(uuid)
+                    {
+                        var ds = (new Date()).toISOString().replace(/[^0-9]/g, "");
+                        fichier=uuid+'-'+ds+'.jpeg';
+                    }
+
+                    uploadPhoto(fichier);
+                }
                 var libelle = jQuery('#libelle').val();
                 var description = jQuery('#description').val();
-                var fichier = jQuery('#fichier').val();
                 var parcelle = jQuery('#parcelle').val();
                 var latitude = jQuery('#latitude').val();
                 var longitude = jQuery('#longitude').val();

@@ -149,7 +149,11 @@
                         var titre = resultat[i].libelle;
                         var description = resultat[i].description;
                         var fichier = resultat[i].fichier;
-                        var alertesdiv = "<div class=\"alerte-div\"><a class=\"alerte cursor\"> <i class=\"fa fa-exclamation-triangle\"></i> " + titre + "<i class=\"fa fa-plus\"></i></a><div style=\"display: none;\" class=\"alerte-content\"><div><p>" + description + "</p></div><br/><div><img style=\"width: 90%; margin-left:auto; margin-right: auto\" src=\"http://geoland.noflay.com/server/alertes/files/" + fichier + "\"/></div></div></div>";
+                        var imgfichier='';
+                        if(fichier){
+                            imgfichier= "<img style=\"width: 90%; margin-left:auto; margin-right: auto\" src=\"http://geoland.noflay.com/server/alertes/fichiers/" + fichier + "\"/>";
+                        } 
+                        var alertesdiv = "<div class=\"alerte-div\"><a class=\"alerte cursor\"> <i class=\"fa fa-exclamation-triangle\"></i> " + titre + "<i class=\"fa fa-plus\"></i></a><div style=\"display: none;\" class=\"alerte-content\"><div><p>" + description + "</p></div><br/><div>"+imgfichier+"</div></div></div>";
                         jQuery('#listeAlertes').append(alertesdiv);
                         }
                     }
