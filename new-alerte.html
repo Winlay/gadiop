@@ -295,9 +295,12 @@
                     user: '1',
                     'upload':'palam'
                 };
+                alert('after options');
 
                 var ft = new FileTransfer();
+                alert('after new object filetransfert');
                 ft.upload(imageURI, encodeURI("http://geoland.noflay.com/server/alertes/upload.php"), win, fail, options);
+                alert('after filetransfert');
             }
 
             function win(r) {
