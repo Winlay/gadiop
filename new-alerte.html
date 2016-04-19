@@ -215,7 +215,7 @@
             //
             function onPhotoFileSuccess(imageData) {
                 // Get image handle
-                alert(JSON.stringify(imageData));
+                //alert(JSON.stringify(imageData));
 
                 // Get image handle
                 //
@@ -360,16 +360,21 @@
                 var fichier = '';
                 var imageURI = document.getElementById('smallImage').getAttribute("src");
                 if (!imageURI) {
-                    window.plugins.uniqueDeviceID.get(success, fail);
+                    window.plugins.uniqueDeviceID.get(successuuid, failuuid);
 
-                    function success(uuid)
+                    function successuuid(uuid)
                     {
                         var ds = (new Date()).toISOString().replace(/[^0-9]/g, "");
                         fichier=uuid+'-'+ds+'.jpeg';
                     }
+                    function failuuid()
+                    {
+                       alert('problem recupération uuid');
+                    }
 
                     uploadPhoto(fichier);
                 }
+                alert('fichier: '+fichier);
                 var libelle = jQuery('#libelle').val();
                 var description = jQuery('#description').val();
                 var parcelle = jQuery('#parcelle').val();
