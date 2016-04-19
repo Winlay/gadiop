@@ -273,12 +273,17 @@
 
             function uploadPhoto() {
 
+                alert('upload 1');
                 //selected photo URI is in the src attribute (we set this on getPhoto)
                 var imageURI = document.getElementById('smallImage').getAttribute("src");
+                alert('upload 2');
+                alert('after get attribute image');
                 if (!imageURI) {
+                alert('upload 3');
                     alert('Please select an image first.');
                     return;
                 }
+                alert('upload 4');
 
                 //set upload options
                 var options = new FileUploadOptions();
@@ -287,13 +292,12 @@
                 options.mimeType = "image/jpeg";
 
                 options.params = {
-                    user: 1
-//                    firstname: document.getElementById("firstname").value
-
-                }
+                    user: '1',
+                    'upload':'palam'
+                };
 
                 var ft = new FileTransfer();
-                ft.upload(imageURI, encodeURI("http://some.server.com/upload.php"), win, fail, options);
+                ft.upload(imageURI, encodeURI("http://geoland.noflay.com/server/alertes/upload.php"), win, fail, options);
             }
 
             function win(r) {
