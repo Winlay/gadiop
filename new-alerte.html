@@ -268,7 +268,45 @@
             // 
             function onFail(message) {
 //                alert('Failed because: ' + message);
-                alert('Problemes de chargement  de la photo:' +message);
+                alert('Problemes de chargement  de la photo:' + message);
+            }
+
+            function uploadPhoto() {
+
+                //selected photo URI is in the src attribute (we set this on getPhoto)
+                var imageURI = document.getElementById('smallImage').getAttribute("src");
+                if (!imageURI) {
+                    alert('Please select an image first.');
+                    return;
+                }
+
+                //set upload options
+                var options = new FileUploadOptions();
+                options.fileKey = "file";
+                options.fileName = imageURI.substr(imageURI.lastIndexOf('/') + 1);
+                options.mimeType = "image/jpeg";
+
+                options.params = {
+                    user: 1
+//                    firstname: document.getElementById("firstname").value
+
+                }
+
+                var ft = new FileTransfer();
+                ft.upload(imageURI, encodeURI("http://some.server.com/upload.php"), win, fail, options);
+            }
+
+            function win(r) {
+                alert("Response =" + r.response);
+//                console.log("Code = " + r.responseCode);
+//                console.log("Response = " + r.response);
+//                console.log("Sent = " + r.bytesSent);
+            }
+
+            function fail(error) {
+                alert("An error has occurred: Code = " + error.code);
+//                console.log("upload error source " + error.source);
+//                console.log("upload error target " + error.target);
             }
 
         </script>
@@ -320,7 +358,8 @@
             }
 
             function saveAlerte() {
-                jQuery("#fileupload").closest('li').html('');
+//                jQuery("#fileupload").closest('li').html('');
+                uploadPhoto();
                 var libelle = jQuery('#libelle').val();
                 var description = jQuery('#description').val();
                 var fichier = jQuery('#fichier').val();
