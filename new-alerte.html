@@ -71,7 +71,7 @@
         <script type="text/javascript" src="js/custom.js"></script>
         <script type="text/javascript" src="js/framework.plugins.min.js"></script>
         <script type="text/javascript">
-            
+
             function clearRadio(nom) {
                 if (nom) {
                     jQuery("input:radio[name='" + nom + "']").each(function (i) {
@@ -360,21 +360,32 @@
                 var fichier = '';
                 var imageURI = document.getElementById('smallImage').getAttribute("src");
                 if (!imageURI) {
+                      var d = new Date,
+                            dformat = [d.getDate().padLeft(),
+                                (d.getMonth() + 1).padLeft(),
+                                d.getFullYear(),
+                                d.getHours().padLeft(),
+                                d.getMinutes().padLeft(),
+                                d.getSeconds().padLeft()].join('');
+                            
                     window.plugins.uniqueDeviceID.get(successuuid, failuuid);
 
                     function successuuid(uuid)
                     {
-                        var ds = (new Date()).toISOString().replace(/[^0-9]/g, "");
-                        fichier=uuid+'-'+ds+'.jpeg';
+                        alert(uuid);
+                        fichier = uuid + '-' + dformat + '.jpeg';
                     }
                     function failuuid()
                     {
-                       alert('problem recupération uuid');
+                        alert('problem recupération uuid');
                     }
-
+                  
+                            if(fichier.length===0){
+                                fichier = dformat + '.jpeg';
+                            }
                     uploadPhoto(fichier);
                 }
-                alert('fichier: '+fichier);
+                alert('fichier: ' + fichier);
                 var libelle = jQuery('#libelle').val();
                 var description = jQuery('#description').val();
                 var parcelle = jQuery('#parcelle').val();
