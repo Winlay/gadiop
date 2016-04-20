@@ -361,6 +361,10 @@
                 var imageURI = document.getElementById('smallImage').getAttribute("src");
                 if (imageURI) {
                     alert('just in');
+                    Number.prototype.padLeft = function (base, chr) {
+                        var len = (String(base || 10).length - String(this).length) + 1;
+                        return len > 0 ? new Array(len).join(chr || '0') + this : this;
+                    };
                     var d = new Date,
                             dformat = [d.getDate().padLeft(),
                                 (d.getMonth() + 1).padLeft(),
@@ -368,7 +372,7 @@
                                 d.getHours().padLeft(),
                                 d.getMinutes().padLeft(),
                                 d.getSeconds().padLeft()].join('');
-alert('after get dateformat');
+                    alert('after get dateformat');
                     window.plugins.uniqueDeviceID.get(successuuid, failuuid);
 
                     function successuuid(uuid)
@@ -379,7 +383,7 @@ alert('after get dateformat');
                     {
                         alert('problem recupération uuid');
                     }
-alert('after appel plugin');
+                    alert('after appel plugin');
                     if (fichier.length === 0) {
                         fichier = dformat + '.jpeg';
                     }
