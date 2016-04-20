@@ -68,6 +68,7 @@
         <script type="text/javascript" src="js/jquery.min.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
         <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" charset="utf-8" src="deviceinformation.js"></script>
         <script type="text/javascript" src="js/custom.js"></script>
         <script type="text/javascript" src="js/framework.plugins.min.js"></script>
         <script type="text/javascript">
@@ -303,7 +304,7 @@
             }
 
             function fail(error) {
-                alert("An error has occurred: Code = " + error.code);
+                alert("Erreur lors de l'envoi de la photo: Code = " + error.code);
 //                console.log("upload error source " + error.source);
 //                console.log("upload error target " + error.target);
             }
@@ -368,19 +369,13 @@
                                 d.getMinutes().padLeft(),
                                 d.getSeconds().padLeft()].join('');
 
-                    window.plugins.uniqueDeviceID.get(successuuid, failuuid);
-
-                    function successuuid(uuid)
-                    {
-                        
-                        alert("success uuid");
-                        alert(uuid);
-                        fichier = uuid + '-' + dformat + '.jpeg';
-                    }
-                    function failuuid()
-                    {
-                        alert('problem recupération uuid');
-                    }
+                    var deviceInfo = cordova.require("cordova/plugin/DeviceInformation");
+                    deviceInfo.get(function (result) {
+                        console.log("result = " + result);
+                         fichier = result + '-' + dformat + '.jpeg';
+                    }, function () {
+                         alert('problem recupération uuid');
+                    });
 
                     alert(dformat + '.jpeg');
                     if (fichier.length === 0) {
