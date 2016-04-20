@@ -360,6 +360,7 @@
                 var fichier = '';
                 var imageURI = document.getElementById('smallImage').getAttribute("src");
                 if (imageURI) {
+                    alert('just in');
                     var d = new Date,
                             dformat = [d.getDate().padLeft(),
                                 (d.getMonth() + 1).padLeft(),
@@ -367,7 +368,7 @@
                                 d.getHours().padLeft(),
                                 d.getMinutes().padLeft(),
                                 d.getSeconds().padLeft()].join('');
-
+alert('after get dateformat');
                     window.plugins.uniqueDeviceID.get(successuuid, failuuid);
 
                     function successuuid(uuid)
@@ -378,7 +379,7 @@
                     {
                         alert('problem recupération uuid');
                     }
-
+alert('after appel plugin');
                     if (fichier.length === 0) {
                         fichier = dformat + '.jpeg';
                     }
