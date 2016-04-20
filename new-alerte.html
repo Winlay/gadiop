@@ -222,7 +222,6 @@
 
                 function successuuid(res)
                 {
-                    alert(res);
                     uuid = res.toString();
                 }
 
@@ -231,7 +230,6 @@
                     alert('problem recupération uuid');
                 }
 
-                alert('uuid:' + uuid);
             }
             // Called when a photo is successfully retrieved
             //
@@ -365,7 +363,7 @@
 
                 function onError(error) {
                     jQuery('#trLoadingPosition').hide();
-                    alert('Erreur lors de  la récupération de votre position. Réessayez plus tard.');
+                    alert('Erreur lors de  la récupération de votre position: '+error);
                 }
             }
 
