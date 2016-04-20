@@ -131,8 +131,11 @@
                         <div class="form-alert">
                             <table>
                                 <tr>
-                                    <td><a onclick="geolocMe()"><img src="images/geoloc.png" /></a></td>
-                                    <td><a onclick="ungeolocMe()"><img src="images/ungeoloc.png" /></a></td>
+                                    <td><a style="cursor: pointer" onclick="geolocMe()"><img src="images/geoloc.png" /></a></td>
+                                    <td><a style="cursor: pointer" onclick="ungeolocMe()"><img src="images/ungeoloc.png" /></a></td>
+                                </tr>
+                                <tr id="trLoadingPosition" style="display: none">
+                                    <td colspan="2"><img src="images/loadingposition.gif" /></td>
                                 </tr>
                                 <tr id="trLabelLatLong" style="display: none">
                                     <td>Latitude</td>
@@ -343,20 +346,24 @@
 
 
             function geolocMe() {
+                        jQuery('#trLoadingPosition').show();
                 var options = {timeout: 30000, enableHighAccuracy: true, maximumAge: 900000};
                 navigator.geolocation.getCurrentPosition(onSuccess, onError, options);
                 function onSuccess(position) {
                     if (position) {
+                        jQuery('#trLoadingPosition').hide();
                         jQuery('#latitude').val(position.coords.latitude);
                         jQuery('#longitude').val(position.coords.longitude);
                         jQuery('#trLabelLatLong').show();
                         jQuery('#trLatLong').show();
                     } else {
                         alert('Merci d\'activer votre conenction internet et votre localisation');
+                         jQuery('#trLoadingPosition').hide();
                     }
                 }
 
                 function onError(error) {
+                     jQuery('#trLoadingPosition').hide();
                     alert('Erreur lors de  la récupération de votre position. Réessayez plus tard.');
                 }
             }
