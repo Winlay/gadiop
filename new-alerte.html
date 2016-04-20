@@ -377,17 +377,16 @@
                     function successuuid(uuid)
                     {
                         fichier = uuid + '-' + dformat + '.jpeg';
-                        alert("Fichier UUID: "+fichier);
                     }
                     function failuuid()
                     {
                         alert('problem recupération uuid');
                     }
                     
-                    if (fichier.length === 0) {
+                    if (fichier === '') {
                         fichier = dformat + '.jpeg';
                     }
-                    alert(fichier);
+                    
                     uploadPhoto(fichier);
                 }
                 
