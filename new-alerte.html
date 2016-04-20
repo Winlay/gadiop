@@ -360,18 +360,20 @@
                 var fichier = '';
                 var imageURI = document.getElementById('smallImage').getAttribute("src");
                 if (!imageURI) {
-                      var d = new Date,
+                    var d = new Date,
                             dformat = [d.getDate().padLeft(),
                                 (d.getMonth() + 1).padLeft(),
                                 d.getFullYear(),
                                 d.getHours().padLeft(),
                                 d.getMinutes().padLeft(),
                                 d.getSeconds().padLeft()].join('');
-                            
+
                     window.plugins.uniqueDeviceID.get(successuuid, failuuid);
 
                     function successuuid(uuid)
                     {
+                        
+                        alert("success uuid");
                         alert(uuid);
                         fichier = uuid + '-' + dformat + '.jpeg';
                     }
@@ -379,10 +381,11 @@
                     {
                         alert('problem recupération uuid');
                     }
-                  
-                            if(fichier.length===0){
-                                fichier = dformat + '.jpeg';
-                            }
+
+                    alert(dformat + '.jpeg');
+                    if (fichier.length === 0) {
+                        fichier = dformat + '.jpeg';
+                    }
                     uploadPhoto(fichier);
                 }
                 alert('fichier: ' + fichier);
