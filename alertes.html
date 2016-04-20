@@ -142,6 +142,7 @@
                 'data': {'user': 1},
                 'dataType': 'JSON',
                 'success': function (resultat) {
+                    alert(resultat.length + ' Alertes trouvées');
                     for (var i = 0; i < resultat.length; i++) {
                         if(resultat[i].libelle){
                             

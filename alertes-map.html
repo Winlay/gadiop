@@ -156,6 +156,7 @@
                         'data': {'user': 1, 'map': 'map'},
                         'dataType': 'JSON',
                         'success': function (resultat) {
+                            alert(resultat.length + ' alertes trouvées');
                             for (var i = 0; i < resultat.length; i++) {
                                 var description = resultat[i].description;
                                 var titre = resultat[i].libelle;
