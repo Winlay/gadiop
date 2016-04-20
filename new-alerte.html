@@ -135,7 +135,7 @@
                                     <td><a style="cursor: pointer" onclick="ungeolocMe()"><img src="images/ungeoloc.png" /></a></td>
                                 </tr>
                                 <tr id="trLoadingPosition" style="display: none">
-                                    <td colspan="2"><img src="images/loadingposition.gif" /></td>
+                                    <td colspan="2"><img style="width: 300px" src="images/loadingposition.gif" /></td>
                                 </tr>
                                 <tr id="trLabelLatLong" style="display: none">
                                     <td>Latitude</td>
@@ -155,8 +155,6 @@
                                         <option value="0">Pas de parcelle</option>
 
                                     </select>
-                                </li>
-                                <li id="patienter" style="display: none">Patientez jusqu'au chargement à 100% du fichier
                                 </li>
                                 <li style="padding-bottom: 50px">
                                     <button style="width: 45%; float: left"  class="btn btn-success fileinput-button" onclick="capturePhotoWithFile();"><i class="fa fa-camera"></i> Photo</button>
@@ -213,24 +211,27 @@
                 }
             });
 
-            window.plugins.uniqueDeviceID.get(successuuid, failuuid);
 
-            function successuuid(res)
-            {
-                uuid = res.toString();
-            }
 
-            function failuuid()
-            {
-                alert('problem recupération uuid');
-            }
-
-      
             // PhoneGap is ready to be used!
             //
             function onDeviceReady() {
                 pictureSource = navigator.camera.PictureSourceType;
                 destinationType = navigator.camera.DestinationType;
+                window.plugins.uniqueDeviceID.get(successuuid, failuuid);
+
+                function successuuid(res)
+                {
+                    alert(res);
+                    uuid = res.toString();
+                }
+
+                function failuuid()
+                {
+                    alert('problem recupération uuid');
+                }
+
+                alert('uuid:' + uuid);
             }
             // Called when a photo is successfully retrieved
             //
@@ -398,7 +399,7 @@
                     } else {
                         fichier = dformat + '.jpeg';
                     }
-                    alert(fichier);
+
                     uploadPhoto(fichier);
                 }
 
