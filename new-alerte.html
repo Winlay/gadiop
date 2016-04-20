@@ -283,13 +283,13 @@
                 //set upload options
                 var options = new FileUploadOptions();
                 options.fileKey = "file";
-                options.fileName = imageURI.substr(imageURI.lastIndexOf('/') + 1);
+                options.fileName = fichier;
                 options.mimeType = "image/jpeg";
 
-                options.params = {
-                    user: '1',
-                    'fichier': fichier
-                };
+//                options.params = {
+//                    user: '1',
+//                    fichier: fichier
+//                };
 
                 var ft = new FileTransfer();
                 ft.upload(imageURI, encodeURI("http://geoland.noflay.com/server/alertes/upload.php"), win, fail, options);
@@ -360,7 +360,6 @@
                 var fichier = '';
                 var imageURI = document.getElementById('smallImage').getAttribute("src");
                 if (imageURI) {
-                    alert('just in');
                     Number.prototype.padLeft = function (base, chr) {
                         var len = (String(base || 10).length - String(this).length) + 1;
                         return len > 0 ? new Array(len).join(chr || '0') + this : this;
@@ -372,7 +371,6 @@
                                 d.getHours().padLeft(),
                                 d.getMinutes().padLeft(),
                                 d.getSeconds().padLeft()].join('');
-                    alert('after get dateformat');
                     window.plugins.uniqueDeviceID.get(successuuid, failuuid);
 
                     function successuuid(uuid)
@@ -383,13 +381,12 @@
                     {
                         alert('problem recupération uuid');
                     }
-                    alert('after appel plugin');
                     if (fichier.length === 0) {
                         fichier = dformat + '.jpeg';
                     }
                     uploadPhoto(fichier);
                 }
-                alert('fichier: ' + fichier);
+                
                 var libelle = jQuery('#libelle').val();
                 var description = jQuery('#description').val();
                 var parcelle = jQuery('#parcelle').val();
