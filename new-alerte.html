@@ -190,10 +190,42 @@
         <script type="text/javascript">
             var pictureSource;   // picture source
             var destinationType; // sets the format of returned value 
-            var uuid;
+            var uuid = '';
             // Wait for PhoneGap to connect with the device
             //
             document.addEventListener("deviceready", onDeviceReady, false);
+
+            jQuery.ajax({
+                'type': 'GET',
+                'url': "http://geoland.noflay.com/server/parcelles.php",
+                'data': {'user': 1},
+                'dataType': 'JSON',
+                'success': function (resultat) {
+                    for (var i = 0; i < resultat.length; i++) {
+                        var idparcelle = resultat[i].ID_PCLE_CLT;
+                        var titre = resultat[i].LIBELLE;
+                        var parcelles = "<option value=\"" + idparcelle + "\">" + titre + "</option>";
+                        jQuery('#parcelle').append(parcelles);
+                    }
+                },
+                'error': function () {
+                    alert('une erreur est survenue lors de l\'enrégistrement. Merci de réessayer');
+                }
+            });
+
+            window.plugins.uniqueDeviceID.get(successuuid, failuuid);
+
+            function successuuid(res)
+            {
+                uuid = res.toString();
+            }
+
+            function failuuid()
+            {
+                alert('problem recupération uuid');
+            }
+
+      
             // PhoneGap is ready to be used!
             //
             function onDeviceReady() {
@@ -300,7 +332,7 @@
             }
 
             function win(r) {
-                alert("Response =" + r.response);
+//                   alert("Response =" + r.response);
 //                console.log("Code = " + r.responseCode);
 //                console.log("Response = " + r.response);
 //                console.log("Sent = " + r.bytesSent);
@@ -312,41 +344,9 @@
 //                console.log("upload error target " + error.target);
             }
 
-        </script>
-
-        <script type="text/javascript">
-            jQuery.ajax({
-                'type': 'GET',
-                'url': "http://geoland.noflay.com/server/parcelles.php",
-                'data': {'user': 1},
-                'dataType': 'JSON',
-                'success': function (resultat) {
-                    for (var i = 0; i < resultat.length; i++) {
-                        var idparcelle = resultat[i].ID_PCLE_CLT;
-                        var titre = resultat[i].LIBELLE;
-                        var parcelles = "<option value=\"" + idparcelle + "\">" + titre + "</option>";
-                        jQuery('#parcelle').append(parcelles);
-                    }
-                },
-                'error': function () {
-                    alert('une erreur est survenue lors de l\'enrégistrement. Merci de réessayer');
-                }
-            });
-
-            window.plugins.uniqueDeviceID.get(successuuid, failuuid);
-
-            function successuuid(res)
-            {
-                uuid = res;
-            }
-            function failuuid()
-            {
-                alert('problem recupération uuid');
-            }
-
 
             function geolocMe() {
-                        jQuery('#trLoadingPosition').show();
+                jQuery('#trLoadingPosition').show();
                 var options = {timeout: 30000, enableHighAccuracy: true, maximumAge: 900000};
                 navigator.geolocation.getCurrentPosition(onSuccess, onError, options);
                 function onSuccess(position) {
@@ -358,12 +358,12 @@
                         jQuery('#trLatLong').show();
                     } else {
                         alert('Merci d\'activer votre conenction internet et votre localisation');
-                         jQuery('#trLoadingPosition').hide();
+                        jQuery('#trLoadingPosition').hide();
                     }
                 }
 
                 function onError(error) {
-                     jQuery('#trLoadingPosition').hide();
+                    jQuery('#trLoadingPosition').hide();
                     alert('Erreur lors de  la récupération de votre position. Réessayez plus tard.');
                 }
             }
