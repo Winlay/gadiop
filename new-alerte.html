@@ -187,6 +187,7 @@
         <script type="text/javascript">
             var pictureSource;   // picture source
             var destinationType; // sets the format of returned value 
+            var uuid;
             // Wait for PhoneGap to connect with the device
             //
             document.addEventListener("deviceready", onDeviceReady, false);
@@ -329,6 +330,17 @@
                 }
             });
 
+            window.plugins.uniqueDeviceID.get(successuuid, failuuid);
+
+            function successuuid(res)
+            {
+                uuid = res;
+            }
+            function failuuid()
+            {
+                alert('problem recupération uuid');
+            }
+
 
             function geolocMe() {
                 var options = {timeout: 30000, enableHighAccuracy: true, maximumAge: 900000};
@@ -355,7 +367,7 @@
                 jQuery('#trLabelLatLong').hide();
                 jQuery('#trLatLong').hide();
             }
-            
+
 
             function saveAlerte() {
                 var fichier = '';
@@ -372,24 +384,17 @@
                                 d.getHours().padLeft(),
                                 d.getMinutes().padLeft(),
                                 d.getSeconds().padLeft()].join('');
-                    window.plugins.uniqueDeviceID.get(successuuid, failuuid);
 
-                    function successuuid(uuid)
-                    {
+
+                    if (uuid !== '') {
                         fichier = uuid + '-' + dformat + '.jpeg';
-                    }
-                    function failuuid()
-                    {
-                        alert('problem recupération uuid');
-                    }
-                    
-                    if (fichier === '') {
+                    } else {
                         fichier = dformat + '.jpeg';
                     }
-                    
+                    alert(fichier);
                     uploadPhoto(fichier);
                 }
-                
+
                 var libelle = jQuery('#libelle').val();
                 var description = jQuery('#description').val();
                 var parcelle = jQuery('#parcelle').val();
