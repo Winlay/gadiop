@@ -2,12 +2,12 @@
 <widget xmlns     = "http://www.w3.org/ns/widgets"
         xmlns:gap = "http://phonegap.com/ns/1.0"
         xmlns:android   = "http://schemas.android.com/apk/res/android"
-        id        = "com.phonegap.Winlaytechmobile"
+        id        = "com.prodac.gesprodacmobile.carto"
         version   = "1.2">
-    <name>GEOLANDS</name>
+    <name>Parcelles GEA</name>
     
     <description>
-        GEOLANDS
+        Parcelles GEA
     </description>
     
     <author email="contact@winlaytech.com" href="http://winlaytech.com">
@@ -17,8 +17,8 @@
     <preference name="permissions"   value="none"/>
     <preference name='phonegap-version' value='cli-5.2.0' />
     <preference name="SplashScreen" value="screen" />
-    <preference name="SplashScreenDelay" value="5000" />
-    <preference name="SplashMaintainAspectRatio" value="true|false" />
+    <!--<preference name="SplashScreenDelay" value="5000" />-->
+    <!--<preference name="SplashMaintainAspectRatio" value="true" />-->
     <preference name="ErrorUrl" value="error.html"/>
     <preference name="auto-hide-splash-screen" value="false" />
     <preference name="AutoHideSplashScreen" value="false" />
@@ -52,7 +52,7 @@
 
     <!--<icon src="images/android/icons/" />-->
     <icon src="images/icon.png"/>
-    <splash src="images/splash.png"  />
+    <!--<splash src="images/splash.png"  />-->
 
     <content src="index.html" />
     <allow-navigation href="http://*/*" />

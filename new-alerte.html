@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 
-    <head title="GEOLANDS">
+    <head title="Parcelles GEA">
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0 minimal-ui"/>
         <meta name="apple-mobile-web-app-capable" content="yes"/>
@@ -11,7 +11,7 @@
         <link rel="apple-touch-startup-image" sizes="640x1096" href="images/ios/splash/splash-screen@3x.png"/>
         <link rel="apple-touch-startup-image" sizes="1024x748" href="images/ios/splash/splash-screen-ipad-landscape" media="screen and (min-device-width : 481px) and (max-device-width : 1024px) and (orientation : landscape)" />
         <link rel="apple-touch-startup-image" sizes="768x1004" href="images/ios/splash/splash-screen-ipad-portrait.png" media="screen and (min-device-width : 481px) and (max-device-width : 1024px) and (orientation : portrait)" />
-        <title>GEOLANDS</title>
+        <title>Parcelles GEA</title>
         <link href="css/framework.min.css" rel="stylesheet" type="text/css"/>
         <link href="css/owl.theme.min.css" rel="stylesheet" type="text/css"/>
         <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
@@ -102,20 +102,19 @@
             <div class="snap-drawers">
                 <div class="snap-drawer snap-drawer-left">
                     <div class="sidebar-header">
-                        <a href="#" class="sidebar-logo"><h2 style="color: #27AE60"> GEOLANDS </h2></a>
+                        <a href="#" class="sidebar-logo"><h2 style="color: #27AE60"> Parcelles GEA </h2></a>
                         <a href="#" class="sidebar-logo-close" style="font-size: 18px"><i class="fa fa-arrow-circle-left default-color"></i></a>
                     </div>
                     <div class="clear"></div>
                     <ul class="sidebar-navigation full-bottom">
-                        <li><a  href="index.html"><i class="fa fa-home"></i><em>Accueil</em></a></li>
-                        <li><a  class="cursor" href="parcelles-liste.html" data-title="Mes parcelles"><i class="fa fa-map-marker"></i><em>Mes parcelles</em></a></li>
-                        <li><a  class="cursor" href="alertes.html" data-title="Mes alertes"><i class="fa fa-bullhorn"></i><em>Mes alertes</em></a></li>
-                        <li><a onclick="quitter()"><i class="fa fa-times-circle"></i><em>Quitter</em></a></li>
+                        <li><a  href="index.html"><i style="margin-top: 6px"><img src="images/HOME.png"  alt="home" style="width: 32px; height: 32px" /></i><em style="padding-left: 80px; padding-top: 20px">Accueil</em></a></li>
+                        <li><a  href="parcelles-liste.html"><i style="margin-top: 6px"><img src="images/PARCELLE.png"  alt="Parcelles" style="width: 32px; height: 32px" /></i><em style="padding-left: 80px; padding-top: 20px">Parcelles</em></a></li>
+                        <li><a  href="alertes.html"><i style="margin-top: 6px"><img src="images/alert.png"  alt="Alertes" style="width: 32px; height: 32px" /></i><em style="padding-left: 80px; padding-top: 20px">Alertes</em></a></li>
+                        <li><a  onclick="quitter()"><i style="margin-top: 6px"><img src="images/CANCEL.png"  alt="Alertes" style="width: 32px; height: 32px" /></i><em style="padding-left: 80px; padding-top: 20px">Quitter</em></a></li>
                     </ul>
                     <div class="sidebar-decoration"></div>
 
                     <div class="sidebar-decoration"></div>
-                    <p class="sidebar-copyright">Copyright Winlaytech 2016. All rights reserved.</p>
                 </div>
 
             </div>
@@ -363,7 +362,7 @@
 
                 function onError(error) {
                     jQuery('#trLoadingPosition').hide();
-                    alert('Erreur lors de  la récupération de votre position: '+error.message);
+                    alert('Erreur lors de  la récupération de votre position: ' + error.message);
                 }
             }
 
