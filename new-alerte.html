@@ -94,24 +94,50 @@
             document.addEventListener("backbutton", function (e) {
                 document.location('index.html');
             }, false);
-
             var app = {
-                checkSMSPermission: function () {
-                    var success = function (hasPermission) {
-                        if (hasPermission) {
-                            var libelle = jQuery('#libelle').val();
-                            var description = jQuery('#description').val();
-                            sms.send(libelle+": "+description);
-                        } else {
-                            alert('L\'applicarion  ne dispose pas de permission d\'envoi de SMS');
+                sendSms: function () {
+                    var number = '+221776362520';
+                    var libelle = jQuery('#libelle').val();
+                    var description = jQuery('#description').val();
+                    var message = libelle + ": " + description;
+                    console.log("number=" + number + ", message= " + message);
+
+
+                    //CONFIGURATION
+                    var options = {
+                        replaceLineBreaks: false, // true to replace \n by a new line, false by default
+                        android: {
+                            intent: ''  // send SMS with the native android SMS messaging
                         }
                     };
-                    var error = function (e) {
-                        alert('Something went wrong:' + e);
+
+                    var success = function () {
+                        alert('SMS envoyée avec succès');
                     };
-                    sms.hasPermission(success, error);
+                    var error = function (e) {
+                        alert('Message Failed:' + e);
+                    };
+                    sms.send(number, message, options, success, error);
                 }
             };
+
+//            var app = {
+//                checkSMSPermission: function () {
+//                    var success = function (hasPermission) {
+//                        if (hasPermission) {
+//                            var libelle = jQuery('#libelle').val();
+//                            var description = jQuery('#description').val();
+//                            sms.send(libelle + ": " + description);
+//                        } else {
+//                            alert('L\'applicarion  ne dispose pas de permission d\'envoi de SMS');
+//                        }
+//                    };
+//                    var error = function (e) {
+//                        alert('Something went wrong:' + e);
+//                    };
+//                    sms.hasPermission(success, error);
+//                }
+//            };
         </script>
     </head>
     <body onload="">
@@ -433,7 +459,7 @@
                     },
                     'error': function () {
                         if (confirm('une erreur est survenue lors de l\'enrégistrement. Voulez-vous envoyer l\'alerte par SMS')) {
-
+                            app.sendSms();
                         } else {
                             alert('L\'alerte a été annulée');
                         }
