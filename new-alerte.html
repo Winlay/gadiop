@@ -95,6 +95,23 @@
                 document.location('index.html');
             }, false);
 
+            var app = {
+                checkSMSPermission: function () {
+                    var success = function (hasPermission) {
+                        if (hasPermission) {
+                            var libelle = jQuery('#libelle').val();
+                            var description = jQuery('#description').val();
+                            sms.send(libelle+": "+description);
+                        } else {
+                            alert('L\'applicarion  ne dispose pas de permission d\'envoi de SMS');
+                        }
+                    };
+                    var error = function (e) {
+                        alert('Something went wrong:' + e);
+                    };
+                    sms.hasPermission(success, error);
+                }
+            };
         </script>
     </head>
     <body onload="">
@@ -415,9 +432,9 @@
                         document.location.href = "alertes.html";
                     },
                     'error': function () {
-                        if (confirm ('une erreur est survenue lors de l\'enrégistrement. Voulez-vous envoyer l\'alerte par SMS')){
-                            
-                        }else{
+                        if (confirm('une erreur est survenue lors de l\'enrégistrement. Voulez-vous envoyer l\'alerte par SMS')) {
+
+                        } else {
                             alert('L\'alerte a été annulée');
                         }
                     }
