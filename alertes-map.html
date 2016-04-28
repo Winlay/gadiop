@@ -155,6 +155,7 @@
                         'data': {'user': 1, 'map': 'map'},
                         'dataType': 'JSON',
                         'success': function (resultat) {
+                            if(resultat){
                             alert(resultat.length + ' alertes trouvées');
                             for (var i = 0; i < resultat.length; i++) {
                                 var description = resultat[i].description;
@@ -194,6 +195,9 @@
 
                                 map.setCenter(marker.position);
                             }
+                        }else{
+                            alert('Aucune alerte géolocalisée n\'a été trouvée '); 
+                        }
                         },
                         'error': function () {
                             alert('une erreur est survenue lors de l\'enrégistrement. Merci de réessayer');
