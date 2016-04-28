@@ -4,10 +4,10 @@
         xmlns:android   = "http://schemas.android.com/apk/res/android"
         id        = "com.prodac.gesprodacmobile.carto"
         version   = "1.2">
-    <name>Parcelles GEA</name>
+    <name>Parcelles DAC</name>
     
     <description>
-        Parcelles GEA
+        Parcelles DAC
     </description>
     
     <author email="contact@winlaytech.com" href="http://winlaytech.com">
@@ -67,6 +67,7 @@
     <plugin name="org.apache.cordova.file-transfer" spec="0.5.0" source="pgb" />
     <plugin name="hu.dpal.phonegap.plugins.uniquedeviceid" spec="1.2.0" source="pgb" />
     <plugin name="org.apache.cordova.geolocation" spec="0.3.12" source="pgb" />
+    <plugin name="com.cordova.plugins.sms" spec="0.1.2" source="pgb" />
 
     <platform name="android">
         <supports-screens android:anyDensity="true"

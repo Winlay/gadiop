@@ -415,7 +415,11 @@
                         document.location.href = "alertes.html";
                     },
                     'error': function () {
-                        alert('une erreur est survenue lors de l\'enrégistrement. Merci de réessayer');
+                        if (confirm ('une erreur est survenue lors de l\'enrégistrement. Voulez-vous envoyer l\'alerte par SMS')){
+                            
+                        }else{
+                            alert('L\'alerte a été annulée');
+                        }
                     }
                 });
             }
