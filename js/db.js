@@ -1,38 +1,42 @@
 // Wait for Cordova to load
-        document.addEventListener("deviceready", onDeviceReady, false);
-
+document.addEventListener("deviceready", onDeviceReady, false);
+var USERLOGIN;
+var USERPASSWORD;
 // Cordova is ready
 function onDeviceReady() {
     var db = window.sqlitePlugin.openDatabase({name: "my.db"});
-
-    db.transaction(function (tx) {
-        tx.executeSql('DROP TABLE IF EXISTS test_table');
-        tx.executeSql('CREATE TABLE IF NOT EXISTS test_table (id integer primary key, data text, data_num integer)');
-
-        // demonstrate PRAGMA:
-        db.executeSql("pragma table_info (test_table);", [], function (res) {
-            alert("PRAGMA res: " + JSON.stringify(res));
-        });
-
-        tx.executeSql("INSERT INTO test_table (data, data_num) VALUES (?,?)", ["test", 100], function (tx, res) {
-            alert("insertId: " + res.insertId + " -- probably 1");
-            alert("rowsAffected: " + res.rowsAffected + " -- should be 1");
-
-            db.transaction(function (tx) {
-                tx.executeSql("select count(id) as cnt from test_table;", [], function (tx, res) {
-                    alert("res.rows.length: " + res.rows.length + " -- should be 1");
-                    alert("res.rows.item(0).cnt: " + res.rows.item(0).cnt + " -- should be 1");
-                });
-            });
-
-        }, function (e) {
-            alert("ERROR: " + e.message);
-        });
-    });
+//    db.transaction(function (tx) {
+//        tx.executeSql("select * from TB_USER WHERE LOGIN=", [], function (tx, res) {
+//            alert("res.rows.length: " + res.rows.length + " -- should be 1");
+//            alert("res.rows.item(0).cnt: " + res.rows.item(0).cnt + " -- should be 1");
+//        });
+//    });
 }
 
+function connexion(login, password) {
+    var db = window.sqlitePlugin.openDatabase({name: "my.db"});
+    db.transaction(function (tx) {
+        tx.executeSql("SELECT * FROM TB_USER WHERE LOGIN='" + login + "' AND PASSWORD = '" + password + "';", [], function (tx, res) {
+            USERLOGIN = res.rows.item(0).LOGIN;
+            USERPASSWORD = res.rows.item(0).MOTPASSE;
+            alert("PRENOM : " + res.rows.item(0).PRENOMUSER + " ");
+            document.location.href = "accueil.html";
+        }, function () {
+            db.transaction(createTableUser, function () {
+                alert("login ou mot de passe incorrect")
+            });
+        });
+    });
+
+    if (login === 'laye' && password === 'passer') {
+        document.location.href = "accueil.html";
+    } else {
+        alert("login ou mot de passe incorrect");
+    }
+}
+
+
 function transaction_error(tx, error) {
-    $('#ajax-content').hide();
     alert("Database Error: " + error);
 }
 
@@ -65,34 +69,73 @@ function getEmployees_success(tx, results) {
     db = null;
 }
 
-function populateDB(tx) {
-    $('#ajax-content').show();
-    tx.executeSql('DROP TABLE IF EXISTS employee');
+function createTableUser(tx) {
+    tx.executeSql('DROP TABLE IF EXISTS TB_USER');
     var sql =
-            "CREATE TABLE IF NOT EXISTS employee ( " +
-            "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-            "firstName VARCHAR(50), " +
-            "lastName VARCHAR(50), " +
-            "title VARCHAR(50), " +
-            "department VARCHAR(50), " +
-            "managerId INTEGER, " +
-            "city VARCHAR(50), " +
-            "officePhone VARCHAR(30), " +
-            "cellPhone VARCHAR(30), " +
-            "email VARCHAR(30), " +
-            "picture VARCHAR(200))";
-    tx.executeSql(sql);
-
-    tx.executeSql("INSERT INTO employee (id,firstName,lastName,managerId,title,department,officePhone,cellPhone,email,city,picture) VALUES (12,'Steven','Wells',4,'Software Architect','Engineering','617-000-0012','781-000-0012','swells@fakemail.com','Boston, MA','steven_wells.jpg')");
-    tx.executeSql("INSERT INTO employee (id,firstName,lastName,managerId,title,department,officePhone,cellPhone,email,city,picture) VALUES (11,'Amy','Jones',5,'Sales Representative','Sales','617-000-0011','781-000-0011','ajones@fakemail.com','Boston, MA','amy_jones.jpg')");
-    tx.executeSql("INSERT INTO employee (id,firstName,lastName,managerId,title,department,officePhone,cellPhone,email,city,picture) VALUES (10,'Kathleen','Byrne',5,'Sales Representative','Sales','617-000-0010','781-000-0010','kbyrne@fakemail.com','Boston, MA','kathleen_byrne.jpg')");
-    tx.executeSql("INSERT INTO employee (id,firstName,lastName,managerId,title,department,officePhone,cellPhone,email,city,picture) VALUES (9,'Gary','Donovan',2,'Marketing','Marketing','617-000-0009','781-000-0009','gdonovan@fakemail.com','Boston, MA','gary_donovan.jpg')");
-    tx.executeSql("INSERT INTO employee (id,firstName,lastName,managerId,title,department,officePhone,cellPhone,email,city,picture) VALUES (8,'Lisa','Wong',2,'Marketing Manager','Marketing','617-000-0008','781-000-0008','lwong@fakemail.com','Boston, MA','lisa_wong.jpg')");
-    tx.executeSql("INSERT INTO employee (id,firstName,lastName,managerId,title,department,officePhone,cellPhone,email,city,picture) VALUES (7,'Paula','Gates',4,'Software Architect','Engineering','617-000-0007','781-000-0007','pgates@fakemail.com','Boston, MA','paula_gates.jpg')");
-    tx.executeSql("INSERT INTO employee (id,firstName,lastName,managerId,title,department,officePhone,cellPhone,email,city,picture) VALUES (5,'Ray','Moore',1,'VP of Sales','Sales','617-000-0005','781-000-0005','rmoore@fakemail.com','Boston, MA','ray_moore.jpg')");
-    tx.executeSql("INSERT INTO employee (id,firstName,lastName,managerId,title,department,officePhone,cellPhone,email,city,picture) VALUES (6,'Paul','Jones',4,'QA Manager','Engineering','617-000-0006','781-000-0006','pjones@fakemail.com','Boston, MA','paul_jones.jpg')");
-    tx.executeSql("INSERT INTO employee (id,firstName,lastName,managerId,title,department,officePhone,cellPhone,email,city,picture) VALUES (3,'Eugene','Lee',1,'CFO','Accounting','617-000-0003','781-000-0003','elee@fakemail.com','Boston, MA','eugene_lee.jpg')");
-    tx.executeSql("INSERT INTO employee (id,firstName,lastName,managerId,title,department,officePhone,cellPhone,email,city,picture) VALUES (4,'John','Williams',1,'VP of Engineering','Engineering','617-000-0004','781-000-0004','jwilliams@fakemail.com','Boston, MA','john_williams.jpg')");
-    tx.executeSql("INSERT INTO employee (id,firstName,lastName,managerId,title,department,officePhone,cellPhone,email,city,picture) VALUES (2,'Julie','Taylor',1,'VP of Marketing','Marketing','617-000-0002','781-000-0002','jtaylor@fakemail.com','Boston, MA','julie_taylor.jpg')");
-    tx.executeSql("INSERT INTO employee (id,firstName,lastName,managerId,title,department,officePhone,cellPhone,email,city,picture) VALUES (1,'James','King',0,'President and CEO','Corporate','617-000-0001','781-000-0001','jking@fakemail.com','Boston, MA','james_king.jpg')");
+            "CREATE TABLE IF NOT EXISTS `TB_USER` ("
+            + "`LOGIN` varchar(255) NOT NULL,"
+            + "`NOMUSER` varchar(255) NOT NULL,"
+            + "`PRENOMUSER` varchar(255) NOT NULL,"
+            + "`MOTPASSE` varchar(50) NOT NULL,"
+            + "`SUPERVISEUR` tinyint(4) NOT NULL DEFAULT '0',"
+            + "`MOTPASSASAISIR` tinyint(4) NOT NULL DEFAULT '1',"
+            + "`ID_USER` int(11) NOT NULL DEFAULT '0',"
+            + "`PHOTO` longblob NOT NULL,"
+            + "`TEL` varchar(50) NOT NULL,"
+            + "`MATRICULE` varchar(50) NOT NULL,"
+            + "`DATEHEURECONNEXION` varchar(50) NOT NULL,"
+            + "`ESTMEMORISE` tinyint(4) NOT NULL DEFAULT '0',"
+            + "`NOM_DAC` varchar(50) NOT NULL,"
+            + "`IDDAC` int(11) NOT NULL DEFAULT '0',"
+            + "`ID_DAC` int(11) NOT NULL,"
+            + "`IDUser` int(11) NOT NULL,"
+            + "PRIMARY KEY (`IDUser`)"
+            + ")";
+//    var sql =
+//            "CREATE TABLE IF NOT EXISTS `TB_USER` ("
+//            + "`LOGIN` varchar(255) NOT NULL,"
+//            + "`NOMUSER` varchar(255) NOT NULL,"
+//            + "`PRENOMUSER` varchar(255) NOT NULL,"
+//            + "`MOTPASSE` varchar(50) NOT NULL,"
+//            + "`SUPERVISEUR` tinyint(4) NOT NULL DEFAULT '0',"
+//            + "`MOTPASSASAISIR` tinyint(4) NOT NULL DEFAULT '1',"
+//            + "`ID_USER` int(11) NOT NULL DEFAULT '0',"
+//            + "`PHOTO` longblob NOT NULL,"
+//            + "`TEL` varchar(50) NOT NULL,"
+//            + "`MATRICULE` varchar(50) NOT NULL,"
+//            + "`DATEHEURECONNEXION` varchar(50) NOT NULL,"
+//            + "`ESTMEMORISE` tinyint(4) NOT NULL DEFAULT '0',"
+//            + "`NOM_DAC` varchar(50) NOT NULL,"
+//            + "`IDDAC` int(11) NOT NULL DEFAULT '0',"
+//            + "`ID_DAC` int(11) NOT NULL,"
+//            + "`IDUser` int(11) NOT NULL,"
+//            + "PRIMARY KEY (`IDUser`)"
+//            + ")";
+    tx.executeSql(sql, function () {
+        jQuery.ajax({
+            'type': 'GET',
+            'url': "http://geoland.noflay.com/server/connexion.php",
+            'data': {'login': login, 'password': password},
+            'dataType': 'JSON',
+            'success': function (resultat) {
+                USERLOGIN = resultat[0].LOGIN;
+                USERPASSWORD = resultat[0].MOTPASSE;
+                tx.executeSql("INSERT INTO TB_USER ('IDUser','ID_USER','LOGIN','MOTPASSE','PRENOMUSER','NOMUSER') VALUES ('" + resultat[0].IDUser + "','" + resultat[0].ID_USER + "','" + resultat[0].LOGIN + "','" + resultat[0].MOTPASSE + "','" + resultat[0].PRENOMUSER + "','" + resultat[0].NOMUSER + "')", ["test", 100], function (tx, res) {
+                    alert("insertId: " + res.insertId);
+                    tx.executeSql("select count(*) as cnt from TB_USER", [], function (tx, res) {
+                        alert("NB USER: " + res.rows.item(0).cnt);
+                    });
+                    document.location.href = "accueil.html";
+                }, function (e) {
+                    alert("ERROR: " + e.message);
+                });
+            },
+            'error': function () {
+                alert('une erreur est survenues lors de la recupération des informations de l\'utilisateur en ligne');
+            }
+        },
+                function () {
+                    alert('echec de la création de la base de données');
+                });
+    });
 }

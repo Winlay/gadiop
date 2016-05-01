@@ -78,13 +78,35 @@
             }
 
             document.addEventListener("backbutton", function (e) {
-                document.location('index.html');
+                document.location('accueil.html');
             }, false);
 
         </script>
     </head>
     <body onload="">
-        <div class="scrollable" id="container">
+        <div class="scrollable" id="connexion" style="margin-left: 20px; margin-right: 20px; margin-top: 20px;">
+            <p>
+                <img alt="ICONE" style="margin-left: auto; margin-right: auto" src="images/icon.png" />
+            </p>
+            <p style="text-align: center; font-size: 14px; color: #000">
+                <br/>
+                <b>Bienvenue. Merci de vous connecter</b>
+                <br/>
+            </p>
+            <p>
+                <label>Login</label>
+                <input class="contactField" id="login" type="text" name="login" value="" style="width: 80%"  />
+                <label>Mot de passe</label>
+                <input class="contactField" id="password" type="password" name="password" value="" style="width: 80%" />
+            </p>
+            <p>
+            <p style="text-align: center; padding-top: 50px; ">
+                <a class="button button-3d button-green" style="font-size: 20px; width: 80%; border-radius: 8px" onclick="connexion(jQuery('#login').val(),jQuery('#password').val());">
+                    <i style="font-size: 25px;" class="fa fa-unlock"></i> Valider
+                </a>
+            </p>
+        </div>
+        <div class="scrollable" id="container" style="display: none">
             <div class="snap-drawers">
                 <div class="snap-drawer snap-drawer-left">
                     <div class="sidessssbar-header">
@@ -93,7 +115,7 @@
                     </div>
                     <div class="clear"></div>
                     <ul class="sidebar-navigation full-bottom">
-                        <li><a  href="index.html"><i style="margin-top: 6px"><img src="images/HOME.png"  alt="home" style="width: 32px; height: 32px" /></i><em style="padding-left: 80px; padding-top: 20px">Accueil</em></a></li>
+                        <li><a  href="accueil.html"><i style="margin-top: 6px"><img src="images/HOME.png"  alt="home" style="width: 32px; height: 32px" /></i><em style="padding-left: 80px; padding-top: 20px">Accueil</em></a></li>
                         <li><a  href="parcelles-liste.html"><i style="margin-top: 6px"><img src="images/PARCELLE.png"  alt="Parcelles" style="width: 32px; height: 32px" /></i><em style="padding-left: 80px; padding-top: 20px">Parcelles</em></a></li>
                         <li><a  href="alertes.html"><i style="margin-top: 6px"><img src="images/alert.png"  alt="Alertes" style="width: 32px; height: 32px" /></i><em style="padding-left: 80px; padding-top: 20px">Alertes</em></a></li>
                         <li><a  onclick="quitter()"><i style="margin-top: 6px"><img src="images/CANCEL.png"  alt="Alertes" style="width: 32px; height: 32px" /></i><em style="padding-left: 80px; padding-top: 20px">Quitter</em></a></li>
@@ -107,13 +129,13 @@
             <div class="page-header">
                 <a href="#" class="open-left"><i class="fa fa-navicon"></i></a>
                 <a class="page-logo"><span id="titreHeder"><img src="images/PARCELLE.png" alt="" style="width: 32px; height: 32px; display: inline;"/> Parcelles GEA</span></a>
-                <!--<a href="index.html" id="backbutton" class="open-right1 cursor"><i style="color: #FFF" class="fa fa-arrow-left"></i></a>-->
+                <!--<a href="accueil.html" id="backbutton" class="open-right1 cursor"><i style="color: #FFF" class="fa fa-arrow-left"></i></a>-->
             </div>
             <div id="content" class="snap-content">
                 <div id="ajax-content" style="" class="scroller">
                     <div class="header-menu">
                         <ul class="sidebar-navigation">
-                            <!--<li><a  href="index.html"><i style="margin-top: 6px"><img src="images/HOME.png"  alt="home" style="width: 32px; height: 32px" /></i><em style="padding-left: 80px; padding-top: 20px">Accueil</em></a></li>-->
+                            <!--<li><a  href="accueil.html"><i style="margin-top: 6px"><img src="images/HOME.png"  alt="home" style="width: 32px; height: 32px" /></i><em style="padding-left: 80px; padding-top: 20px">Accueil</em></a></li>-->
                             <li><a  href="parcelles-liste.html"><i style="margin-top: 6px"><img src="images/PARCELLE.png"  alt="Parcelles" style="width: 32px; height: 32px" /></i><em style="padding-left: 80px; padding-top: 20px">Parcelles</em></a></li>
                             <li><a  href="alertes.html"><i style="margin-top: 6px"><img src="images/alert.png"  alt="Alertes" style="width: 32px; height: 32px" /></i><em style="padding-left: 80px; padding-top: 20px">Alertes</em></a></li>
                             <li><a  onclick="quitter()"><i style="margin-top: 6px"><img src="images/CANCEL.png"  alt="Alertes" style="width: 32px; height: 32px" /></i><em style="padding-left: 80px; padding-top: 20px">Quitter</em></a></li>
@@ -128,29 +150,10 @@
         </div>
         <script type="text/javascript" src="js/db.js"></script>
         <script type="text/javascript">
-            jQuery('.ajax-menu').on('click', function () {
-                jQuery("#titreHeder").html(' ' + jQuery(this).data('title'));
-                jQuery("#ajax-content").load(jQuery(this).data('page'));
-//                jQuery("#backbutton").load(jQuery(this).data('page'));
-            });
-            function loadFromServer(page, titre) {
-//                jQuery("#titreHeder").addClass(titre);
-//                jQuery("#ajax-content").addClass(page+'.html');
-                if (conn) {
-//                 jQuery("#fromdb").show();
-//                 jQuery("#ajax-content").html('<div style="text-align: center"><img  src="images/load.gif"  style="width: 100%" /></div>');
-//                 jQuery("#fromdb").load("server/articles.php?category=" + cat);
-                    //jQuery("#fromdb").load("http://mms-serveur.noflay.com/articles.php?category="+cat);
-                } else {
-                    alert('connexion internet indisponible');
-                }
-            }
-        </script>
-        <script type="text/javascript">
-// Wait for Cordova to load
+            // Wait for Cordova to load
             document.addEventListener("deviceready", onDeviceReady, false);
 
-// Cordova is ready
+            // Cordova is ready
             function onDeviceReady() {
             }
         </script>
