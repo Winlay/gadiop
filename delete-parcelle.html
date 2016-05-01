@@ -14,6 +14,7 @@
         <title>Parcelles GEA</title>
         <link href="css/framework.min.css" 	  rel="stylesheet" type="text/css"/>
         <link href="css/owl.theme.min.css"    rel="stylesheet" type="text/css"/>
+        <!--<link href="css/swipebox.min.css"	  rel="stylesheet" type="text/css"/>-->
         <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
         <link href="css/style.css"     	  rel="stylesheet" type="text/css"/>
         <style type="text/css">
@@ -45,6 +46,7 @@
                 -webkit-overflow-scrolling: touch;
                 -webkit-overflow-scrolling: touch;
             }
+            /* iOS specific fix, don't use it on Android devices */
             .scrollable > * {
                 -webkit-transform: translateZ(0px);
             }
@@ -81,12 +83,12 @@
 
         </script>
     </head>
-    <body onload="">
+    <body onload="initialize()">
         <div class="scrollable" id="container">
             <div class="snap-drawers">
                 <div class="snap-drawer snap-drawer-left">
                     <div class="sidebar-header">
-                        <a href="#" class="sidebar-logo"><h2 style="color: #27AE60"> Parcelles GEA </h2></a>
+                        <a href="#" class="sidebar-logo"><h2 style="color: #27AE60">Parcelles GEA</h2></a>
                         <a href="#" class="sidebar-logo-close" style="font-size: 18px"><i class="fa fa-arrow-circle-left default-color"></i></a>
                     </div>
                     <div class="clear"></div>
@@ -105,57 +107,73 @@
 
             <div class="page-header">
                 <a href="#" class="open-left"><i class="fa fa-navicon"></i></a>
-                <a class="page-logo"><span id="titreHeder"><img src="images/PARCELLE.png" alt="" style="width: 32px; height: 32px; display: inline;"/> Parcelles</span></a>
-                <!--<a href="index.html" id="backbutton" class="open-right1 cursor"><i style="color: #FFF" class="fa fa-arrow-left"></i></a>-->
+                <a class="page-logo"><img src="images/PARCELLE.png" alt="" style="width: 32px; height: 32px; display: inline;"/> Suppr. parcelle</a>
             </div>
+
             <div id="content" class="snap-content">
                 <div id="ajax-content" style="" class="scroller">
-                    <div style=" padding-top: 60px;">
-                        <table style="padding: 1px; margin-bottom: 2px" class="table">
-                            <tr style=" padding: 2px; margin: 2px; font-size: 20px">
-                                <td style="padding: 2px; margin: 2px; width: 50%">
-                                    <a href="insert.html" style="width: 100%; text-align: center; border-radius: 10px; text-align: center; color: #27AE60" class="button-3d"><img src="images/ADD_GRN.png"  alt="Alertes" style="width: 30px; height: 30px; float: left" /> Ajouter</a>
-                                </td>
-                                <td  style=" padding: 2px; margin: 2px; width: 50%">
-                                    <a href="parcelles-map.html" style="width: 100%; text-align: center; border-radius: 10px; color: #27AE60" class=" button-3d"><img src="images/map.png"  alt="Map" style="width: 30px; height: 30px; float: left" /> sur la carte</a>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div class="header-menu1" id="listeParcelles">
-
+                    <div style=" padding-top: 80px;">
+                        <p style="text-align: center; padding: 10px">
+                            Voulez-vous vraiment supprimer la parcelle <br/>
+                            <b id="libelle"></b>
+                            <input type="hidden" value="" id="ID_PCLE_CLT"  />
+                        </p>
+                        <p>
+                            <img style="margin-left: auto; margin-right: auto" src="images/trash.png" />
+                        </p>
+                        <p style="text-align: center; padding-top: 50px; ">
+                            <a href="" id="annuler" class="button button-3d button-blue" style="font-size: 20px; width: 45%; border-radius: 8px">
+                               <i style="font-size: 25px;" class="fa fa-arrow-left"></i> Annuler
+                            </a>
+                            <a class="button button-3d button-green" style="font-size: 20px; width: 45%; border-radius: 8px" onclick="deleteParcelle();">
+                                <i style="font-size: 25px;" class="fa fa-trash-o"></i> Supprimer
+                            </a>
+                        </p>
                     </div>
                 </div>
+
             </div>
         </div>
         <script type="text/javascript">
-            jQuery('.ajax-menu').on('click', function () {
-                jQuery("#titreHeder").html(' ' + jQuery(this).data('title'));
-                jQuery("#ajax-content").load(jQuery(this).data('page'));
-            });
-        </script>
-        <script type="text/javascript">
-            jQuery.ajax({
-                'type': 'GET',
-                'url': "http://geoland.noflay.com/server/parcelles.php",
-//                'url': "http://localhost/geoLands/server/parcelles.php",
-//                'data': {'user': 1},
-                'dataType': 'JSON',
-                'success': function (resultat) {
-                    alert(resultat.length + ' parcelles trouvées');
-                    for (var i = 0; i < resultat.length; i++) {
-                        var idparcelle = resultat[i].ID_PCLE_CLT;
-                        var titre = resultat[i].LIBELLE;
-                        var surface = Math.floor(parseFloat(resultat[i].SUPERFICIE_PCLE) * 100) / 100;
-                        var parcelles = "<a href=\"parcelle-unique.html?parcelle_id=" + idparcelle + "\" class=\"openparcelle cursor\" data-idparcelle=\"" + idparcelle + "\"><i class=\"fa fa-map-marker\"></i>" + titre + " (" + surface + " Ha)<i class=\"fa fa-chevron-right\"></i></a>";
-                        jQuery('#listeParcelles').append(parcelles);
+            function initialize() {
+                var parameters = location.search.substring(1).split("&");
+                var temp = parameters[0].split("=");
+                var parcelle_id = unescape(temp[1]);
+                jQuery('#annuler').attr("href", "parcelle-unique.html?parcelle_id=" + parcelle_id);
+                jQuery.ajax({
+                    'type': 'GET',
+                    'url': "http://geoland.noflay.com/server/parcelles.php?parcelle=" + parcelle_id,
+                    'data': {'user': 1},
+                    'dataType': 'JSON',
+                    'success': function (resultat) {
+                        var idparcelle = resultat[0].ID_PCLE_CLT;
+                        jQuery('#ID_PCLE_CLT').val(resultat[0].ID_PCLE_CLT);
+                        jQuery('#libelle').html(resultat[0].LIBELLE);
+                    },
+                    'error': function () {
+                        alert('une erreur est survenues lors de la recupération des données de la parcelle. Merci de réessayer');
                     }
-                },
-                'error': function () {
-                    alert('une erreur est survenue lors de l\'enrégistrement. Merci de réessayer');
-                }
-            });
+                });
+            }
+            function deleteParcelle() {
+                var ID_PCLE_CLT = $('#ID_PCLE_CLT').val();
+                jQuery.ajax({
+                    'type': 'GET',
+                    'url': "http://geoland.noflay.com/server/deleteparcelle.php",
+                    'data': {
+                        'ID_PCLE_CLT': ID_PCLE_CLT
+                    },
+                    'success': function () {
+                        alert('Parcelle supprimée avec succès');
+                        document.location.href = "parcelles-liste.html";
+                    },
+                    'error': function () {
+                        alert('une erreur est survenue lors de l\'enrégistrement. Merci de réessayer');
+                    }
+                });
+            }
         </script>
+
     </body>
 
 </html>

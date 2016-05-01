@@ -53,6 +53,9 @@
             .scrollable > * {
                 -webkit-transform: translateZ(0px);
             }
+            tr, td{
+                border: none;
+            }
         </style>
 
         <script type="text/javascript" src="js/jquery.min.js"></script>
@@ -122,13 +125,19 @@
                 <div id="ajax-content" style="" class="scroller">
                     <div style=" padding-top: 60px;">
                         <table style="padding: 1px; margin-bottom: 2px" class="table">
-                            <tr style=" padding: 2px; margin: 2px; font-size: 20px">
-                                <td style="padding: 2px; margin: 2px; width: 50%">
-                                    <a onclick="$('#btn-showformInfos').hide();$('#btn-hideformInfos').show();$('#formInfos').show('slow');" id="btn-showformInfos" style="width: 100%; text-align: center; border-radius: 10px; text-align: center; color: #27AE60" class="button-3d"><img src="images/INFO.png"  alt="Alertes" style="width: 30px; height: 30px; float: left" /> Détails</a>
-                                    <a onclick="$('#formInfos').hide();$('#btn-hideformInfos').hide();$('#btn-showformInfos').show();" id="btn-hideformInfos" style="display: none;width: 100%; text-align: center; border-radius: 10px; text-align: center; color: #27AE60" class="button-3d"><img src="images/hide-top.png"  alt="Alertes" style="width: 30px; height: 30px; float: left" /> Cacher détails</a>
+                            <tr style=" padding: 2px; margin: 2px; font-size: 20px; text-align: center">
+                                <td  style=" padding: 2px; margin: 2px; width: 25%; text-align: center">
+                                    <a href="parcelles-liste.html" style="width: 100%; text-align: center; border-radius: 10px; color: #27AE60" class=" button-3d"><img src="images/icon-liste.png"  alt="Alertes" style="width: 30px; height: 30px; float: left" /></a>
                                 </td>
-                                <td  style=" padding: 2px; margin: 2px; width: 50%">
-                                    <a href="parcelles-liste.html" style="width: 100%; text-align: center; border-radius: 10px; color: #27AE60" class=" button-3d"><img src="images/PARCELLE.png"  alt="Alertes" style="width: 30px; height: 30px; float: left" /> Parcelles</a>
+                                <td style="padding: 2px; margin: 2px; width: 25%; text-align: center">
+                                    <a onclick="$('#btn-showformInfos').hide();$('#btn-hideformInfos').show();$('#formInfos').show('slow');" id="btn-showformInfos" style="width: 100%; text-align: center; border-radius: 10px; text-align: center; color: #27AE60" class="button-3d"><img src="images/INFO.png"  alt="Alertes" style="width: 30px; height: 30px; float: left" /></a>
+                                    <a onclick="$('#formInfos').hide();$('#btn-hideformInfos').hide();$('#btn-showformInfos').show();" id="btn-hideformInfos" style="display: none;width: 100%; text-align: center; border-radius: 10px; text-align: center; color: #27AE60" class="button-3d"><img src="images/hide-top.png"  alt="Alertes" style="width: 30px; height: 30px; float: left" /></a>
+                                </td>
+                                <td  style=" padding: 2px; margin: 2px; width: 25%; text-align: center">
+                                    <a href="" id="btn-modif" style="width: 100%; text-align: center; border-radius: 10px; color: #27AE60" class=" button-3d"><img src="images/edit.png"  alt="Alertes" style="width: 30px; height: 30px; float: left" /></a>
+                                </td>
+                                <td  style=" padding: 2px; margin: 2px; width: 25%; text-align: center">
+                                    <a href="" id="btn-delete" style="width: 100%; text-align: center; border-radius: 10px; color: #27AE60" class=" button-3d"><img src="images/delete.png"  alt="Alertes" style="width: 30px; height: 30px; float: left" /></a>
                                 </td>
                             </tr>
                         </table>
@@ -171,7 +180,7 @@
                         </table>
                     </div>
                     <div id="map" style="width: 100%; height: 500px; padding-top: 2px; text-align: center">
-                        <img style="text-align: center; margin-left: auto; margin-right: auto" src="images/loading.gif" alt="Chargement en cours..."/>
+                        <img style="width: 100%; text-align: center; margin-left: auto; margin-right: auto" src="images/loading.gif" alt="Chargement en cours..."/>
                     </div> 
                 </div>
 
@@ -188,7 +197,9 @@
                     var parameters = location.search.substring(1).split("&");
                     var temp = parameters[0].split("=");
                     var parcelle_id = unescape(temp[1]);
-                    initialLocation = {lat: latInitial, lng: lngInitial}
+                    jQuery('#btn-modif').attr("href", "modif-parcelle.html?parcelle_id=" + parcelle_id);
+                    jQuery('#btn-delete').attr("href", "delete-parcelle.html?parcelle_id=" + parcelle_id);
+                    initialLocation = {lat: latInitial, lng: lngInitial};
                     map = new google.maps.Map(
                             document.getElementById('map'),
                             {zoom: 18, center: initialLocation, mapTypeId: google.maps.MapTypeId.SATELLITE}
@@ -226,11 +237,9 @@
                             var idparcelle = resultat[0].ID_PCLE_CLT;
                             var couleur = resultat[0].COULEUR;
                             var categorie = resultat[0].NOM_CULTURE;
-                            var titre = resultat[0].NOMCA;
+                            var titre = resultat[0].LIBELLE;
                             var description = "Description";
-                            var surface = parseFloat(resultat[0].SUPERFICIE_EMB);
-//                            var pol = jQuery.parseJSON(resultat[0].polygone);
-//                            var pol2 = [{lat:14.7647623459741,lng:-17.3662734031677},{lat:14.7650268974297,lng:-17.3655438423157},{lat:14.7642176801988,lng:-17.3656404018402},{lat:14.7642176801988,lng:-17.366150021553}];
+                            var surface = parseFloat(resultat[0].SUPERFICIE_PCLE);
                             var pol = resultat[0].polygone;
 
                             var polygone = [];
@@ -246,15 +255,28 @@
                             jQuery('#parcelle').html(titre);
                             jQuery('#categorie').html(categorie);
                             jQuery('#description').html(description);
-                            jQuery('#surface').html(surface + ' m<sup>2</sup>');
+                            jQuery('#surface').html(surface + ' Ha');
+                            var perimetre = 0;     //google.maps.geometry.spherical.computeLength(polygone);
+
                             var contentString0 = '<table><tr><td><b>Libelle</b></td><td>' + titre + '</td></tr>'
                                     + '<tr><td>Culture</b></td><td>' + categorie + '</td></tr>'
-                                    + '<tr><td>Superficie </b></td><td>' + Math.round(superficie * 100) / 100 + ' m<sup>2</sup></td></tr>'
+                                    + '<tr><td>Superficie </b></td><td>' + Math.round(surface * 100) / 100 + ' Ha</td></tr>'
                                     + '<tr><td>Périmètres </b></td><td>' + Math.round(perimetre * 100) / 100 + ' mètres</td></tr>'
                                     + '<tr><td>Gerant</b></td><td> Amadou LY</td></tr></table>';
                             var infosimple = new google.maps.InfoWindow({
                                 content: contentString0,
                             });
+                            var contentString = '<table><tr><td><b>Libelle</b></td><td>' + titre + '</td></tr>'
+                                    + '<tr><td>Culture</b></td><td>' + categorie + '</td></tr>'
+                                    + '<tr><td>Superficie </b></td><td>' + Math.round(surface * 100) / 100 + ' m<sup>2</sup></td></tr>'
+                                    + '<tr><td>Périmètres </b></td><td>' + Math.round(perimetre * 100) / 100 + ' mètres</td></tr>'
+                                    + '<tr><td>Zone </b></td><td> Prodzc 4</td></tr>'
+                                    + '<tr><td>Date </b></td><td> 02/02/2015</td></tr>'
+                                    + '<tr><td>Gerant</b></td><td> Amadou LY</td></tr></table>';
+                            var infos = new google.maps.InfoWindow({
+                                content: contentString
+                            });
+
 
                             polygoneDepart = new google.maps.Polygon({
                                 paths: polygone,
@@ -263,32 +285,19 @@
                                 strokeWeight: 1,
                                 fillColor: couleur,
                                 fillOpacity: 0.35,
-                                info: infosimple
+                                infosimple: infosimple,
+                                info: infos
                             });
                             center = polygonCenter(polygoneDepart);
                             polygoneDepart.setMap(map);
                             map.setCenter(center);
+                            polygoneDepart.infosimple.setPosition(center);
                             polygoneDepart.info.setPosition(center);
-                            polygoneDepart.info.open(map);
-                            polygoneDepart.addListener('click', showArrays);
-                            var superficie = google.maps.geometry.spherical.computeArea(polygoneDepart.getPath());
-                            var perimetre = google.maps.geometry.spherical.computeLength(polygoneDepart.getPath());
-                            infoWindow = new google.maps.InfoWindow;
-
-                            /** @this {google.maps.Polygon} */
-                            function showArrays(event) {
-                                var contentString = '<table><tr><td><b>Libelle</b></td><td>' + titre + '</td></tr>'
-                                        + '<tr><td>Culture</b></td><td>' + categorie + '</td></tr>'
-                                        + '<tr><td>Superficie </b></td><td>' + Math.round(superficie * 100) / 100 + ' m<sup>2</sup></td></tr>'
-                                        + '<tr><td>Périmètres </b></td><td>' + Math.round(perimetre * 100) / 100 + ' mètres</td></tr>'
-                                        + '<tr><td>Zone </b></td><td> Prodzc 4</td></tr>'
-                                        + '<tr><td>Date </b></td><td> 02/02/2015</td></tr>'
-                                        + '<tr><td>Gerant</b></td><td> Amadou LY</td></tr></table>';
-                                // Replace the info window's content and position.
-                                infoWindow.setContent(contentString);
-                                infoWindow.setPosition(event.latLng);
-                                infoWindow.open(map);
-                            }
+                            polygoneDepart.infosimple.open(map);
+                            polygoneDepart.addListener('click', function () {
+                                this.infosimple.close(map);
+                                this.info.open(map);
+                            });
                         },
                         'error': function () {
                             alert('une erreur est survenues lors de la recuoération des données de la parcelle. Merci de réessayer');

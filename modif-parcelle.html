@@ -80,7 +80,7 @@
                 margin: 2px;
                 padding: 2px 2px 2px 15px;
             }
-            
+
             td a img {
                 /*width: 32px;*/
                 /*height: 32px;*/
@@ -145,7 +145,7 @@
 
             <div class="page-header">
                 <a href="#" class="open-left"><i class="fa fa-navicon"></i></a>
-                <a class="page-logo"><img src="images/PARCELLE.png" alt="" style="width: 32px; height: 32px; display: inline;"/> Ajout parcelle</a>
+                <a class="page-logo"><img src="images/PARCELLE.png" alt="" style="width: 32px; height: 32px; display: inline;"/> Modif. parcelle</a>
             </div>
             <div id="content" class="snap-content">
                 <div id="ajax-content" style="" class="scroller">
@@ -159,7 +159,7 @@
                                     <a style="display: none" id="btn-hideformInfos" class="cursor" onclick="$('#formInfos').hide(); $('#btn-hideformInfos').hide(); $('#btn-showformInfos').show();"><img src="images/arrow-left.png" /></a>
                                 </td>
                                 <td>    
-                                    <a class="cursor" onclick="initialize();" title="effacer polygone"><img src="images/icon_clear.png" /></a>
+                                    <a class="cursor" onclick="deletePolygone();" title="effacer polygone"><img src="images/icon_clear.png" /></a>
                                 </td>
                                 <td> 
                                     <a class="cursor" onclick="defarPolygone();"><img src="images/icon_geofence.png" /></a>
@@ -177,6 +177,7 @@
                         <table style="padding: 5px; margin-bottom: 2px" class="table">
                             <tr style=" padding: 2px; margin: 2px">
                                 <td style=" padding: 2px; margin: 2px">
+                                    <input name="ID_PCLE_CLT"  id="ID_PCLE_CLT" type="hidden" value="" />
                                     <input class="contactField" name="libelle"  id="libelle" placeholder="Libelle de la parcelle"  />
                                 </td>
                             </tr>
@@ -259,6 +260,111 @@
 
             </div>
             <script type="text/javascript">
+                var map;
+                var polygoneDepart;
+                var latInitial = 14.7362987;
+                var lngInitial = -17.45662444;
+                var infoWindow;
+                var markers = [];
+
+
+                function initialize() {
+                    var parameters = location.search.substring(1).split("&");
+                    var temp = parameters[0].split("=");
+                    var parcelle_id = unescape(temp[1]);
+                    initialLocation = {lat: latInitial, lng: lngInitial};
+                    map = new google.maps.Map(
+                            document.getElementById('map'),
+                            {zoom: 18, center: initialLocation, mapTypeId: google.maps.MapTypeId.SATELLITE}
+                    );
+
+                    google.maps.event.addListener(map, 'click', function (event) {
+                        yokkMarker(event.latLng);
+                    });
+
+                    function polygonCenter(poly) {
+                        var lowx,
+                                highx,
+                                lowy,
+                                highy,
+                                lats = [],
+                                lngs = [],
+                                vertices = poly.getPath();
+
+                        for (var i = 0; i < vertices.length; i++) {
+                            lngs.push(vertices.getAt(i).lng());
+                            lats.push(vertices.getAt(i).lat());
+                        }
+
+                        lats.sort();
+                        lngs.sort();
+                        lowx = lats[0];
+                        highx = lats[vertices.length - 1];
+                        lowy = lngs[0];
+                        highy = lngs[vertices.length - 1];
+                        center_x = lowx + ((highx - lowx) / 2);
+                        center_y = lowy + ((highy - lowy) / 2);
+                        return (new google.maps.LatLng(center_x, center_y));
+                    }
+                    jQuery.ajax({
+                        'type': 'GET',
+                        'url': "http://geoland.noflay.com/server/parcelles.php?parcelle=" + parcelle_id,
+                        'data': {'user': 1},
+                        'dataType': 'JSON',
+                        'success': function (resultat) {
+                            var idparcelle = resultat[0].ID_PCLE_CLT;
+                            var couleur = resultat[0].COULEUR;
+                            var categorie = resultat[0].NOM_CULTURE;
+                            var titre = resultat[0].NOMCA;
+                            var pol = resultat[0].polygone;
+
+                            var polygone = [];
+                            for (var i = 0; i < pol.length; i++) {
+                                var lati = parseFloat(pol[i].lat);
+                                var long = parseFloat(pol[i].lng);
+                                var cord = {lat: lati, lng: long};
+                                polygone.push(cord);
+                            }
+
+                            jQuery('#ID_PCLE_CLT').val(resultat[0].ID_PCLE_CLT);
+                            jQuery('#CULTURE').val(resultat[0].ID_CULTURE);
+                            jQuery('#TYPEFONCIER').val(resultat[0].TYPE_FONCIER);
+                            jQuery('#TYPEIRRIGATION').val(resultat[0].TYPE_IRRIGATION);
+                            jQuery('#TYPEAMENAGEMENT').val(resultat[0].TYPE_AMENAGEMENT);
+                            jQuery('#GEA').val(resultat[0].ID_GEA);
+                            jQuery('#CAMPAGNE').val(resultat[0].ID_CA);
+                            jQuery('#DETAILCAMPAGNE').val(resultat[0].ID_DETAIL_CA);
+                            jQuery('#UAE').val(resultat[0].ID_UAE);
+                            jQuery('#COULEUR').val(resultat[0].COULEUR);
+                            jQuery('#libelle').val(resultat[0].LIBELLE);
+
+                            polygoneDepart = new google.maps.Polygon({
+                                paths: polygone,
+                                strokeColor: couleur,
+                                strokeOpacity: 0.8,
+                                strokeWeight: 1,
+                                fillColor: couleur,
+                                fillOpacity: 0.35,
+                                editable: true,
+                                draggable: true
+                            });
+                            center = polygonCenter(polygoneDepart);
+                            polygoneDepart.setMap(map);
+                            map.setCenter(center);
+                            google.maps.event.addListener(map, 'click', function (event) {
+                                yokkMarker(event.latLng);
+                            });
+                        },
+                        'error': function () {
+                            alert('une erreur est survenues lors de la recuoération des données de la parcelle. Merci de réessayer');
+                        }
+                    });
+                }
+
+                function deletePolygone() {
+                    polygoneDepart.setMap(null);
+                    polygoneDepart = null;
+                }
 
                 function initParams() {
                     jQuery.ajax({
@@ -267,7 +373,7 @@
                         'data': {'user': 1},
                         'dataType': 'JSON',
                         'success': function (resultat) {
-                            
+
 //                            CULTURE
                             for (var i = 0; i < resultat.CULTURE.length; i++) {
                                 var id = resultat.CULTURE[i].ID_CULTURE;
@@ -275,7 +381,7 @@
                                 var options = "<option value=\"" + id + "\">" + nom + "</option>";
                                 jQuery('#CULTURE').append(options);
                             }
-                            
+
 //                            TYPEFONCIER
                             for (var i = 0; i < resultat.TYPEFONCIER.length; i++) {
                                 var id = resultat.TYPEFONCIER[i].ID_TYPE_FONCIER;
@@ -283,8 +389,8 @@
                                 var options = "<option value=\"" + id + "\">" + nom + "</option>";
                                 jQuery('#TYPEFONCIER').append(options);
                             }
- 
-                            
+
+
 //                            TYPEIRRIGATION
                             for (var i = 0; i < resultat.TYPEIRRIGATION.length; i++) {
                                 var id = resultat.TYPEIRRIGATION[i].ID_TYPE_IRRIGATION;
@@ -292,7 +398,7 @@
                                 var options = "<option value=\"" + id + "\">" + nom + "</option>";
                                 jQuery('#TYPEIRRIGATION').append(options);
                             }
-                            
+
 //                            TYPEAMENAGEMENT
                             for (var i = 0; i < resultat.TYPEAMENAGEMENT.length; i++) {
                                 var id = resultat.TYPEAMENAGEMENT[i].ID_TYPE_AMENAGEMENT;
@@ -300,8 +406,8 @@
                                 var options = "<option value=\"" + id + "\">" + nom + "</option>";
                                 jQuery('#TYPEAMENAGEMENT').append(options);
                             }
- 
-                            
+
+
 //                            GEA
                             for (var i = 0; i < resultat.GEA.length; i++) {
                                 var id = resultat.GEA[i].ID_GEA;
@@ -309,8 +415,8 @@
                                 var options = "<option value=\"" + id + "\">" + nom + "</option>";
                                 jQuery('#GEA').append(options);
                             }
- 
-                            
+
+
 //                            CAMPAGNE
                             for (var i = 0; i < resultat.CAMPAGNE.length; i++) {
                                 var id = resultat.CAMPAGNE[i].ID_CA;
@@ -318,7 +424,7 @@
                                 var options = "<option value=\"" + id + "\">" + nom + "</option>";
                                 jQuery('#CAMPAGNE').append(options);
                             }
- 
+
 //                            DETAILCAMPAGNE
                             for (var i = 0; i < resultat.DETAILCAMPAGNE.length; i++) {
                                 var id = resultat.DETAILCAMPAGNE[i].ID_DETAIL_CA;
@@ -326,7 +432,7 @@
                                 var options = "<option value=\"" + id + "\">" + nom + "</option>";
                                 jQuery('#DETAILCAMPAGNE').append(options);
                             }
-                            
+
 //                            UAE
                             for (var i = 0; i < resultat.UAE.length; i++) {
                                 var id = resultat.UAE[i].ID_UAE;
@@ -334,51 +440,16 @@
                                 var options = "<option value=\"" + id + "\">" + nom + "</option>";
                                 jQuery('#UAE').append(options);
                             }
- 
-                            
- 
-                            
+
+
+
+
                         },
                         'error': function () {
                             alert('une erreur est survenue lors de l\'enrégistrement. Merci de réessayer');
                         }
                     });
                 }
-
-                var map;
-                var polygoneDepart;
-                var latInitial = 14.7362987;
-                var lngInitial = -17.45662444;
-                var polygones = [];
-                var markers = [];
-
-                function onSuccess(position) {
-                    if (position) {
-                        latInitial = position.coords.latitude;
-                        lngInitial = position.coords.longitude;
-                        map = new google.maps.Map(
-                                document.getElementById('map'),
-                                {zoom: 18, center: {lat: latInitial, lng: lngInitial}, mapTypeId: google.maps.MapTypeId.SATELLITE}
-                        );
-                        google.maps.event.addListener(map, 'click', function (event) {
-                            yokkMarker(event.latLng);
-                        });
-                    } else {
-                        alert('Merci d\'activer votre conenction internet et votre localisation');
-                    }
-                }
-
-                function onError(error) {
-                    //  alert('Une erreur est survenue ===>' + 'message: ' + error.message + '\n');
-                    alert('Merci d\'activer votre conenction internet');
-                }
-
-                function initialize() {
-                    var options = {timeout: 30000, enableHighAccuracy: true, maximumAge: 900000};
-                    navigator.geolocation.getCurrentPosition(onSuccess, onError, options);
-                }
-
-
 
                 function yokkMarker(location) {
                     var marker = new google.maps.Marker({
@@ -424,6 +495,7 @@
 
 
                 function savePolygone() {
+                    var ID_PCLE_CLT = $('#ID_PCLE_CLT').val();
                     var CULTURE = $('#CULTURE').val();
                     var TYPEFONCIER = $('#TYPEFONCIER').val();
                     var TYPEIRRIGATION = $('#TYPEIRRIGATION').val();
@@ -445,8 +517,9 @@
                         }
                         jQuery.ajax({
                             'type': 'GET',
-                            'url': "http://geoland.noflay.com/server/saveparcelle.php",
+                            'url': "http://geoland.noflay.com/server/updateparcelle.php",
                             'data': {
+                                'ID_PCLE_CLT': ID_PCLE_CLT,
                                 'ID_CULTURE': CULTURE,
                                 'ID_TYPE_FONCIER': TYPEFONCIER,
                                 'ID_TYPE_IRRIGATION': TYPEIRRIGATION,

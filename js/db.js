@@ -1,68 +1,86 @@
-var db;
-var dbCreated = false;
+// Wait for Cordova to load
+        document.addEventListener("deviceready", onDeviceReady, false);
 
-var scroll = new iScroll('wrapper', { vScrollbar: false, hScrollbar:false, hScroll: false });
-
-document.addEventListener("deviceready", onDeviceReady, false);
-
+// Cordova is ready
 function onDeviceReady() {
-    db = window.sqlitePlugin.openDatabase("parcellesDAC", "1.0", "Parcelles DAC", 200000);
-    if (dbCreated)
-    	db.transaction(getEmployees, transaction_error);
-    else
-    	db.transaction(populateDB, transaction_error, populateDB_success);
+    var db = window.sqlitePlugin.openDatabase({name: "my.db"});
+
+    db.transaction(function (tx) {
+        tx.executeSql('DROP TABLE IF EXISTS test_table');
+        tx.executeSql('CREATE TABLE IF NOT EXISTS test_table (id integer primary key, data text, data_num integer)');
+
+        // demonstrate PRAGMA:
+        db.executeSql("pragma table_info (test_table);", [], function (res) {
+            console.log("PRAGMA res: " + JSON.stringify(res));
+        });
+
+        tx.executeSql("INSERT INTO test_table (data, data_num) VALUES (?,?)", ["test", 100], function (tx, res) {
+            console.log("insertId: " + res.insertId + " -- probably 1");
+            console.log("rowsAffected: " + res.rowsAffected + " -- should be 1");
+
+            db.transaction(function (tx) {
+                tx.executeSql("select count(id) as cnt from test_table;", [], function (tx, res) {
+                    console.log("res.rows.length: " + res.rows.length + " -- should be 1");
+                    console.log("res.rows.item(0).cnt: " + res.rows.item(0).cnt + " -- should be 1");
+                });
+            });
+
+        }, function (e) {
+            console.log("ERROR: " + e.message);
+        });
+    });
 }
 
 function transaction_error(tx, error) {
-	$('#ajax-content').hide();
+    $('#ajax-content').hide();
     alert("Database Error: " + error);
 }
 
 function populateDB_success() {
-	dbCreated = true;
+    dbCreated = true;
     db.transaction(getEmployees, transaction_error);
 }
 
 function getEmployees(tx) {
-	var sql = "select e.id, e.firstName, e.lastName, e.title, e.picture, count(r.id) reportCount " + 
-				"from employee e left join employee r on r.managerId = e.id " +
-				"group by e.id order by e.lastName, e.firstName";
-	tx.executeSql(sql, [], getEmployees_success);
+    var sql = "select e.id, e.firstName, e.lastName, e.title, e.picture, count(r.id) reportCount " +
+            "from employee e left join employee r on r.managerId = e.id " +
+            "group by e.id order by e.lastName, e.firstName";
+    tx.executeSql(sql, [], getEmployees_success);
 }
 
 function getEmployees_success(tx, results) {
-	$('#ajax-content').hide();
+    $('#ajax-content').hide();
     var len = results.rows.length;
-    for (var i=0; i<len; i++) {
-    	var employee = results.rows.item(i);
-		$('#employeeList').append('<li><a href="employeedetails.html?id=' + employee.id + '">' +
-				'<img src="pics/' + employee.picture + '" class="list-icon"/>' +
-				'<p class="line1">' + employee.firstName + ' ' + employee.lastName + '</p>' +
-				'<p class="line2">' + employee.title + '</p>' +
-				'<span class="bubble">' + employee.reportCount + '</span></a></li>');
+    for (var i = 0; i < len; i++) {
+        var employee = results.rows.item(i);
+        $('#employeeList').append('<li><a href="employeedetails.html?id=' + employee.id + '">' +
+                '<img src="pics/' + employee.picture + '" class="list-icon"/>' +
+                '<p class="line1">' + employee.firstName + ' ' + employee.lastName + '</p>' +
+                '<p class="line2">' + employee.title + '</p>' +
+                '<span class="bubble">' + employee.reportCount + '</span></a></li>');
     }
-	setTimeout(function(){
-		scroll.refresh();
-	},100);
-	db = null;
+    setTimeout(function () {
+        scroll.refresh();
+    }, 100);
+    db = null;
 }
 
 function populateDB(tx) {
-	$('#ajax-content').show();
-	tx.executeSql('DROP TABLE IF EXISTS employee');
-	var sql = 
-		"CREATE TABLE IF NOT EXISTS employee ( "+
-		"id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-		"firstName VARCHAR(50), " +
-		"lastName VARCHAR(50), " +
-		"title VARCHAR(50), " +
-		"department VARCHAR(50), " + 
-		"managerId INTEGER, " +
-		"city VARCHAR(50), " +
-		"officePhone VARCHAR(30), " + 
-		"cellPhone VARCHAR(30), " +
-		"email VARCHAR(30), " +
-		"picture VARCHAR(200))";
+    $('#ajax-content').show();
+    tx.executeSql('DROP TABLE IF EXISTS employee');
+    var sql =
+            "CREATE TABLE IF NOT EXISTS employee ( " +
+            "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            "firstName VARCHAR(50), " +
+            "lastName VARCHAR(50), " +
+            "title VARCHAR(50), " +
+            "department VARCHAR(50), " +
+            "managerId INTEGER, " +
+            "city VARCHAR(50), " +
+            "officePhone VARCHAR(30), " +
+            "cellPhone VARCHAR(30), " +
+            "email VARCHAR(30), " +
+            "picture VARCHAR(200))";
     tx.executeSql(sql);
 
     tx.executeSql("INSERT INTO employee (id,firstName,lastName,managerId,title,department,officePhone,cellPhone,email,city,picture) VALUES (12,'Steven','Wells',4,'Software Architect','Engineering','617-000-0012','781-000-0012','swells@fakemail.com','Boston, MA','steven_wells.jpg')");
