@@ -63,6 +63,9 @@
 
                 list-style: none;
             }
+            table, td, tr{
+                border: none
+            }
         </style>
 
         <script type="text/javascript" src="js/jquery.min.js"></script>
@@ -121,23 +124,6 @@
                 }
             };
 
-//            var app = {
-//                checkSMSPermission: function () {
-//                    var success = function (hasPermission) {
-//                        if (hasPermission) {
-//                            var libelle = jQuery('#libelle').val();
-//                            var description = jQuery('#description').val();
-//                            sms.send(libelle + ": " + description);
-//                        } else {
-//                            alert('L\'applicarion  ne dispose pas de permission d\'envoi de SMS');
-//                        }
-//                    };
-//                    var error = function (e) {
-//                        alert('Something went wrong:' + e);
-//                    };
-//                    sms.hasPermission(success, error);
-//                }
-//            };
         </script>
     </head>
     <body onload="">
@@ -164,28 +150,28 @@
 
             <div class="page-header">
                 <a href="#" class="open-left"><i class="fa fa-navicon"></i></a>
-                <a class="page-logo"><i class="fa fa-bullhorn"></i><span id="titreHeder"> Alerte</span></a>
-                <a href="index.html" id="backbutton" class="open-right1 cursor"><i style="color: #FFF" class="fa fa-arrow-left"></i></a>
+                <a class="page-logo"><span id="titreHeder"> <img src="images/alert.png" alt="" style="width: 32px; height: 32px; display: inline;"/>Alerte</span></a>
+                <!--<a href="index.html" id="backbutton" class="open-right1 cursor"><i style="color: #FFF" class="fa fa-arrow-left"></i></a>-->
             </div>
             <div id="content" class="snap-content">
                 <div id="ajax-content" style="" class="scroller">
                     <div style=" padding-top: 80px;">
                         <div class="form-alert">
-                            <table>
-                                <tr>
-                                    <td><a style="cursor: pointer" onclick="geolocMe()"><img src="images/geoloc.png" /></a></td>
-                                    <td><a style="cursor: pointer" onclick="ungeolocMe()"><img src="images/ungeoloc.png" /></a></td>
+                            <table style="border: none">
+                                <tr style="border: none">
+                                    <td style="padding: 2px; margin: 2px; width: 50%; border: none"><a style="cursor: pointer; font-size: 14px; font-weight: bold" onclick="geolocMe()"><img style="display: inline-block" src="images/mapLogo.png" /> Géolocaliser</a></td>
+                                    <td style="padding: 2px; margin: 2px; width: 50%; border: none"><a  style="cursor: pointer; font-size: 14px; font-weight: bold" onclick="ungeolocMe()"><img style="display: inline-block" src="images/ungeolocate.png" />  Annuler</a></td>
                                 </tr>
                                 <tr id="trLoadingPosition" style="display: none">
                                     <td colspan="2" style="text-align: center"><img style="width: 300px" src="images/loadingposition.gif" /></td>
                                 </tr>
                                 <tr id="trLabelLatLong" style="display: none">
-                                    <td>Latitude</td>
-                                    <td>Longitude</td>
+                                    <td style="padding: 2px; margin: 2px; width: 50%">Latitude</td>
+                                    <td style="padding: 2px; margin: 2px; width: 50%">Longitude</td>
                                 </tr>
                                 <tr id="trLatLong" style="display: none">
-                                    <td><input name="latitude" id="latitude" value=""/></td>
-                                    <td><input name="longitude" id="longitude" value=""/></td>
+                                    <td style="padding: 2px; margin: 2px; width: 50%"><input class="contactField" name="latitude" id="latitude" value=""/></td>
+                                    <td style="padding: 2px; margin: 2px; width: 50%"><input class="contactField" name="longitude" id="longitude" value=""/></td>
                                 </tr>
                             </table>
                             <ul class="formAlerte" id="moby_form">
@@ -210,10 +196,10 @@
 
                                 <li>
                                     <input type="hidden" name="fichier"  id="fichier" value="" />
-                                    <textarea name="description" id="description" placeholder="Objet de l'alerte" required="required" style="height: 150px; width: 100%"  maxlength="10000"></textarea>
+                                    <textarea name="description" id="description" placeholder="Objet de l'alerte" required="required" style="height: 200px; width: 95%; margin: 10px"  maxlength="10000"></textarea>
                                 </li>
                                 <li style="text-align: center">
-                                    <a class="btn btn-success" onclick="saveAlerte()" style="width: 80%"  id="saveAlerte">Enrégistrer</a>
+                                    <a class="btn btn-success" onclick="saveAlerte()" style="width: 80%;"  id="saveAlerte">Enrégistrer</a>
                                 </li>
                             </ul>
 
@@ -460,6 +446,7 @@
                     'error': function () {
                         if (confirm('une erreur est survenue lors de l\'enrégistrement. Voulez-vous envoyer l\'alerte par SMS')) {
                             app.sendSms();
+                             document.location.href = "alertes.html";
                         } else {
                             alert('L\'alerte a été annulée');
                         }

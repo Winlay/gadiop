@@ -115,24 +115,20 @@
 
             <div class="page-header">
                 <a href="#" class="open-left"><i class="fa fa-navicon"></i></a>
-                <a class="page-logo"><i class="fa fa-plus-circle"></i> Parcelle A</a>
+                <a class="page-logo"><img src="images/PARCELLE.png" alt="" style="width: 32px; height: 32px; display: inline;"/> Parcelle</a>
                 <!--<a href="#" class="open-right"><i class="fa fa-info-circle"></i></a>-->
             </div>
             <div id="content" class="snap-content">
                 <div id="ajax-content" style="" class="scroller">
                     <div style=" padding-top: 60px;">
                         <table style="padding: 1px; margin-bottom: 2px" class="table">
-                            <tr style=" padding: 2px; margin: 2px">
-                                <td style="padding: 2px; margin: 2px">
-                                    <a style="width: 100%; border-radius: 30px" id="btn-showformInfos" class="button-blue button-3d" onclick="$('#btn-showformInfos').hide();
-                                            $('#btn-hideformInfos').show();
-                                            $('#formInfos').show('slow');"><i class="fa fa-comment"></i> Détails</a>
-                                    <a style="width: 100%; border-radius: 30px; display: none" id="btn-hideformInfos" class="button-red button-3d" onclick="$('#formInfos').hide();
-                                            $('#btn-hideformInfos').hide();
-                                            $('#btn-showformInfos').show();"><i class="fa fa-eye-slash"></i> cacher détails</a>
+                            <tr style=" padding: 2px; margin: 2px; font-size: 20px">
+                                <td style="padding: 2px; margin: 2px; width: 50%">
+                                    <a onclick="$('#btn-showformInfos').hide();$('#btn-hideformInfos').show();$('#formInfos').show('slow');" id="btn-showformInfos" style="width: 100%; text-align: center; border-radius: 10px; text-align: center; color: #27AE60" class="button-3d"><img src="images/INFO.png"  alt="Alertes" style="width: 30px; height: 30px; float: left" /> Détails</a>
+                                    <a onclick="$('#formInfos').hide();$('#btn-hideformInfos').hide();$('#btn-showformInfos').show();" id="btn-hideformInfos" style="display: none;width: 100%; text-align: center; border-radius: 10px; text-align: center; color: #27AE60" class="button-3d"><img src="images/hide-top.png"  alt="Alertes" style="width: 30px; height: 30px; float: left" /> Cacher détails</a>
                                 </td>
-                                <td colspan="1" style=" padding: 2px; margin: 2px">
-                                    <a style="width: 100%; border-radius: 30px" href="parcelles-liste.html" class="button-green button-3d"><i class="fa fa-list"></i>  Liste</a>
+                                <td  style=" padding: 2px; margin: 2px; width: 50%">
+                                    <a href="parcelles-liste.html" style="width: 100%; text-align: center; border-radius: 10px; color: #27AE60" class=" button-3d"><img src="images/PARCELLE.png"  alt="Alertes" style="width: 30px; height: 30px; float: left" /> Parcelles</a>
                                 </td>
                             </tr>
                         </table>
