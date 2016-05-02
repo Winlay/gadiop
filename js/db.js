@@ -28,11 +28,11 @@ function connexion(login, password) {
         });
     });
 
-    if (login === 'laye' && password === 'passer') {
-        document.location.href = "accueil.html";
-    } else {
-        alert("login ou mot de passe incorrect");
-    }
+//    if (login === 'laye' && password === 'passer') {
+//        document.location.href = "accueil.html";
+//    } else {
+//        alert("login ou mot de passe incorrect");
+//    }
 }
 
 
