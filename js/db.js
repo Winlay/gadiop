@@ -20,7 +20,7 @@ function connexion(login, password) {
             USERLOGIN = res.rows.item(0).LOGIN;
             USERPASSWORD = res.rows.item(0).MOTPASSE;
             alert("PRENOM : " + res.rows.item(0).PRENOMUSER + " ");
-            document.location.href = "accueil.html";
+//            document.location.href = "accueil.html";
         }, function () {
             db.transaction(createTableUser, function () {
                 alert("login ou mot de passe incorrect")
