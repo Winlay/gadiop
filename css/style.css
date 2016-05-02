@@ -11,7 +11,7 @@ Platforms:   Mobile & Tablet
 
 @charset "UTF-8";
 
-/* Reset Framework For Material Specific */
+/* Reset Framework For Materialg Specific */
 
 
 @font-face {
@@ -356,7 +356,8 @@ h6{
 }
 
 .sidebar-logo{
-    background-image:url(../images/bm-small.png);
+    /*background-image:url(../images/bm-small.png);*/
+    background-image:url(../images/prodac.png);
     background-position: left;
     background-repeat: no-repeat;
     padding-left: 65px;
