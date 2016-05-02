@@ -223,8 +223,8 @@ h6{
     /*background-position: center;*/
     /*background-repeat: no-repeat;*/
     padding-right: 35px;
-    padding-top: 20px;
-    color: #FFF;
+    padding-top: 10px;
+    color: #00C000;
     font-size:20px;
     /*width:200px;*/
     width:100%;
@@ -236,6 +236,10 @@ h6{
     position:absolute;
     left:40%;
 
+}
+
+.page-logo img{
+    margin-bottom: -7px;
 }
 
 /*
@@ -256,9 +260,9 @@ h6{
 }
 
 .page-header{
-    /*background-color:#FFFFFF;*/
-    background-color:#27AE60;
-    color: #FFFFFF;
+    /*background-color:#27AE60;*/
+    background-color:#D8F6EA;
+    color: #00C000;
     height:60px;
     width:100%;
     position:fixed;
@@ -266,7 +270,8 @@ h6{
     transform:translateX(0px);
     -webkit-transform:translateX(0px);
     transition:all 350ms ease-in-out;
-    border-bottom: solid 2px #27AE60;
+    border-top: solid 4px #00C000;
+    border-bottom: solid 4px #FF8000;
 }
 
 .page-header-right{
@@ -292,10 +297,9 @@ h6{
     text-align:center;
     line-height:60px;
     width:60px;
-    /*color:#1f1f1f;*/
-    /*color:#27AE60;*/
-    color: #FFFFFF;
-    font-size:14px;
+    /*color: #FFFFFF;*/
+    color: #00C000;
+    font-size:20px;
     border-right: solid 1px #FFFFFF;
 }
 
@@ -1155,7 +1159,7 @@ h6{
     margin-top:20px;
     font-size:16px;
 }
-//The things we love to do, for you!
+/*//The things we love to do, for you!*/
 
 .staff-item em{
     text-align:center;

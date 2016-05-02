@@ -36,6 +36,8 @@ function onDeviceReady() {
 }
 
 function connexion(login, password) {
+    USERLOGIN=login;
+    USERPASSWORD= password;
     var db = window.sqlitePlugin.openDatabase({name: "my.db"});
     db.transaction(function (tx) {
         tx.executeSql("SELECT * FROM TB_USER WHERE LOGIN='" + login + "' AND PASSWORD = '" + password + "';", [], function (tx, res) {
@@ -47,7 +49,7 @@ function connexion(login, password) {
             jQuery.ajax({
                 'type': 'GET',
                 'url': "http://geoland.noflay.com/server/connexion.php",
-                'data': {'login': login, 'password': password},
+                'data': {'login': USERLOGIN, 'password': USERPASSWORD},
                 'dataType': 'JSON',
                 'success': function (resultat) {
                     USERLOGIN = resultat[0].LOGIN;

@@ -109,7 +109,7 @@
             <div class="page-header">
                 <a href="#" class="open-left"><i class="fa fa-navicon"></i></a>
                 <a class="page-logo"><span id="titreHeder"><img src="images/alert.png" alt="" style="width: 32px; height: 32px; display: inline;"/> Alertes</span></a>
-                <a href="accueil.html" id="backbutton" class="open-right1 cursor"><i style="color: #FFF" class="fa fa-arrow-left"></i></a>
+                <!--<a href="accueil.html" id="backbutton" class="open-right1 cursor"><i style="color: #FFF" class="fa fa-arrow-left"></i></a>-->
             </div>
             <div id="content" class="snap-content">
                 <div id="ajax-content" style="" class="scroller">
@@ -117,15 +117,16 @@
                         <table style="padding: 1px; margin-bottom: 2px" class="table">
                             <tr style=" padding: 2px; margin: 2px; font-size: 20px">
                                 <td style="padding: 2px; margin: 2px; width: 50%">
-                                    <a href="new-alerte.html" style="width: 100%; text-align: center; border-radius: 10px; text-align: center; color: #27AE60" class="button-3d"><img src="images/ADD_GRN.png"  alt="Alertes" style="width: 30px; height: 30px; float: left" /> Ajouter</a>
+                                    <a href="new-alerte.html" style="width: 100%; text-align: center; border-radius: 10px; text-align: center; color: #27AE60" class="button-3d"><img src="images/ADD_GRN.png"  alt="Alertes" style="width: 30px; height: 30px; display: inline-block; margin-bottom: -7px" /> Ajouter</a>
                                 </td>
                                 <td  style=" padding: 2px; margin: 2px; width: 50%">
-                                    <a href="alertes-map.html" style="width: 100%; text-align: center; border-radius: 10px; color: #27AE60" class=" button-3d"><img src="images/map.png"  alt="Alertes" style="width: 30px; height: 30px; float: left" /> sur la carte</a>
+                                    <a href="alertes-map.html" style="width: 100%; text-align: center; border-radius: 10px; color: #27AE60" class=" button-3d"><img src="images/map.png"  alt="Alertes" style="width: 30px; height: 30px; display: inline-block; margin-bottom: -7px" /> Carte</a>
                                 </td>
                             </tr>
                         </table>
                     </div>
                     <div class="header-menu" id="listeAlertes" style="margin: 1px 10px 1px 10px;">
+                        <img id="loading" style="text-align: center; margin-left: auto; margin-right: auto; width: 100%" src="images/loading.gif" alt="Chargement en cours..."/>
                     </div>
                 </div>
             </div>
@@ -139,6 +140,7 @@
                 'dataType': 'JSON',
                 'success': function (resultat) {
                     alert(resultat.length + ' Alertes trouvées');
+                    jQuery('#loading').hide();
                     for (var i = 0; i < resultat.length; i++) {
                         if (resultat[i].libelle) {
 

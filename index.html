@@ -81,6 +81,28 @@
                 document.location('accueil.html');
             }, false);
 
+jQuery.ajax({
+                'type': 'GET',
+                'url': "http://geoland.noflay.com/server/connexion.php",
+                'data': {'login': 'laye', 'password': 'passer'},
+                'dataType': 'JSON',
+                'success': function (resultat) {
+                    USERLOGIN = resultat[0].LOGIN;
+                    USERPASSWORD = resultat[0].MOTPASSE;
+                    tx.executeSql("INSERT INTO TB_USER ('IDUser','ID_USER','LOGIN','MOTPASSE','PRENOMUSER','NOMUSER') VALUES ('" + resultat[0].IDUser + "','" + resultat[0].ID_USER + "','" + resultat[0].LOGIN + "','" + resultat[0].MOTPASSE + "','" + resultat[0].PRENOMUSER + "','" + resultat[0].NOMUSER + "')", ["test", 100], function (tx, res) {
+                        alert("insertId: " + res.insertId);
+                        tx.executeSql("select count(*) as cnt from TB_USER", [], function (tx, res) {
+                            alert("NB USER: " + res.rows.item(0).cnt);
+                        });
+                        document.location.href = "accueil.html";
+                    }, function (e) {
+                        alert("ERROR: " + e.message);
+                    });
+                },
+                'error': function () {
+                    alert('une erreur est survenues lors de la recupération des informations de l\'utilisateur en ligne');
+                }
+        });
         </script>
     </head>
     <body onload="">

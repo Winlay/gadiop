@@ -114,16 +114,16 @@
                         <table style="padding: 1px; margin-bottom: 2px" class="table">
                             <tr style=" padding: 2px; margin: 2px; font-size: 20px">
                                 <td style="padding: 2px; margin: 2px; width: 50%">
-                                    <a href="insert.html" style="width: 100%; text-align: center; border-radius: 10px; text-align: center; color: #27AE60" class="button-3d"><img src="images/ADD_GRN.png"  alt="Alertes" style="width: 30px; height: 30px; float: left" /> Ajouter</a>
+                                    <a href="insert.html" style="width: 100%; text-align: center; border-radius: 10px; text-align: center; color: #27AE60" class="button-3d"><img src="images/ADD_GRN.png"  alt="Alertes" style="width: 30px; height: 30px; display: inline-block; margin-bottom: -7px" /> Ajouter</a>
                                 </td>
                                 <td  style=" padding: 2px; margin: 2px; width: 50%">
-                                    <a href="parcelles-map.html" style="width: 100%; text-align: center; border-radius: 10px; color: #27AE60" class=" button-3d"><img src="images/map.png"  alt="Map" style="width: 30px; height: 30px; float: left" /> sur la carte</a>
+                                    <a href="parcelles-map.html" style="width: 100%; text-align: center; border-radius: 10px; color: #27AE60" class=" button-3d"><img src="images/map.png"  alt="Map" style="width: 30px; height: 30px; display: inline-block; margin-bottom: -7px" /> Carte</a>
                                 </td>
                             </tr>
                         </table>
                     </div>
                     <div class="header-menu1" id="listeParcelles">
-
+                        <img id="loading" style="text-align: center; margin-left: auto; margin-right: auto; width: 100%" src="images/loading.gif" alt="Chargement en cours..."/>
                     </div>
                 </div>
             </div>
@@ -142,6 +142,7 @@
 //                'data': {'user': 1},
                 'dataType': 'JSON',
                 'success': function (resultat) {
+                    jQuery('#loading').hide();
                     alert(resultat.length + ' parcelles trouvées');
                     for (var i = 0; i < resultat.length; i++) {
                         var idparcelle = resultat[i].ID_PCLE_CLT;

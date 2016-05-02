@@ -50,6 +50,7 @@
             .scrollable > * {
                 -webkit-transform: translateZ(0px);
             }
+            
         </style>
 
         <script type="text/javascript" src="js/jquery.min.js"></script>
@@ -85,9 +86,9 @@
     </head>
     <body onload="">
         <div class="scrollable" id="container">
-            <div class="snap-drawers">
+<!--            <div class="snap-drawers">
                 <div class="snap-drawer snap-drawer-left">
-                    <div class="sidessssbar-header">
+                    <div class="headerAccueil sidebar-header">
                         <a href="#" class="sidebar-logo"><h2 style="color: #27AE60">Parcelles GEA</h2></a>
                         <a href="#" class="sidebar-logo-close" style="font-size: 18px"><i class="fa fa-arrow-circle-left default-color"></i></a>
                     </div>
@@ -102,14 +103,14 @@
                     <div class="sidebar-decoration"></div>
                 </div>
 
-            </div>
+            </div>-->
 
-            <div class="page-header">
-                <a href="#" class="open-left"><i class="fa fa-navicon"></i></a>
-                <a class="page-logo"><span id="titreHeder"><img src="images/PARCELLE.png" alt="" style="width: 32px; height: 32px; display: inline;"/> Parcelles GEA</span></a>
+<div class="page-header" style="height: 100px">
+                <!--<a href="#" class="open-left"><i class="fa fa-navicon"></i></a>-->
+                <a class="page-logo" style="padding-top: 30px;"><span id="titreHeder"><img src="images/PARCELLE.png" alt="" style="width: 32px; height: 32px; display: inline; margin-bottom: -7px;"/> Parcelles GEA</span></a>
                 <!--<a href="accueil.html" id="backbutton" class="open-right1 cursor"><i style="color: #FFF" class="fa fa-arrow-left"></i></a>-->
             </div>
-            <div id="content" class="snap-content">
+<div id="content" class="snap-content" style="padding-top: 50px">
                 <div id="ajax-content" style="" class="scroller">
                     <div class="header-menu">
                         <ul class="sidebar-navigation">
@@ -126,7 +127,7 @@
 
             </div>
         </div>
-        <script type="text/javascript" src="js/db.js"></script>
+        <!--<script type="text/javascript" src="js/db.js"></script>-->
         <script type="text/javascript">
             // Wait for Cordova to load
             document.addEventListener("deviceready", onDeviceReady, false);
