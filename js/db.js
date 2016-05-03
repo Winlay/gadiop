@@ -30,7 +30,7 @@ function onDeviceReady() {
             alert('base de donées créée avec succes');
         }, function (e) {
             console.log("ERROR: " + e.message);
-            alert('base de donnée initialisée');
+            alert('base de données chargée');
         });
     });
 }
@@ -45,7 +45,7 @@ function connexion(login, password) {
             USERPASSWORD = res.rows.item(0).MOTPASSE;
             alert("PRENOM : " + res.rows.item(0).PRENOMUSER + " ");
             document.location.href = "accueil.html";
-        }, function (tx) {
+        }, function (tx,USERLOGIN,USERPASSWORD) {
             jQuery.ajax({
                 'type': 'GET',
                 'url': "http://geoland.noflay.com/server/connexion.php",

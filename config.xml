@@ -55,7 +55,7 @@
     <!--<splash src="images/splash.png"  />-->
 
     <!--<content src="index.html" />-->
-    <content src="accueil.html" />
+    <content src="index.html" />
     <allow-navigation href="http://*/*" />
     <allow-intent href="https://*/*" />
     <allow-intent href="http://*/*" />
