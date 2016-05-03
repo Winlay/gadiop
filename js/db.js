@@ -40,7 +40,9 @@ function connexion(login, password) {
     USERPASSWORD= password;
     var db = window.sqlitePlugin.openDatabase({name: "my.db"});
     db.transaction(function (tx) {
-        tx.executeSql("SELECT * FROM TB_USER WHERE LOGIN='" + login + "' AND PASSWORD = '" + password + "';", [], function (tx, res) {
+        var sql="SELECT * FROM TB_USER WHERE LOGIN='" + USERLOGIN + "' AND PASSWORD = '" + USERPASSWORD + "';";
+        alert(sql);
+        tx.executeSql(sql, [], function (res) {
             USERLOGIN = res.rows.item(0).LOGIN;
             USERPASSWORD = res.rows.item(0).MOTPASSE;
             alert("PRENOM : " + res.rows.item(0).PRENOMUSER + " ");
