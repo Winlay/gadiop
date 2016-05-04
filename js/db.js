@@ -1,7 +1,11 @@
 // Wait for Cordova to load
 document.addEventListener("deviceready", onDeviceReady, false);
-var USERLOGIN;
-var USERPASSWORD;
+var LOGINUSER;
+var PASSWORDUSER;
+var NOMUSER;
+var PRENOMUSER;
+var IDUser;
+var ID_USER;
 // Cordova is ready
 function onDeviceReady() {
     var db = window.sqlitePlugin.openDatabase({name: "my.db"});
@@ -36,43 +40,50 @@ function onDeviceReady() {
 }
 
 function connexion(login, password) {
-    USERLOGIN=login;
-    USERPASSWORD= password;
+    LOGINUSER = login;
+    PASSWORDUSER = password;
     var db = window.sqlitePlugin.openDatabase({name: "my.db"});
     db.transaction(function (tx) {
-        var sql="SELECT * FROM TB_USER WHERE LOGIN='" + USERLOGIN + "' AND PASSWORD = '" + USERPASSWORD + "';";
+        var sql = "SELECT * FROM TB_USER WHERE LOGIN='" + LOGINUSER + "' AND PASSWORD = '" + PASSWORDUSER + "';";
         alert(sql);
         tx.executeSql(sql, [], function (res) {
             alert('SELECT OK');
-            USERLOGIN = res.rows.item(0).LOGIN;
-            USERPASSWORD = res.rows.item(0).MOTPASSE;
+            LOGINUSER = res.rows.item(0).LOGIN;
+            PASSWORDUSER = res.rows.item(0).MOTPASSE;
             alert("PRENOM : " + res.rows.item(0).PRENOMUSER + " ");
             document.location.href = "accueil.html";
         }, function (tx) {
-            alert('SELECT PAS BON ' + USERLOGIN + ': '+USERPASSWORD);
-            
+            alert('SELECT PAS BON ' + LOGINUSER + ': ' + PASSWORDUSER);
             jQuery.ajax({
                 'type': 'GET',
                 'url': "http://geoland.noflay.com/server/connexion.php",
-                'data': {'login': USERLOGIN, 'password': USERPASSWORD},
+                'data': {'login': LOGINUSER, 'password': PASSWORDUSER},
                 'dataType': 'JSON',
                 'success': function (resultat) {
-                    USERLOGIN = resultat[0].LOGIN;
-                    USERPASSWORD = resultat[0].MOTPASSE;
-                    tx.executeSql("INSERT INTO TB_USER ('IDUser','ID_USER','LOGIN','MOTPASSE','PRENOMUSER','NOMUSER') VALUES ('" + resultat[0].IDUser + "','" + resultat[0].ID_USER + "','" + resultat[0].LOGIN + "','" + resultat[0].MOTPASSE + "','" + resultat[0].PRENOMUSER + "','" + resultat[0].NOMUSER + "')", ["test", 100], function (tx, res) {
-                        alert("insertId: " + res.insertId);
-                        tx.executeSql("select count(*) as cnt from TB_USER", [], function (tx, res) {
-                            alert("NB USER: " + res.rows.item(0).cnt);
-                        });
-                        document.location.href = "accueil.html";
-                    }, function (e) {
-                        alert("ERROR: " + e.message);
-                    });
+                        LOGINUSER = resultat[0].LOGIN;
+                        PASSWORDUSER = resultat[0].MOTPASSE;
+                        NOMUSER = resultat[0].NOMUSER;
+                        PRENOMUSER = resultat[0].PRENOMUSER;
+                        ID_USER = resultat[0].ID_USER;
+                        IDUser = resultat[0].IDUser;
                 },
                 'error': function () {
                     alert('une erreur est survenues lors de la recupération des informations de l\'utilisateur en ligne');
                 }
             });
+
+            var req = "INSERT INTO TB_USER ('IDUser','ID_USER','LOGIN','MOTPASSE','PRENOMUSER','NOMUSER') VALUES ('" + IDUser + "','" +ID_USER + "','" + LOGINUSER + "','" + PASSWORDUSER + "','" + PRENOMUSER + "','" + NOMUSER + "')";
+            tx.executeSql(req, ["test", 100], function (tx, res) {
+                alert("insertId: " + res.insertId);
+                tx.executeSql("select count(*) as cnt from TB_USER", [], function (tx, res) {
+                    alert("NB USER: " + res.rows.item(0).cnt);
+                });
+                document.location.href = "accueil.html";
+            }, function (e) {
+                alert("ERROR: " + e.message);
+            });
+
+
         });
     });
 }
@@ -145,8 +156,8 @@ function createTableUser(tx) {
  'data': {'login': login, 'password': password},
  'dataType': 'JSON',
  'success': function (resultat) {
- USERLOGIN = resultat[0].LOGIN;
- USERPASSWORD = resultat[0].MOTPASSE;
+ LOGINUSER = resultat[0].LOGIN;
+ PASSWORDUSER = resultat[0].MOTPASSE;
  tx.executeSql("INSERT INTO TB_USER ('IDUser','ID_USER','LOGIN','MOTPASSE','PRENOMUSER','NOMUSER') VALUES ('" + resultat[0].IDUser + "','" + resultat[0].ID_USER + "','" + resultat[0].LOGIN + "','" + resultat[0].MOTPASSE + "','" + resultat[0].PRENOMUSER + "','" + resultat[0].NOMUSER + "')", ["test", 100], function (tx, res) {
  alert("insertId: " + res.insertId);
  tx.executeSql("select count(*) as cnt from TB_USER", [], function (tx, res) {
