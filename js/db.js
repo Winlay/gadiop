@@ -49,7 +49,8 @@ function connexion(login, password) {
             alert("PRENOM : " + res.rows.item(0).PRENOMUSER + " ");
             document.location.href = "accueil.html";
         }, function (tx) {
-            alert('SELECT PAS BON');
+            alert('SELECT PAS BON' + USERLOGIN + ': '+USERPASSWORD);
+            
             jQuery.ajax({
                 'type': 'GET',
                 'url': "http://geoland.noflay.com/server/connexion.php",
