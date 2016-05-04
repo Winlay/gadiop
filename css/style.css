@@ -224,7 +224,7 @@ h6{
     /*background-repeat: no-repeat;*/
     padding-right: 35px;
     padding-top: 10px;
-    color: #00C000;
+    color: #39981F;
     font-size:20px;
     /*width:200px;*/
     width:100%;
@@ -262,7 +262,7 @@ h6{
 .page-header{
     /*background-color:#27AE60;*/
     background-color:#D8F6EA;
-    color: #00C000;
+    color: #39981F;
     height:60px;
     width:100%;
     position:fixed;
@@ -270,7 +270,7 @@ h6{
     transform:translateX(0px);
     -webkit-transform:translateX(0px);
     transition:all 350ms ease-in-out;
-    border-top: solid 4px #00C000;
+    border-top: solid 4px #39981F;
     border-bottom: solid 4px #FF8000;
 }
 
@@ -298,7 +298,7 @@ h6{
     line-height:60px;
     width:60px;
     /*color: #FFFFFF;*/
-    color: #00C000;
+    color: #39981F;
     font-size:20px;
     border-right: solid 1px #FFFFFF;
 }

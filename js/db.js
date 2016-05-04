@@ -30,7 +30,7 @@ function onDeviceReady() {
             alert('base de donées créée avec succes');
         }, function (e) {
             console.log("ERROR: " + e.message);
-            alert('base de donnée initialisée');
+            alert('base de données chargée');
         });
     });
 }
@@ -40,12 +40,16 @@ function connexion(login, password) {
     USERPASSWORD= password;
     var db = window.sqlitePlugin.openDatabase({name: "my.db"});
     db.transaction(function (tx) {
-        tx.executeSql("SELECT * FROM TB_USER WHERE LOGIN='" + login + "' AND PASSWORD = '" + password + "';", [], function (tx, res) {
+        var sql="SELECT * FROM TB_USER WHERE LOGIN='" + USERLOGIN + "' AND PASSWORD = '" + USERPASSWORD + "';";
+        alert(sql);
+        tx.executeSql(sql, [], function (res) {
+            alert('SELECT OK');
             USERLOGIN = res.rows.item(0).LOGIN;
             USERPASSWORD = res.rows.item(0).MOTPASSE;
             alert("PRENOM : " + res.rows.item(0).PRENOMUSER + " ");
             document.location.href = "accueil.html";
         }, function (tx) {
+            alert('SELECT PAS BON');
             jQuery.ajax({
                 'type': 'GET',
                 'url': "http://geoland.noflay.com/server/connexion.php",
@@ -67,10 +71,7 @@ function connexion(login, password) {
                 'error': function () {
                     alert('une erreur est survenues lors de la recupération des informations de l\'utilisateur en ligne');
                 }
-            },
-                    function () {
-                        alert('echec de la création de la base de données');
-                    });
+            });
         });
     });
 }
