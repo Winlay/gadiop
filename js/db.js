@@ -66,6 +66,7 @@ function connexion(login, password) {
                         PRENOMUSER = resultat[0].PRENOMUSER;
                         ID_USER = resultat[0].ID_USER;
                         IDUser = resultat[0].IDUser;
+                        alert('LOGINUSER:'+LOGINUSER+'/PASSWORDUSER'+PASSWORDUSER+'/PRENOMUSER:'+PRENOMUSER);
                 },
                 'error': function () {
                     alert('une erreur est survenues lors de la recupération des informations de l\'utilisateur en ligne');
