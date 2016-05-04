@@ -77,13 +77,11 @@
             function quitter() {
                 if (confirm("Voulez-vous vraiment quitter l'application")) {
                     navigator.app.exitApp();
-                } else {
-                    alert("Annulée");
-                }
+                } 
             }
-
+            
             document.addEventListener("backbutton", function (e) {
-                loadContent('index_ajax.html');
+                document.location('alertes.html');
             }, false);
         </script>
 
@@ -115,7 +113,7 @@
 
             <div class="page-header">
                 <a href="#" class="open-left"><i class="fa fa-navicon"></i></a>
-                <a class="page-logo"><img src="images/alert.png" alt="" style="width: 32px; height: 32px; display: inline;"/> Alertes</a>
+                <a class="page-logo"><img src="images/alert.png" alt="" style="width: 48px; height: 48px; display: inline;"/> Alertes</a>
             </div>
             <div id="content" class="snap-content">
                 <div id="ajax-content" style="" class="scroller">
@@ -155,49 +153,49 @@
                         'data': {'user': 1, 'map': 'map'},
                         'dataType': 'JSON',
                         'success': function (resultat) {
-                            if(resultat){
-                            alert(resultat.length + ' alertes trouvées');
-                            for (var i = 0; i < resultat.length; i++) {
-                                var description = resultat[i].description;
-                                var titre = resultat[i].libelle;
-                                var latitude = resultat[i].latitude;
-                                var longitude = resultat[i].longitude;
-                                var fichier = resultat[i].fichier;
-                                var textimg = '';
-                                if (fichier) {
-                                    textimg = '<p><img style="width:90%"  src="http://geoland.noflay.com/server/alertes/fichiers/' + fichier + '"/></p>';
+                            if (resultat) {
+                                alert(resultat.length + ' alertes trouvées');
+                                for (var i = 0; i < resultat.length; i++) {
+                                    var description = resultat[i].description;
+                                    var titre = resultat[i].libelle;
+                                    var latitude = resultat[i].latitude;
+                                    var longitude = resultat[i].longitude;
+                                    var fichier = resultat[i].fichier;
+                                    var textimg = '';
+                                    if (fichier) {
+                                        textimg = '<p><img style="width:90%"  src="http://geoland.noflay.com/server/alertes/fichiers/' + fichier + '"/></p>';
+                                    }
+
+                                    var contentString = '<div>'
+                                            + textimg
+                                            + '<br/><table><tr><td><b>Libelle</b></td><td>' + titre + '</td></tr>'
+                                            + '<tr><td>Description</b></td><td>' + description + '</td></tr>'
+                                            + '</table></div>';
+
+                                    var infowindow = new google.maps.InfoWindow({
+                                        position: new google.maps.LatLng(latitude, longitude),
+                                        content: contentString
+                                    });
+                                    var marker = new google.maps.Marker({
+                                        position: new google.maps.LatLng(latitude, longitude),
+                                        map: map,
+                                        title: titre,
+                                        icon: 'images/alerte.png',
+                                        info: infowindow
+                                    });
+
+                                    markers.push(marker);
+
+
+                                    marker.addListener('click', function () {
+                                        this.info.open(map);
+                                    });
+
+                                    map.setCenter(marker.position);
                                 }
-
-                                var contentString = '<div>'
-                                        + textimg
-                                        + '<br/><table><tr><td><b>Libelle</b></td><td>' + titre + '</td></tr>'
-                                        + '<tr><td>Description</b></td><td>' + description + '</td></tr>'
-                                        + '</table></div>';
-
-                                var infowindow = new google.maps.InfoWindow({
-                                    position: new google.maps.LatLng(latitude, longitude),
-                                    content: contentString
-                                });
-                                var marker = new google.maps.Marker({
-                                    position: new google.maps.LatLng(latitude, longitude),
-                                    map: map,
-                                    title: titre,
-                                    icon: 'images/alerte.png',
-                                    info: infowindow
-                                });
-
-                                markers.push(marker);
-
-
-                                marker.addListener('click', function () {
-                                    this.info.open(map);
-                                });
-
-                                map.setCenter(marker.position);
+                            } else {
+                                alert('Aucune alerte géolocalisée n\'a été trouvée ');
                             }
-                        }else{
-                            alert('Aucune alerte géolocalisée n\'a été trouvée '); 
-                        }
                         },
                         'error': function () {
                             alert('une erreur est survenue lors de l\'enrégistrement. Merci de réessayer');

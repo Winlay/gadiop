@@ -1,0 +1,12 @@
+bouton liste
+Accueil agrandir les boutons et ne pas afficher ekls traits en dessous
+PAge alerte naligner vtextes et image geoloc
+Ajouter PArcelle trouble /  centrer boutons actions / Attendre que la 
+Tous les types; details campagne; (enlever du formulaire)
+Formulaire: Tout obligatoire sauf 
+Verifier si la localisation est activé et le signaler si negatif! 
+
+backbuton pour chaque page. 
+
+
+

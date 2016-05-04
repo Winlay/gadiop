@@ -51,6 +51,21 @@
                 -webkit-transform: translateZ(0px);
             }
 
+            .header-menu a {
+                height: 50px;
+                line-height: 80px;
+                color: #1f1f1f;
+                background-color: rgba(255,255,255,0.5);
+                border: none;
+                text-shadow: 0px 1px 0px #FFFFFF;
+                font-weight: normal;
+                font-size: 20px;
+                padding-bottom: 30px
+            }
+            .header-menu a:first-child {
+                border: none;
+            }
+            
         </style>
 
         <script type="text/javascript" src="js/jquery.min.js"></script>
@@ -90,8 +105,8 @@
             <div class="page-header" style="height: 150px; border-top: solid 2px #FFFFFF">
                 <div class="" style="height: 40px; border-bottom: solid 4px #39981F; background-color: #FFFFFF">
                     <img src="images/icon.png" style="float: left; height: 32px" />
-                    <p style="float: right; padding-right: 5px">
-                        <a id="nomdac" style="font-size: 10px">KEUR Masamba Kane</a>
+                    <p style="float: right; padding-right: 5px; font-weight: bold">
+                        <a id="nomdac" style="font-size: 10px">KEUR SAMBA KANE</a> - 
                         <a id="dateheure" style="font-size: 10px">03/05/2015 - 20:30:35</a>
                     </p>
                 </div>
@@ -106,9 +121,9 @@
                     </div>
                     <div class="header-menu">
                         <ul class="sidebar-navigation">
-                            <li><a  href="parcelles-liste.html"><i style="margin-top: 6px"><img src="images/PARCELLE.png"  alt="Parcelles" style="width: 32px; height: 32px" /></i><em style="padding-left: 80px; padding-top: 20px">Parcelles</em></a></li>
-                            <li><a  href="alertes.html"><i style="margin-top: 6px"><img src="images/alert.png"  alt="Alertes" style="width: 32px; height: 32px" /></i><em style="padding-left: 80px; padding-top: 20px">Alertes</em></a></li>
-                            <li><a  onclick="quitter()"><i style="margin-top: 6px"><img src="images/CANCEL.png"  alt="Alertes" style="width: 32px; height: 32px" /></i><em style="padding-left: 80px; padding-top: 20px">Quitter</em></a></li>
+                            <li style="padding-bottom: 80px"><a  href="parcelles-liste.html"><i style="margin-top: 6px"><img src="images/PARCELLE.png"  alt="Parcelles" style="width: 64px; height: 64px" /></i><em style="padding-left: 100px; padding-top: 20px">Parcelles</em></a></li>
+                            <li style="padding-bottom: 80px"><a  href="alertes.html"><i style="margin-top: 6px"><img src="images/alert.png"  alt="Alertes" style="width: 64px; height: 64px" /></i><em style="padding-left: 100px; padding-top: 20px">Alertes</em></a></li>
+                            <li style="padding-bottom: 80px"><a  onclick="quitter()"><i style="margin-top: 6px"><img src="images/CANCEL.png"  alt="Alertes" style="width: 64px; height: 64px" /></i><em style="padding-left: 100px; padding-top: 20px">Quitter</em></a></li>
                         </ul>
                     </div>
                 </div>
@@ -117,7 +132,7 @@
         </div>
         <!--<script type="text/javascript" src="js/db.js"></script>-->
         <script type="text/javascript">
-            
+
             var datetexte = moment().format("DD/MM/YYYY, h:mm:ss a");
             jQuery('#dateheure').html(datetexte);
             document.addEventListener("deviceready", onDeviceReady, false);
