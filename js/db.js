@@ -21,7 +21,7 @@ var SQLCREATETABLE =
 
 // Cordova is ready
 function onDeviceReady() {
-    var DB = window.sqlitePlugin.openDatabase({name: "my.db"});
+    var DB = window.sqlitePlugin.openDatabase({name:"my.db", location: 1});
     window.plugins.toast.show('DEBUT DROP TABLE', 'long', 'center');
     DB.transaction(function (transaction) {
         transaction.executeSql('DROP TABLE TB_USER', [],
@@ -36,7 +36,7 @@ function onDeviceReady() {
 }
 // Cordova is ready
 function createDB() {
-    var DB = window.sqlitePlugin.openDatabase({name: "my.db"});
+    var DB = window.sqlitePlugin.openDatabase({name:"my.db", location: 1});
     DB.transaction(function (transaction) {
         transaction.executeSql(SQLCREATETABLE, [],
                 function (tx, result) {
@@ -49,7 +49,7 @@ function createDB() {
 }
 // Cordova is ready
 function selectUser() {
-    var DB = window.sqlitePlugin.openDatabase({name: "my.db"});
+    var DB = window.sqlitePlugin.openDatabase({name:"my.db", location: 1});
     DB.transaction(function (transaction) {
         var reqInsert = "SELECT * FROM TB_USER;";
         transaction.executeSql(reqInsert, [],
@@ -66,15 +66,15 @@ function selectUser() {
 }
 // Cordova is ready
 function insertUser() {
-    var DB = window.sqlitePlugin.openDatabase({name: "my.db"});
+    var DB = window.sqlitePlugin.openDatabase({name:"my.db", location: 1});
     DB.transaction(function (transaction) {
         var reqInsert = "INSERT INTO TB_USER (ID_USER,LOGIN,MOTPASSE,PRENOMUSER,NOMUSER,NOM_DAC,ID_DAC) VALUES (?,?,?,?,?,?,?);";
         transaction.executeSql(reqInsert, [ID_USER, LOGINUSER, PASSWORDUSER, PRENOMUSER, NOMUSER, 'KEUR SAMBA KANE', 1],
                 function (tx, result) {
-                    alert('succes insertion utilisateur');
+                    window.plugins.toast.show('succes insertion utilisateur', 'long', 'center');
                 },
                 function (error) {
-                    alert('erreur insertion utilisateur');
+                    window.plugins.toast.show('erreur insertion utilisateu', 'long', 'center');
                 });
     });
 }
