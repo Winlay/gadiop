@@ -22,7 +22,7 @@ var SQLCREATETABLE =
 // Cordova is ready
 function onDeviceReady() {
     var DB = window.sqlitePlugin.openDatabase({name: "my.db"});
-    alert('DEBUT DROP TABLE');
+    window.plugins.toast.show('DEBUT DROP TABLE', 'long', 'center');
     DB.transaction(function (transaction) {
         transaction.executeSql('DROP TABLE TB_USER', [],
                 function (tx, result) {
@@ -40,10 +40,10 @@ function createDB() {
     DB.transaction(function (transaction) {
         transaction.executeSql(SQLCREATETABLE, [],
                 function (tx, result) {
-                     window.plugins.toast.show('table embed créée avec succes', 'long', 'center');
+                    window.plugins.toast.show('table embed créée avec succes', 'long', 'center');
                 },
                 function (error) {
-                     window.plugins.toast.show('erreur création embed table', 'long', 'center');
+                    window.plugins.toast.show('erreur création embed table', 'long', 'center');
                 });
     });
 }
