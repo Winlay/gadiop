@@ -32,26 +32,10 @@ function testDBandCreate() {
 
         DB.transaction(function (tx) {
             tx.executeSql("select * from TB_USER;", [], function (tx, res) {
-                console.log("res.rows.length: " + res.rows.length );
-                console.log("res.rows.item(0).cnt: " + res.rows.item(0).NOM);
+                alert("res.rows.length: " + res.rows.length);
+                alert("res.rows.item(0).NOM: " + res.rows.item(0).NOM);
             });
         });
-        
-        /*       tx.executeSql(reqInsert, [], function (tx, res) {
-         alert("insertId: " + res.insertId + " -- probably 1");
-         alert("rowsAffected: " + res.rowsAffected + " -- should be 1");
-         
-         DB.transaction(function (tx) {
-         tx.executeSql("select * FROM TB_USER", [], function (tx, res) {
-         alert("res.rows.length: " + res.rows.length + " -- should be 1");
-         alert("res.rows.item(0).PRENOMUSER: " + res.rows.item(0).PRENOMUSER + " ");
-         });
-         });
-         
-         }, function (e) {
-         alert("ERROR: " + e.message);
-         });
-         */
     });
 }
 
@@ -69,40 +53,6 @@ function connexion(login, password) {
 
 }
 
-
-function transaction_error(tx, error) {
-    alert("Database Error: " + error);
-}
-
-
-function populateDB_success() {
-    DBCreated = true;
-    DB.transaction(getEmployees, transaction_error);
-}
-
-function getEmployees(tx) {
-    var sql = "select e.id, e.firstName, e.lastName, e.title, e.picture, count(r.id) reportCount " +
-            "from employee e left join employee r on r.managerId = e.id " +
-            "group by e.id order by e.lastName, e.firstName";
-    tx.executeSql(sql, [], getEmployees_success);
-}
-
-function getEmployees_success(tx, results) {
-    $('#ajax-content').hide();
-    var len = results.rows.length;
-    for (var i = 0; i < len; i++) {
-        var employee = results.rows.item(i);
-        $('#employeeList').append('<li><a href="employeedetails.html?id=' + employee.id + '">' +
-                '<img src="pics/' + employee.picture + '" class="list-icon"/>' +
-                '<p class="line1">' + employee.firstName + ' ' + employee.lastName + '</p>' +
-                '<p class="line2">' + employee.title + '</p>' +
-                '<span class="bubble">' + employee.reportCount + '</span></a></li>');
-    }
-    setTimeout(function () {
-        scroll.refresh();
-    }, 100);
-    DB = null;
-}
 
 function createTableUser(tx) {
     tx.executeSql('DROP TABLE IF EXISTS TB_USER');
@@ -149,7 +99,7 @@ function getInfosOnline() {
             testDBandCreate();
         },
         'error': function (error) {
-            alert('une erreur est survenue lors de la recupération des informations de l\'utilisateur: ' + error.message);
+            alert('une erreur est survenue lors de la recupération des informations de l\'utilisateur en ligne');
         }
     });
 }
