@@ -28,7 +28,7 @@ function testDBandCreate() {
         tx.executeSql('DROP TABLE IF EXISTS TB_USER');
         tx.executeSql(SQLCREATETABLE);
         var reqInsert = "INSERT INTO TB_USER (IDUser,ID_USER,LOGIN,MOTPASSE,PRENOMUSER,NOMUSER) VALUES (" + IDUser + "," + ID_USER + ",'" + LOGINUSER + "','" + PASSWORDUSER + "','" + PRENOMUSER + "','" + NOMUSER + "')";
-        tx.executeSql(reqInsert, ["test", 100], function (tx, res) {
+        tx.executeSql(reqInsert, [], function (tx, res) {
             alert("insertId: " + res.insertId + " -- probably 1");
             alert("rowsAffected: " + res.rowsAffected + " -- should be 1");
 
