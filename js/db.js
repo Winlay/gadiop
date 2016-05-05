@@ -121,6 +121,7 @@ function createTableUser(tx) {
 }
 
 function getInfosOnline() {
+     alert('LOGINUSER:' + LOGINUSER + '/PASSWORDUSER' + PASSWORDUSER );
     jQuery.ajax({
         'type': 'GET',
         'url': "http://geoland.noflay.com/server/connexion.php",
