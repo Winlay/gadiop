@@ -1,6 +1,6 @@
 // Wait for Cordova to load
 document.addEventListener("deviceready", onDeviceReady, false);
-var DB;
+//var DB;
 var LOGINUSER;
 var PASSWORDUSER;
 var NOMUSER;
@@ -19,8 +19,10 @@ var SQLCREATETABLE =
         + 'ID_DAC integer,'
         + ')';
 
+// Cordova is ready
 function onDeviceReady() {
-    DB = window.sqlitePlugin.openDatabase({name: "my.db"});
+    var DB = window.sqlitePlugin.openDatabase({name: "my.db"});
+    alert('DEBUT DROP TABLE');
     DB.transaction(function (transaction) {
         transaction.executeSql('DROP TABLE TB_USER', [],
                 function (tx, result) {
@@ -30,10 +32,11 @@ function onDeviceReady() {
                     alert('erreur DROP TABLE');
                 });
     });
+    // ...
 }
 // Cordova is ready
 function createDB() {
-    DB = window.sqlitePlugin.openDatabase({name: "my.db"});
+    var DB = window.sqlitePlugin.openDatabase({name: "my.db"});
     DB.transaction(function (transaction) {
         transaction.executeSql(SQLCREATETABLE, [],
                 function (tx, result) {
@@ -46,7 +49,7 @@ function createDB() {
 }
 // Cordova is ready
 function selectUser() {
-    DB = window.sqlitePlugin.openDatabase({name: "my.db"});
+   var DB = window.sqlitePlugin.openDatabase({name: "my.db"});
     DB.transaction(function (transaction) {
         var reqInsert = "SELECT * FROM TB_USER;";
         transaction.executeSql(reqInsert, [],
@@ -63,7 +66,7 @@ function selectUser() {
 }
 // Cordova is ready
 function insertUser() {
-    DB = window.sqlitePlugin.openDatabase({name: "my.db"});
+    var DB = window.sqlitePlugin.openDatabase({name: "my.db"});
     DB.transaction(function (transaction) {
         var reqInsert = "INSERT INTO TB_USER (ID_USER,LOGIN,MOTPASSE,PRENOMUSER,NOMUSER,NOM_DAC,ID_DAC) VALUES (?,?,?,?,?,?,?);";
         transaction.executeSql(reqInsert, [ID_USER, LOGINUSER, PASSWORDUSER, PRENOMUSER, NOMUSER, 'KEUR SAMBA KANE', 1],
