@@ -14,7 +14,6 @@
         <title>Parcelles GEA</title>
         <link href="css/framework.min.css" 	  rel="stylesheet" type="text/css"/>
         <link href="css/owl.theme.min.css"    rel="stylesheet" type="text/css"/>
-        <!--<link href="css/swipebox.min.css"	  rel="stylesheet" type="text/css"/>-->
         <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
         <link href="css/style.css"     	  rel="stylesheet" type="text/css"/>
         <style type="text/css">
@@ -74,6 +73,7 @@
         <script type="text/javascript" src="js/custom.js"></script>
         <script type="text/javascript" src="js/framework.plugins.min.js"></script>
         <script type="text/javascript" src="js/moment.js"></script>
+        <script type="text/javascript" src="js/initUser.js"></script>
         <script type="text/javascript">
             function clearRadio(nom) {
                 if (nom) {
@@ -105,7 +105,7 @@
                 <div class="" style="height: 40px; border-bottom: solid 4px #39981F; background-color: #FFFFFF">
                     <img src="images/icon.png" style="float: left; height: 32px" />
                     <p style="float: right; padding-right: 5px; font-weight: bold">
-                        <a id="nomdac" style="font-size: 10px">KEUR SAMBA KANE</a> - 
+                        <a id="nomdac" style="font-size: 10px">NOM DAC</a> - 
                         <a id="dateheure" style="font-size: 10px">03/05/2015 - 20:30:35</a>
                     </p>
                 </div>
@@ -134,39 +134,7 @@
 
             var datetexte = moment().format("DD/MM/YYYY, h:mm:ss a");
             jQuery('#dateheure').html(datetexte);
-
-            document.addEventListener("deviceready", onDeviceReady, false);
-//var DB;
-            var LOGINUSER;
-            var PASSWORDUSER;
-            var NOMUSER;
-            var NOM_DAC;
-            var PRENOMUSER;
-            var IDUser;
-            var ID_USER;
-// Cordova is ready
-            function onDeviceReady() {
-                var DB = window.sqlitePlugin.openDatabase({name: "my.db", location: 1});
-                DB.transaction(function (tx) {
-                    var reqInsert = "SELECT * FROM tb_user;";
-                    tx.executeSql(reqInsert, [],
-                            function (tx, result) {
-                                LOGINUSER = result.rows.item(0).LOGIN;
-                                PASSWORDUSER = result.rows.item(0).MOTPASSE;
-                                NOMUSER = result.rows.item(0).PRENOMUSER;
-                                PRENOMUSER = result.rows.item(0).PRENOMUSER;
-                                ID_USER = result.rows.item(0).ID_USER;
-                                IDUser = result.rows.item(0).IDUser;
-                                NOM_DAC = result.rows.item(0).NOM_DAC;
-                                jQuery('#nomdac').html(NOM_DAC);
-                            },
-                            function (error) {
-                                window.plugins.toast.showLongCenter('erreur select utilisateur' + error);
-                            });
-                });
-            }
-
-
+            jQuery('#nomdac').html(NOM_DAC);
         </script>
     </body>
 
