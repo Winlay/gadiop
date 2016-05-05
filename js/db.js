@@ -21,7 +21,14 @@ var SQLCREATETABLE =
 
 // Cordova is ready
 function onDeviceReady() {
-    var DB = window.sqlitePlugin.openDatabase({name:"my.db", location: 1});
+      var DB = window.sqlitePlugin.openDatabase({name: "my.db"}, 
+    function() {
+        window.plugins.toast.showLongCenter('Connected');
+    },
+    function(err) {
+        window.plugins.toast.showLongCenter('Error Connexion');
+    });
+    
     window.plugins.toast.show('DEBUT DROP TABLE', 'long', 'center');
     DB.transaction(function (tx) {
         tx.executeSql('DROP TABLE TB_USER', [],
@@ -36,7 +43,7 @@ function onDeviceReady() {
 }
 // Cordova is ready
 function createDB() {
-    var DB = window.sqlitePlugin.openDatabase({name:"my.db", location: 1});
+    var DB = window.sqlitePlugin.openDatabase({name: "my.db", location: 1});
     DB.transaction(function (tx) {
         tx.executeSql(SQLCREATETABLE, [],
                 function (tx, result) {
@@ -49,7 +56,7 @@ function createDB() {
 }
 // Cordova is ready
 function selectUser() {
-    var DB = window.sqlitePlugin.openDatabase({name:"my.db", location: 1});
+    var DB = window.sqlitePlugin.openDatabase({name: "my.db", location: 1});
     DB.transaction(function (tx) {
         var reqInsert = "SELECT * FROM TB_USER;";
         tx.executeSql(reqInsert, [],
@@ -60,13 +67,13 @@ function selectUser() {
                     }
                 },
                 function (error) {
-                    alert('erreur select utilisateur');
+                    window.plugins.toast.show('erreur select utilisateur', 'long', 'center');
                 });
     });
 }
 // Cordova is ready
 function insertUser() {
-    var DB = window.sqlitePlugin.openDatabase({name:"my.db", location: 1});
+    var DB = window.sqlitePlugin.openDatabase({name: "my.db", location: 1});
     DB.transaction(function (tx) {
         var reqInsert = "INSERT INTO TB_USER (ID_USER,LOGIN,MOTPASSE,PRENOMUSER,NOMUSER,NOM_DAC,ID_DAC) VALUES (?,?,?,?,?,?,?);";
         tx.executeSql(reqInsert, [ID_USER, LOGINUSER, PASSWORDUSER, PRENOMUSER, NOMUSER, 'KEUR SAMBA KANE', 1],

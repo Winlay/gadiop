@@ -52,24 +52,13 @@
         </style>
 
         <!--<script type="text/javascript" src="js/jquery.min.js"></script>-->
+        <script type="text/javascript" src="js/db.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/custom.js"></script>
         <script type="text/javascript" src="js/framework.plugins.min.js"></script>
-        <script type="text/javascript" src="js/db.js"></script>
 
         <script type="text/javascript">
-            function clearRadio(nom) {
-                if (nom) {
-                    jQuery("input:radio[name='" + nom + "']").each(function (i) {
-                        this.checked = false;
-                    });
-                }
-            }
-            function loadContent(url) {
-                jQuery('#ajax-content').load(url);
-            }
-
             function quitter() {
                 if (confirm("Voulez-vous vraiment quitter l'application")) {
                     navigator.app.exitApp();
