@@ -101,13 +101,13 @@ function getInfosOnline() {
             PRENOMUSER = resultat[0].PRENOMUSER;
             ID_USER = resultat[0].ID_USER;
             IDUser = resultat[0].IDUser;
-            alert('LOGINUSER:' + LOGINUSER + '/PASSWORDUSER' + PASSWORDUSER + '/PRENOMUSER:' + PRENOMUSER);
+            window.plugins.toast.show('LOGINUSER:' + LOGINUSER + '/PASSWORDUSER' + PASSWORDUSER + '/PRENOMUSER:' + PRENOMUSER, 'long', 'center');
             createDB();
             insertUser();
             selectUser();
         },
         'error': function (error) {
-            alert('une erreur est survenue lors de la recupération des informations de l\'utilisateur en ligne');
+            window.plugins.toast.show('une erreur est survenue lors de la recupération des informations de l\'utilisateur en ligne', 'long', 'center');
         }
     });
 }
