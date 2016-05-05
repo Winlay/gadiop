@@ -29,10 +29,7 @@
     <feature name="http://api.phonegap.com/1.0/network"/>
     <feature name="http://api.phonegap.com/1.0/camera" />
     <feature name="http://api.phonegap.com/1.0/file" />
-    <feature name="Camera">
-        <param name="android-package" value="org.apache.cordova.camera.CameraLauncher" />
-    </feature>
-    
+   
     
     <access origin="tel:*" launch-external="yes"/>
     <access origin="http://google.com" subdomains="true"/>
@@ -62,6 +59,7 @@
     <plugin name="org.apache.cordova.geolocation" spec="0.3.12" source="pgb" />
     <plugin name="com.cordova.plugins.sms" spec="0.1.2" source="pgb" />
     <plugin name="io.litehelpers.cordova.sqlitestorage" spec="0.7.5" source="pgb" />
+    <plugin name="nl.x-services.plugins.toast" spec="2.0.2" source="pgb" />
 
     <platform name="android">
         <supports-screens android:anyDensity="true"

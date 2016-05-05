@@ -26,10 +26,10 @@ function onDeviceReady() {
     DB.transaction(function (transaction) {
         transaction.executeSql('DROP TABLE TB_USER', [],
                 function (tx, result) {
-                    alert('DROP TABLE OK');
+                    window.plugins.toast.show('DROP TABLE OK', 'long', 'center');
                 },
                 function (error) {
-                    alert('erreur DROP TABLE');
+                    window.plugins.toast.show('ERREUR DROP TABLE', 'long', 'center');
                 });
     });
     // ...
@@ -40,23 +40,23 @@ function createDB() {
     DB.transaction(function (transaction) {
         transaction.executeSql(SQLCREATETABLE, [],
                 function (tx, result) {
-                    alert('table embed créée avec succes');
+                     window.plugins.toast.show('table embed créée avec succes', 'long', 'center');
                 },
                 function (error) {
-                    alert('erreur création embed table');
+                     window.plugins.toast.show('erreur création embed table', 'long', 'center');
                 });
     });
 }
 // Cordova is ready
 function selectUser() {
-   var DB = window.sqlitePlugin.openDatabase({name: "my.db"});
+    var DB = window.sqlitePlugin.openDatabase({name: "my.db"});
     DB.transaction(function (transaction) {
         var reqInsert = "SELECT * FROM TB_USER;";
         transaction.executeSql(reqInsert, [],
                 function (tx, result) {
                     var len = result.rows.length, i;
                     for (i = 0; i < len; i++) {
-                        alert('RESULT=>' + result.rows.item(i).PRENOM + ' ' + result.rows.item(i).NOM);
+                        window.plugins.toast.show('RESULT=>' + result.rows.item(i).PRENOM + ' ' + result.rows.item(i).NOM, 'long', 'center');
                     }
                 },
                 function (error) {
