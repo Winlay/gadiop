@@ -64,7 +64,8 @@
                 list-style: none;
             }
             table, td, tr{
-                border: none
+                border: none;
+                background-color: #FFFFFF;
             }
         </style>
 
@@ -89,7 +90,7 @@
             function quitter() {
                 if (confirm("Voulez-vous vraiment quitter l'application")) {
                     navigator.app.exitApp();
-                } 
+                }
             }
 
             document.addEventListener("backbutton", function (e) {
@@ -100,7 +101,7 @@
                     var number = '+221776362520';
                     var libelle = jQuery('#libelle').val();
                     var description = jQuery('#description').val();
-                    var message = "P. DAC: "+libelle + ": " + description;
+                    var message = "P. DAC: " + libelle + ": " + description;
                     console.log("number=" + number + ", message= " + message);
 
 
@@ -140,8 +141,6 @@
                         <li><a  onclick="quitter()"><i style="margin-top: 6px"><img src="images/CANCEL.png"  alt="Alertes" style="width: 32px; height: 32px" /></i><em style="padding-left: 80px; padding-top: 20px">Quitter</em></a></li>
                     </ul>
                     <div class="sidebar-decoration"></div>
-
-                    <div class="sidebar-decoration"></div>
                 </div>
 
             </div>
@@ -156,8 +155,17 @@
                         <div class="form-alert">
                             <table style="border: none">
                                 <tr style="border: none">
-                                    <td style="padding: 2px; margin: 2px; width: 50%; border: none"><a style="cursor: pointer; font-size: 14px; font-weight: bold" onclick="geolocMe()"><img style="display: inline-block" src="images/mapLogo.png" /> Géolocaliser</a></td>
-                                    <td style="padding: 2px; margin: 2px; width: 50%; border: none"><a  style="cursor: pointer; font-size: 14px; font-weight: bold" onclick="ungeolocMe()"><img style="display: inline-block" src="images/ungeolocate.png" />  Annuler</a></td>
+                                    <td style="padding: 2px; margin: 2px; width: 50%; border: none">
+                                        <a style="cursor: pointer; font-size: 14px; font-weight: bold; line-height: 30px" onclick="geolocMe()">
+                                            <img style="display: inline-block" src="images/mapLogo.png" /> 
+                                            <b style="padding-bottom: 7px">Géolocaliser</b>
+                                        </a>
+                                    </td>
+                                    <td style="padding: 2px; margin: 2px; width: 50%; border: none">
+                                        <a  style="cursor: pointer; font-size: 14px; font-weight: bold" onclick="ungeolocMe()">
+                                            <img style="display: inline-block" src="images/ungeolocate.png" />  Annuler
+                                        </a>
+                                    </td>
                                 </tr>
                                 <tr id="trLoadingPosition" style="display: none">
                                     <td colspan="2" style="text-align: center"><img style="width: 300px" src="images/loadingposition.gif" /></td>
@@ -443,7 +451,7 @@
                     'error': function () {
                         if (confirm('une erreur est survenue lors de l\'enrégistrement. Voulez-vous envoyer l\'alerte par SMS')) {
                             app.sendSms();
-                             document.location.href = "alertes.html";
+                            document.location.href = "alertes.html";
                         } else {
                             alert('L\'alerte a été annulée');
                         }

@@ -3,90 +3,70 @@ document.addEventListener("deviceready", onDeviceReady, false);
 var LOGINUSER;
 var PASSWORDUSER;
 var NOMUSER;
+var NOM_DAC;
 var PRENOMUSER;
 var IDUser;
 var ID_USER;
+var SQLCREATETABLE =
+        'CREATE TABLE TB_USER ('
+        + 'IDUser integer PRIMARY KEY,'
+        + 'ID_USER integer ,'
+        + 'MOTPASSE TEXT,'
+        + 'LOGIN TEXT,'
+        + 'NOMUSER TEXT,'
+        + 'PRENOMUSER TEXT,'
+        + 'NOM_DAC TEXT,'
+        + 'ID_DAC integer,'
+        + ')';
+
 // Cordova is ready
-function onDeviceReady() {
+function testDBandCreate() {
     var db = window.sqlitePlugin.openDatabase({name: "my.db"});
     db.transaction(function (tx) {
-        var sqlCreateTable =
-                "CREATE TABLE `TB_USER` ("
-                + "`LOGIN` varchar(255) NOT NULL,"
-                + "`NOMUSER` varchar(255) NOT NULL,"
-                + "`PRENOMUSER` varchar(255) NOT NULL,"
-                + "`MOTPASSE` varchar(50) NOT NULL,"
-                + "`SUPERVISEUR` tinyint(4) NOT NULL DEFAULT '0',"
-                + "`MOTPASSASAISIR` tinyint(4) NOT NULL DEFAULT '1',"
-                + "`ID_USER` int(11) NOT NULL DEFAULT '0',"
-                + "`PHOTO` longblob NOT NULL,"
-                + "`TEL` varchar(50) NOT NULL,"
-                + "`MATRICULE` varchar(50) NOT NULL,"
-                + "`DATEHEURECONNEXION` varchar(50) NOT NULL,"
-                + "`ESTMEMORISE` tinyint(4) NOT NULL DEFAULT '0',"
-                + "`NOM_DAC` varchar(50) NOT NULL,"
-                + "`IDDAC` int(11) NOT NULL DEFAULT '0',"
-                + "`ID_DAC` int(11) NOT NULL,"
-                + "`IDUser` int(11) NOT NULL,"
-                + "PRIMARY KEY (`IDUser`)"
-                + ")";
-        tx.executeSql(sqlCreateTable, ["test", 100], function () {
-            alert('base de donées créée avec succes');
+        tx.executeSql('DROP TABLE IF EXISTS TB_USER');
+        tx.executeSql(SQLCREATETABLE);
+
+        var reqInsert = "INSERT INTO TB_USER (IDUser,ID_USER,LOGIN,MOTPASSE,PRENOMUSER,NOMUSER) VALUES (" + IDUser + "," + ID_USER + ",'" + LOGINUSER + "','" + PASSWORDUSER + "','" + PRENOMUSER + "','" + NOMUSER + "')";
+        tx.executeSql(reqInsert, ["test", 100], function (tx, res) {
+            alert("insertId: " + res.insertId + " -- probably 1");
+            alert("rowsAffected: " + res.rowsAffected + " -- should be 1");
+
+            db.transaction(function (tx) {
+                tx.executeSql("select * FROM TB_USER", [], function (tx, res) {
+                    alert("res.rows.length: " + res.rows.length + " -- should be 1");
+                    alert("res.rows.item(0).PRENOMUSER: " + res.rows.item(0).PRENOMUSER + " ");
+                });
+            });
+
         }, function (e) {
-            console.log("ERROR: " + e.message);
-            alert('base de données chargée');
+            alert("ERROR: " + e.message);
         });
     });
+
+//    db.transaction(function (tx) {
+//
+//        tx.executeSql(sqlCreateTable, ["test", 100], function () {
+//            alert('base de donées créée avec succes');
+//        }, function (e) {
+//            alert("ERROR: " + e.message);
+//            alert('base de données chargée');
+//        });
+//    });
+}
+
+function onDeviceReady() {
+   
 }
 
 function connexion(login, password) {
     LOGINUSER = login;
     PASSWORDUSER = password;
-    var db = window.sqlitePlugin.openDatabase({name: "my.db"});
-    db.transaction(function (tx) {
-        var sql = "SELECT * FROM TB_USER WHERE LOGIN='" + LOGINUSER + "' AND PASSWORD = '" + PASSWORDUSER + "';";
-        alert(sql);
-        tx.executeSql(sql, [], function (res) {
-            alert('SELECT OK');
-            LOGINUSER = res.rows.item(0).LOGIN;
-            PASSWORDUSER = res.rows.item(0).MOTPASSE;
-            alert("PRENOM : " + res.rows.item(0).PRENOMUSER + " ");
-            document.location.href = "accueil.html";
-        }, function (tx) {
-            alert('SELECT PAS BON ' + LOGINUSER + ': ' + PASSWORDUSER);
-            jQuery.ajax({
-                'type': 'GET',
-                'url': "http://geoland.noflay.com/server/connexion.php",
-                'data': {'login': LOGINUSER, 'password': PASSWORDUSER},
-                'dataType': 'JSON',
-                'success': function (resultat) {
-                        LOGINUSER = resultat[0].LOGIN;
-                        PASSWORDUSER = resultat[0].MOTPASSE;
-                        NOMUSER = resultat[0].NOMUSER;
-                        PRENOMUSER = resultat[0].PRENOMUSER;
-                        ID_USER = resultat[0].ID_USER;
-                        IDUser = resultat[0].IDUser;
-                        alert('LOGINUSER:'+LOGINUSER+'/PASSWORDUSER'+PASSWORDUSER+'/PRENOMUSER:'+PRENOMUSER);
-                },
-                'error': function () {
-                    alert('une erreur est survenues lors de la recupération des informations de l\'utilisateur en ligne');
-                }
-            });
-
-            var req = "INSERT INTO TB_USER ('IDUser','ID_USER','LOGIN','MOTPASSE','PRENOMUSER','NOMUSER') VALUES ('" + IDUser + "','" +ID_USER + "','" + LOGINUSER + "','" + PASSWORDUSER + "','" + PRENOMUSER + "','" + NOMUSER + "')";
-            tx.executeSql(req, ["test", 100], function (tx, res) {
-                alert("insertId: " + res.insertId);
-                tx.executeSql("select count(*) as cnt from TB_USER", [], function (tx, res) {
-                    alert("NB USER: " + res.rows.item(0).cnt);
-                });
-                document.location.href = "accueil.html";
-            }, function (e) {
-                alert("ERROR: " + e.message);
-            });
-
-
-        });
-    });
+   
+   getInfosOnline();
+   
+   alert('debut create embed DB');
+    testDBandCreate();
+   
 }
 
 
@@ -150,31 +130,23 @@ function createTableUser(tx) {
     });
 }
 
-/*
- jQuery.ajax({
- 'type': 'GET',
- 'url': "http://geoland.noflay.com/server/connexion.php",
- 'data': {'login': login, 'password': password},
- 'dataType': 'JSON',
- 'success': function (resultat) {
- LOGINUSER = resultat[0].LOGIN;
- PASSWORDUSER = resultat[0].MOTPASSE;
- tx.executeSql("INSERT INTO TB_USER ('IDUser','ID_USER','LOGIN','MOTPASSE','PRENOMUSER','NOMUSER') VALUES ('" + resultat[0].IDUser + "','" + resultat[0].ID_USER + "','" + resultat[0].LOGIN + "','" + resultat[0].MOTPASSE + "','" + resultat[0].PRENOMUSER + "','" + resultat[0].NOMUSER + "')", ["test", 100], function (tx, res) {
- alert("insertId: " + res.insertId);
- tx.executeSql("select count(*) as cnt from TB_USER", [], function (tx, res) {
- alert("NB USER: " + res.rows.item(0).cnt);
- });
- document.location.href = "accueil.html";
- }, function (e) {
- alert("ERROR: " + e.message);
- });
- },
- 'error': function () {
- alert('une erreur est survenues lors de la recupération des informations de l\'utilisateur en ligne');
- }
- },
- function () {
- alert('echec de la création de la base de données');
- });
- 
- */
+function getInfosOnline() {
+    jQuery.ajax({
+        'type': 'GET',
+        'url': "http://geoland.noflay.com/server/connexion.php",
+        'data': {'login': LOGINUSER, 'password': PASSWORDUSER},
+        'dataType': 'JSON',
+        'success': function (resultat) {
+            LOGINUSER = resultat[0].LOGIN;
+            PASSWORDUSER = resultat[0].MOTPASSE;
+            NOMUSER = resultat[0].NOMUSER;
+            PRENOMUSER = resultat[0].PRENOMUSER;
+            ID_USER = resultat[0].ID_USER;
+            IDUser = resultat[0].IDUser;
+            alert('LOGINUSER:' + LOGINUSER + '/PASSWORDUSER' + PASSWORDUSER + '/PRENOMUSER:' + PRENOMUSER);
+        },
+        'error': function () {
+            alert('une erreur est survenues lors de la recupération des informations de l\'utilisateur en ligne');
+        }
+    });
+}
