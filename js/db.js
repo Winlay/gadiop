@@ -21,10 +21,19 @@ var SQLCREATETABLE =
 
 function onDeviceReady() {
     DB = window.sqlitePlugin.openDatabase({name: "my.db"});
+    DB.transaction(function (transaction) {
+        transaction.executeSql('DROP TABLE TB_USER', [],
+                function (tx, result) {
+                    alert('DROP TABLE OK');
+                },
+                function (error) {
+                    alert('erreur DROP TABLE');
+                });
+    });
 }
 // Cordova is ready
-function CreateDB() {
-
+function createDB() {
+    DB = window.sqlitePlugin.openDatabase({name: "my.db"});
     DB.transaction(function (transaction) {
         transaction.executeSql(SQLCREATETABLE, [],
                 function (tx, result) {
@@ -37,13 +46,14 @@ function CreateDB() {
 }
 // Cordova is ready
 function selectUser() {
+    DB = window.sqlitePlugin.openDatabase({name: "my.db"});
     DB.transaction(function (transaction) {
         var reqInsert = "SELECT * FROM TB_USER;";
         transaction.executeSql(reqInsert, [],
                 function (tx, result) {
                     var len = result.rows.length, i;
                     for (i = 0; i < len; i++) {
-                        alert( 'RESULT=>' +result.rows.item(i).PRENOM+' '+result.rows.item(i).NOM);
+                        alert('RESULT=>' + result.rows.item(i).PRENOM + ' ' + result.rows.item(i).NOM);
                     }
                 },
                 function (error) {
@@ -53,6 +63,7 @@ function selectUser() {
 }
 // Cordova is ready
 function insertUser() {
+    DB = window.sqlitePlugin.openDatabase({name: "my.db"});
     DB.transaction(function (transaction) {
         var reqInsert = "INSERT INTO TB_USER (ID_USER,LOGIN,MOTPASSE,PRENOMUSER,NOMUSER,NOM_DAC,ID_DAC) VALUES (?,?,?,?,?,?,?);";
         transaction.executeSql(reqInsert, [ID_USER, LOGINUSER, PASSWORDUSER, PRENOMUSER, NOMUSER, 'KEUR SAMBA KANE', 1],
@@ -75,7 +86,6 @@ function connexion(login, password) {
 
 
 function getInfosOnline() {
-    alert('LOGINUSER:' + LOGINUSER + '/PASSWORDUSER' + PASSWORDUSER);
     jQuery.ajax({
         'type': 'GET',
         'url': "http://geoland.noflay.com/server/connexion.php",
@@ -89,7 +99,7 @@ function getInfosOnline() {
             ID_USER = resultat[0].ID_USER;
             IDUser = resultat[0].IDUser;
             alert('LOGINUSER:' + LOGINUSER + '/PASSWORDUSER' + PASSWORDUSER + '/PRENOMUSER:' + PRENOMUSER);
-            CreateDB();
+            createDB();
             insertUser();
             selectUser();
         },
