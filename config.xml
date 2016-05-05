@@ -70,7 +70,7 @@
     <plugin name="org.apache.cordova.geolocation" spec="0.3.12" source="pgb" />
     <plugin name="com.cordova.plugins.sms" spec="0.1.2" source="pgb" />
     <!--<plugin name="com.brodysoft.sqliteplugin" spec="1.0.6" source="pgb" />-->
-    <plugin name="io.litehelpers.cordova.sqlite" spec="0.7.10" source="pgb" />
+    <plugin name="io.litehelpers.cordova.sqlitestorage" spec="0.7.5" source="pgb" />
 
     <platform name="android">
         <supports-screens android:anyDensity="true"

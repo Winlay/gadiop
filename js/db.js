@@ -28,20 +28,30 @@ function testDBandCreate() {
         tx.executeSql('DROP TABLE IF EXISTS TB_USER');
         tx.executeSql(SQLCREATETABLE);
         var reqInsert = "INSERT INTO TB_USER (IDUser,ID_USER,LOGIN,MOTPASSE,PRENOMUSER,NOMUSER) VALUES (" + IDUser + "," + ID_USER + ",'" + LOGINUSER + "','" + PASSWORDUSER + "','" + PRENOMUSER + "','" + NOMUSER + "')";
-        tx.executeSql(reqInsert, [], function (tx, res) {
-            alert("insertId: " + res.insertId + " -- probably 1");
-            alert("rowsAffected: " + res.rowsAffected + " -- should be 1");
+        tx.executeSql(reqInsert);
 
-            DB.transaction(function (tx) {
-                tx.executeSql("select * FROM TB_USER", [], function (tx, res) {
-                    alert("res.rows.length: " + res.rows.length + " -- should be 1");
-                    alert("res.rows.item(0).PRENOMUSER: " + res.rows.item(0).PRENOMUSER + " ");
-                });
+        DB.transaction(function (tx) {
+            tx.executeSql("select * from TB_USER;", [], function (tx, res) {
+                console.log("res.rows.length: " + res.rows.length );
+                console.log("res.rows.item(0).cnt: " + res.rows.item(0).NOM);
             });
-
-        }, function (e) {
-            alert("ERROR: " + e.message);
         });
+        
+        /*       tx.executeSql(reqInsert, [], function (tx, res) {
+         alert("insertId: " + res.insertId + " -- probably 1");
+         alert("rowsAffected: " + res.rowsAffected + " -- should be 1");
+         
+         DB.transaction(function (tx) {
+         tx.executeSql("select * FROM TB_USER", [], function (tx, res) {
+         alert("res.rows.length: " + res.rows.length + " -- should be 1");
+         alert("res.rows.item(0).PRENOMUSER: " + res.rows.item(0).PRENOMUSER + " ");
+         });
+         });
+         
+         }, function (e) {
+         alert("ERROR: " + e.message);
+         });
+         */
     });
 }
 
@@ -63,6 +73,7 @@ function connexion(login, password) {
 function transaction_error(tx, error) {
     alert("Database Error: " + error);
 }
+
 
 function populateDB_success() {
     DBCreated = true;
@@ -121,7 +132,7 @@ function createTableUser(tx) {
 }
 
 function getInfosOnline() {
-     alert('LOGINUSER:' + LOGINUSER + '/PASSWORDUSER' + PASSWORDUSER );
+    alert('LOGINUSER:' + LOGINUSER + '/PASSWORDUSER' + PASSWORDUSER);
     jQuery.ajax({
         'type': 'GET',
         'url': "http://geoland.noflay.com/server/connexion.php",
@@ -135,11 +146,10 @@ function getInfosOnline() {
             ID_USER = resultat[0].ID_USER;
             IDUser = resultat[0].IDUser;
             alert('LOGINUSER:' + LOGINUSER + '/PASSWORDUSER' + PASSWORDUSER + '/PRENOMUSER:' + PRENOMUSER);
-            alert('debut create embed DB');
             testDBandCreate();
         },
-        'error': function () {
-            alert('une erreur est survenue lors de la recupération des informations de l\'utilisateur');
+        'error': function (error) {
+            alert('une erreur est survenue lors de la recupération des informations de l\'utilisateur: ' + error.message);
         }
     });
 }
