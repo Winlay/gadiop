@@ -5,41 +5,29 @@ var LOGINUSER;
 var PASSWORDUSER;
 var NOMUSER;
 var NOM_DAC;
+var ID_DAC;
 var PRENOMUSER;
 var IDUser;
 var ID_USER;
-var SQLCREATETABLE =
-        'CREATE TABLE TB_USER ('
-        + 'ID_USER integer PRIMARY KEY,'
-        + 'MOTPASSE TEXT,'
-        + 'LOGIN TEXT,'
-        + 'NOMUSER TEXT,'
-        + 'PRENOMUSER TEXT,'
-        + 'NOM_DAC TEXT,'
-        + 'ID_DAC integer,'
-        + ')';
-
+var SQLCREATETABLE = 'CREATE TABLE tb_user (ID_USER integer PRIMARY KEY,MOTPASSE text,LOGIN text,NOMUSER text,PRENOMUSER text,NOM_DAC text,ID_DAC integer)';
 // Cordova is ready
 function onDeviceReady() {
-      var DB = window.sqlitePlugin.openDatabase({name: "my.db"}, 
-    function() {
-        window.plugins.toast.showLongCenter('Connected');
-    },
-    function(err) {
-        window.plugins.toast.showLongCenter('Error Connexion');
-    });
-    
-    window.plugins.toast.show('DEBUT DROP TABLE', 'long', 'center');
+    selectUser();
+}
+
+function selectUser() {
+    var DB = window.sqlitePlugin.openDatabase({name: "my.db", location: 1});
     DB.transaction(function (tx) {
-        tx.executeSql('DROP TABLE TB_USER', [],
+        var reqInsert = "SELECT * FROM tb_user;";
+        tx.executeSql(reqInsert, [],
                 function (tx, result) {
-                    window.plugins.toast.show('DROP TABLE OK', 'long', 'center');
+                    window.plugins.toast.showLongCenter(' Bienvenu ' + result.rows.item(0).PRENOMUSER + ' ' + result.rows.item(0).NOMUSER);
+                    window.location = "accueil.html";
                 },
                 function (error) {
-                    window.plugins.toast.show('ERREUR DROP TABLE', 'long', 'center');
+                    window.plugins.toast.showLongCenter('erreur select utilisateur' + error);
                 });
     });
-    // ...
 }
 // Cordova is ready
 function createDB() {
@@ -47,41 +35,25 @@ function createDB() {
     DB.transaction(function (tx) {
         tx.executeSql(SQLCREATETABLE, [],
                 function (tx, result) {
-                    window.plugins.toast.show('table embed créée avec succes', 'long', 'center');
+                    window.plugins.toast.showLongCenter('table utilisateur créée avec succes');
                 },
                 function (error) {
-                    window.plugins.toast.show('erreur création embed table', 'long', 'center');
+                    window.plugins.toast.showLongCenter('erreur création embed table' + error);
                 });
     });
 }
 // Cordova is ready
-function selectUser() {
-    var DB = window.sqlitePlugin.openDatabase({name: "my.db", location: 1});
-    DB.transaction(function (tx) {
-        var reqInsert = "SELECT * FROM TB_USER;";
-        tx.executeSql(reqInsert, [],
-                function (tx, result) {
-                    var len = result.rows.length, i;
-                    for (i = 0; i < len; i++) {
-                        window.plugins.toast.show('RESULT=>' + result.rows.item(i).PRENOM + ' ' + result.rows.item(i).NOM, 'long', 'center');
-                    }
-                },
-                function (error) {
-                    window.plugins.toast.show('erreur select utilisateur', 'long', 'center');
-                });
-    });
-}
 // Cordova is ready
 function insertUser() {
     var DB = window.sqlitePlugin.openDatabase({name: "my.db", location: 1});
     DB.transaction(function (tx) {
-        var reqInsert = "INSERT INTO TB_USER (ID_USER,LOGIN,MOTPASSE,PRENOMUSER,NOMUSER,NOM_DAC,ID_DAC) VALUES (?,?,?,?,?,?,?);";
-        tx.executeSql(reqInsert, [ID_USER, LOGINUSER, PASSWORDUSER, PRENOMUSER, NOMUSER, 'KEUR SAMBA KANE', 1],
+        var reqInsert = "INSERT INTO tb_user (ID_USER,LOGIN,MOTPASSE,PRENOMUSER,NOMUSER,NOM_DAC,ID_DAC) VALUES (?,?,?,?,?,?,?);";
+        tx.executeSql(reqInsert, [ID_USER, LOGINUSER, PASSWORDUSER, PRENOMUSER, NOMUSER, NOM_DAC, ID_DAC],
                 function (tx, result) {
-                    window.plugins.toast.show('succes insertion utilisateur', 'long', 'center');
+                    window.plugins.toast.showLongCenter('utilisateur initialisé avec succes');
                 },
                 function (error) {
-                    window.plugins.toast.show('erreur insertion utilisateu', 'long', 'center');
+                    window.plugins.toast.showLongCenter('erreur initialisation utilisateur' + error.message);
                 });
     });
 }
@@ -108,13 +80,15 @@ function getInfosOnline() {
             PRENOMUSER = resultat[0].PRENOMUSER;
             ID_USER = resultat[0].ID_USER;
             IDUser = resultat[0].IDUser;
-            window.plugins.toast.show('LOGINUSER:' + LOGINUSER + '/PASSWORDUSER' + PASSWORDUSER + '/PRENOMUSER:' + PRENOMUSER, 'long', 'center');
+            NOM_DAC = resultat[0].NOM_DAC;
+            ID_DAC = resultat[0].ID_DAC;
+//            window.plugins.toast.showLongCenter('LOGINUSER:' + LOGINUSER + '/PASSWORDUSER' + PASSWORDUSER + '/PRENOMUSER:' + PRENOMUSER);
             createDB();
             insertUser();
             selectUser();
         },
         'error': function (error) {
-            window.plugins.toast.show('une erreur est survenue lors de la recupération des informations de l\'utilisateur en ligne', 'long', 'center');
+            window.plugins.toast.showLongCenter('une erreur est survenue lors de la recupération des informations de l\'utilisateur en ligne');
         }
     });
 }

@@ -94,7 +94,7 @@
             }
 
             document.addEventListener("backbutton", function (e) {
-                document.location('alertes.html');
+                window.location('alertes.html');
             }, false);
             var app = {
                 sendSms: function () {
@@ -446,12 +446,12 @@
                     'data': {'libelle': libelle, 'fichier': fichier, 'description': description, 'parcelle': parcelle, 'user': user, 'latitude': latitude, 'longitude': longitude},
                     'success': function () {
                         alert('Nouvelle alerte ajoutée avec succès');
-                        document.location.href = "alertes.html";
+                        window.location.href = "alertes.html";
                     },
                     'error': function () {
                         if (confirm('une erreur est survenue lors de l\'enrégistrement. Voulez-vous envoyer l\'alerte par SMS')) {
                             app.sendSms();
-                            document.location.href = "alertes.html";
+                            window.location.href = "alertes.html";
                         } else {
                             alert('L\'alerte a été annulée');
                         }
