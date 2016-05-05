@@ -24,7 +24,7 @@ var SQLCREATETABLE =
 function testDBandCreate() {
 
     DB.transaction(function (tx) {
-        alert("SQLCREATETABLE==>"+SQLCREATETABLE);
+        alert("SQLCREATETABLE==>" + SQLCREATETABLE);
         tx.executeSql('DROP TABLE IF EXISTS TB_USER');
         tx.executeSql(SQLCREATETABLE);
         var reqInsert = "INSERT INTO TB_USER (IDUser,ID_USER,LOGIN,MOTPASSE,PRENOMUSER,NOMUSER) VALUES (" + IDUser + "," + ID_USER + ",'" + LOGINUSER + "','" + PASSWORDUSER + "','" + PRENOMUSER + "','" + NOMUSER + "')";
@@ -55,8 +55,7 @@ function connexion(login, password) {
 
     getInfosOnline();
 
-    alert('debut create embed DB');
-    testDBandCreate();
+
 
 }
 
@@ -135,9 +134,11 @@ function getInfosOnline() {
             ID_USER = resultat[0].ID_USER;
             IDUser = resultat[0].IDUser;
             alert('LOGINUSER:' + LOGINUSER + '/PASSWORDUSER' + PASSWORDUSER + '/PRENOMUSER:' + PRENOMUSER);
+            alert('debut create embed DB');
+            testDBandCreate();
         },
         'error': function () {
-            alert('une erreur est survenues lors de la recupération des informations de l\'utilisateur en ligne');
+            alert('une erreur est survenue lors de la recupération des informations de l\'utilisateur');
         }
     });
 }
