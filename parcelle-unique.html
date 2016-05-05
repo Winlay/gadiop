@@ -64,29 +64,16 @@
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/custom.js"></script>
         <script type="text/javascript" src="js/framework.plugins.min.js"></script>
-        <!--<script type="text/javascript" src="js/PhoneDialer.js"></script>-->
+        <script type="text/javascript" src="js/initUser.js"></script>
         <script type="text/javascript">
-            function clearRadio(nom) {
-                if (nom) {
-                    jQuery("input:radio[name='" + nom + "']").each(function (i) {
-                        this.checked = false;
-                    });
-                }
-            }
-            function loadContent(url) {
-                jQuery('#ajax-content').load(url);
-            }
-
             function quitter() {
                 if (confirm("Voulez-vous vraiment quitter l'application")) {
                     navigator.app.exitApp();
-                } else {
-//                    alert("Annulée");
                 }
             }
 
             document.addEventListener("backbutton", function (e) {
-                window.location('parcelles-liste.html');
+                window.location = 'parcelles-liste.html';
             }, false);
         </script>
 
@@ -231,7 +218,7 @@
                     jQuery.ajax({
                         'type': 'GET',
                         'url': "http://geoland.noflay.com/server/parcelles.php?parcelle=" + parcelle_id,
-                        'data': {'user': 1},
+                        'data': {'user': ID_USER},
                         'dataType': 'JSON',
                         'success': function (resultat) {
                             var idparcelle = resultat[0].ID_PCLE_CLT;
@@ -244,7 +231,6 @@
 
                             var polygone = [];
                             for (var i = 0; i < pol.length; i++) {
-//                               alert(pol[i].lat);
                                 var lati = parseFloat(pol[i].lat);
                                 var long = parseFloat(pol[i].lng);
                                 var cord = {lat: lati, lng: long};
@@ -256,15 +242,13 @@
                             jQuery('#categorie').html(categorie);
                             jQuery('#description').html(description);
                             jQuery('#surface').html(surface + ' Ha');
-                            var perimetre = 0;     //google.maps.geometry.spherical.computeLength(polygone);
+                            var perimetre = 0; 
 
                             var contentString0 = '<table><tr><td><b>Libelle</b></td><td>' + titre + '</td></tr>'
                                     + '<tr><td>Culture</b></td><td>' + categorie + '</td></tr>'
-                                    + '<tr><td>Superficie </b></td><td>' + Math.round(surface * 100) / 100 + ' Ha</td></tr>'
-                                    + '<tr><td>Périmètres </b></td><td>' + Math.round(perimetre * 100) / 100 + ' mètres</td></tr>'
-                                    + '<tr><td>Gerant</b></td><td> Amadou LY</td></tr></table>';
+                                    + '</table>';
                             var infosimple = new google.maps.InfoWindow({
-                                content: contentString0,
+                                content: contentString0
                             });
                             var contentString = '<table><tr><td><b>Libelle</b></td><td>' + titre + '</td></tr>'
                                     + '<tr><td>Culture</b></td><td>' + categorie + '</td></tr>'

@@ -92,18 +92,8 @@
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/custom.js"></script>
         <script type="text/javascript" src="js/framework.plugins.min.js"></script>
+        <script type="text/javascript" src="js/initUser.js"></script>
         <script type="text/javascript">
-            function clearRadio(nom) {
-                if (nom) {
-                    jQuery("input:radio[name='" + nom + "']").each(function (i) {
-                        this.checked = false;
-                    });
-                }
-            }
-            function loadContent(url) {
-                jQuery('#ajax-content').load(url);
-            }
-
             function quitter() {
                 if (confirm("Voulez-vous vraiment quitter l'application")) {
                     navigator.app.exitApp();
@@ -307,7 +297,7 @@
                     jQuery.ajax({
                         'type': 'GET',
                         'url': "http://geoland.noflay.com/server/parcelles.php?parcelle=" + parcelle_id,
-                        'data': {'user': 1},
+                        'data': {'user': ID_USER},
                         'dataType': 'JSON',
                         'success': function (resultat) {
                             var idparcelle = resultat[0].ID_PCLE_CLT;
@@ -368,7 +358,7 @@
                     jQuery.ajax({
                         'type': 'GET',
                         'url': "http://geoland.noflay.com/server/parameters.php",
-                        'data': {'user': 1},
+                        'data': {'user': ID_USER},
                         'dataType': 'JSON',
                         'success': function (resultat) {
 
@@ -517,6 +507,7 @@
                             'type': 'GET',
                             'url': "http://geoland.noflay.com/server/updateparcelle.php",
                             'data': {
+                                'ID_USER': ID_USER,
                                 'ID_PCLE_CLT': ID_PCLE_CLT,
                                 'ID_CULTURE': CULTURE,
                                 'ID_TYPE_FONCIER': TYPEFONCIER,

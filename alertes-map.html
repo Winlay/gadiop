@@ -61,27 +61,17 @@
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/custom.js"></script>
         <script type="text/javascript" src="js/framework.plugins.min.js"></script>
-        <!--<script type="text/javascript" src="js/PhoneDialer.js"></script>-->
+        <script type="text/javascript" src="js/initUser.js"></script>
         <script type="text/javascript">
-            function clearRadio(nom) {
-                if (nom) {
-                    jQuery("input:radio[name='" + nom + "']").each(function (i) {
-                        this.checked = false;
-                    });
-                }
-            }
-            function loadContent(url) {
-                jQuery('#ajax-content').load(url);
-            }
 
             function quitter() {
                 if (confirm("Voulez-vous vraiment quitter l'application")) {
                     navigator.app.exitApp();
-                } 
+                }
             }
-            
+
             document.addEventListener("backbutton", function (e) {
-                window.location('alertes.html');
+                window.location = 'alertes.html';
             }, false);
         </script>
 
@@ -150,7 +140,7 @@
                     jQuery.ajax({
                         'type': 'GET',
                         'url': "http://geoland.noflay.com/server/alertes.php",
-                        'data': {'user': 1, 'map': 'map'},
+                        'data': {'user': ID_USER, 'map': 'map'},
                         'dataType': 'JSON',
                         'success': function (resultat) {
                             if (resultat) {

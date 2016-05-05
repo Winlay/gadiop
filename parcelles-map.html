@@ -56,32 +56,19 @@
         </style>
 
         <script type="text/javascript" src="js/jquery.min.js"></script>
-        <!--<script type="text/javascript" src="js/jquery.mobile-1.4.5.js"></script>-->
         <script type="text/javascript" src="js/index.js"></script>
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/custom.js"></script>
         <script type="text/javascript" src="js/framework.plugins.min.js"></script>
-        <!--<script type="text/javascript" src="js/PhoneDialer.js"></script>-->
-        <script type="text/javascript">
-            function clearRadio(nom) {
-                if (nom) {
-                    jQuery("input:radio[name='" + nom + "']").each(function (i) {
-                        this.checked = false;
-                    });
-                }
-            }
-            function loadContent(url) {
-                jQuery('#ajax-content').load(url);
-            }
-
-            function quitter() {
+        <script type="text/javascript" src="js/initUser.js"></script>
+        <script type="text/javascript">function quitter() {
                 if (confirm("Voulez-vous vraiment quitter l'application")) {
                     navigator.app.exitApp();
-                } 
+                }
             }
 
             document.addEventListener("backbutton", function (e) {
-                window.location('parcelles-liste.html');
+                window.location = 'parcelles-liste.html';
             }, false);
         </script>
 
@@ -150,7 +137,7 @@
                     jQuery.ajax({
                         'type': 'GET',
                         'url': "http://geoland.noflay.com/server/parcelles.php",
-                        'data': {'user': 1},
+                        'data': {'user': ID_USER},
                         'dataType': 'JSON',
                         'success': function (resultat) {
                             function polygonCenter(poly) {
@@ -178,20 +165,18 @@
                                 return (new google.maps.LatLng(center_x, center_y));
                             }
 
-                            alert(resultat.length + ' parcelles trouvées');
+                            window.plugins.toast.showLongCenter(resultat.length + ' parcelles trouvées');
                             for (var i = 0; i < resultat.length; i++) {
                                 if (resultat[i].polygone) {
                                     var idparcelle = resultat[i].ID;
                                     var couleur = resultat[i].COULEUR;
                                     var superficie = parseFloat(resultat[i].SUPERFICIE_EMB);
                                     var categorie = resultat[i].NOM_CULTURE;
-                                    var description = "Description";
                                     var titre = resultat[i].NOMCA;
                                     var pol = resultat[i].polygone;
 
                                     var polygone = [];
                                     for (var i = 0; i < pol.length; i++) {
-//                               alert(pol[i].lat);
                                         var lati = parseFloat(pol[i].lat);
                                         var long = parseFloat(pol[i].lng);
                                         var cord = {lat: lati, lng: long};
@@ -200,7 +185,6 @@
 
                                     var contentString = '<table><tr><td><b>Libelle</b></td><td>' + titre + '</td></tr>'
                                             + '<tr><td>Culture</b></td><td>' + categorie + '</td></tr>'
-                                            + '<tr><td>Description</b></td><td>' + description + '</td></tr>'
                                             + '<tr><td>Superficie </b></td><td>' + Math.round(superficie * 100) / 100 + ' Ha</td></tr>'
                                             + '</table>';
 
