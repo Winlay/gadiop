@@ -1,5 +1,6 @@
 // Wait for Cordova to load
 document.addEventListener("deviceready", onDeviceReady, false);
+var DB;
 var LOGINUSER;
 var PASSWORDUSER;
 var NOMUSER;
@@ -21,17 +22,17 @@ var SQLCREATETABLE =
 
 // Cordova is ready
 function testDBandCreate() {
-    var db = window.sqlitePlugin.openDatabase({name: "my.db"});
-    db.transaction(function (tx) {
+
+    DB.transaction(function (tx) {
+        alert("SQLCREATETABLE==>"+SQLCREATETABLE);
         tx.executeSql('DROP TABLE IF EXISTS TB_USER');
         tx.executeSql(SQLCREATETABLE);
-
         var reqInsert = "INSERT INTO TB_USER (IDUser,ID_USER,LOGIN,MOTPASSE,PRENOMUSER,NOMUSER) VALUES (" + IDUser + "," + ID_USER + ",'" + LOGINUSER + "','" + PASSWORDUSER + "','" + PRENOMUSER + "','" + NOMUSER + "')";
         tx.executeSql(reqInsert, ["test", 100], function (tx, res) {
             alert("insertId: " + res.insertId + " -- probably 1");
             alert("rowsAffected: " + res.rowsAffected + " -- should be 1");
 
-            db.transaction(function (tx) {
+            DB.transaction(function (tx) {
                 tx.executeSql("select * FROM TB_USER", [], function (tx, res) {
                     alert("res.rows.length: " + res.rows.length + " -- should be 1");
                     alert("res.rows.item(0).PRENOMUSER: " + res.rows.item(0).PRENOMUSER + " ");
@@ -42,31 +43,21 @@ function testDBandCreate() {
             alert("ERROR: " + e.message);
         });
     });
-
-//    db.transaction(function (tx) {
-//
-//        tx.executeSql(sqlCreateTable, ["test", 100], function () {
-//            alert('base de donées créée avec succes');
-//        }, function (e) {
-//            alert("ERROR: " + e.message);
-//            alert('base de données chargée');
-//        });
-//    });
 }
 
 function onDeviceReady() {
-   
+    DB = window.sqlitePlugin.openDatabase({name: "my.db"});
 }
 
 function connexion(login, password) {
     LOGINUSER = login;
     PASSWORDUSER = password;
-   
-   getInfosOnline();
-   
-   alert('debut create embed DB');
+
+    getInfosOnline();
+
+    alert('debut create embed DB');
     testDBandCreate();
-   
+
 }
 
 
@@ -75,8 +66,8 @@ function transaction_error(tx, error) {
 }
 
 function populateDB_success() {
-    dbCreated = true;
-    db.transaction(getEmployees, transaction_error);
+    DBCreated = true;
+    DB.transaction(getEmployees, transaction_error);
 }
 
 function getEmployees(tx) {
@@ -100,7 +91,7 @@ function getEmployees_success(tx, results) {
     setTimeout(function () {
         scroll.refresh();
     }, 100);
-    db = null;
+    DB = null;
 }
 
 function createTableUser(tx) {
